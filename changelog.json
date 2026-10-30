@@ -1,0 +1,34 @@
+[
+  {
+    "version": "5.5.4",
+    "date": "2026-10-29",
+    "intro": "Arrivée du **Modmail** : les membres écrivent en MP au bot et le staff répond depuis un salon privé.",
+    "intro_en": "The **Modmail** is here: members DM the bot and the staff replies from a private channel.",
+    "modifications": {
+      "✨ Nouveautés": [
+        "[+] **Modmail** : les membres écrivent en MP au bot, un salon privé est créé pour le staff et les réponses sont renvoyées en MP.",
+        "[+] `/modmail setup` : choisis la catégorie, le rôle du staff et un salon de logs (optionnel) pour activer le système.",
+        "[+] **Répondre** : le staff écrit directement dans le salon Modmail. Un message qui commence par `//` reste une note interne, non envoyée au membre.",
+        "[+] **Fermeture** : bouton **Fermer** ou `/modmail close`. Le membre est prévenu en MP, la transcription est envoyée dans le salon de logs puis le salon est supprimé.",
+        "[+] **Bloquer / débloquer** : `/modmail block` et `/modmail unblock` pour gérer les membres autorisés à utiliser le Modmail.",
+        "[+] **Plusieurs serveurs** : si un membre est sur plusieurs serveurs avec Modmail, le bot lui demande lequel contacter."
+      ],
+      "🔴 Améliorations": [
+        "[~] Les MP envoyés au bot ne sont plus transférés au propriétaire du bot, ils vont désormais au staff du serveur via le Modmail."
+      ]
+    },
+    "modifications_en": {
+      "✨ New": [
+        "[+] **Modmail**: members DM the bot, a private channel is created for the staff and replies are sent back by DM.",
+        "[+] `/modmail setup`: pick the category, the staff role and an optional logs channel to enable the system.",
+        "[+] **Reply**: staff write directly in the Modmail channel. A message starting with `//` stays an internal note, not sent to the member.",
+        "[+] **Closing**: **Close** button or `/modmail close`. The member is notified by DM, the transcript is sent to the logs channel, then the channel is deleted.",
+        "[+] **Block / unblock**: `/modmail block` and `/modmail unblock` to manage which members may use the Modmail.",
+        "[+] **Multiple servers**: if a member is on several servers with Modmail, the bot asks which one to contact."
+      ],
+      "🔴 Improvements": [
+        "[~] DMs sent to the bot are no longer forwarded to the bot owner; they now go to the server staff through the Modmail."
+      ]
+    }
+  }
+]
