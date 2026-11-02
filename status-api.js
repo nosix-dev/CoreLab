@@ -1,11 +1,11 @@
 // status-api.js — à ajouter dans le dossier du bot, puis dans index.js :
-//   require('./status-api')(client);
+//   require('./status-api')(client);        (ou (client, app) si tu as déjà Express)
 // Expose GET /status et /statut (JSON) avec les vraies stats de CoreLab. Aucune dépendance.
 const http = require('http');
 const os = require('os');
 const fs = require('fs');
 
-module.exports = (client) => {
+module.exports = (client, app) => {
   // CPU du process, échantillonné toutes les 5 s
   let lastUsage = process.cpuUsage(), lastTime = Date.now(), cpu = 0;
   setInterval(() => {
@@ -36,13 +36,25 @@ module.exports = (client) => {
     };
   };
 
-  http.createServer((req, res) => {
-    if (!['/status', '/statut'].includes(req.url.split('?')[0])) { res.writeHead(404); return res.end(); }
+  const send = (res) => {
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-store',
     });
     res.end(JSON.stringify(build()));
+  };
+
+  // Option A : tu as déjà un serveur Express -> require('./status-api')(client, app);
+  // (supprime ton ancienne route /statut qui renvoie « CoreLab en ligne », sinon elle gagne)
+  if (app && typeof app.get === 'function') {
+    app.get(['/status', '/statut'], (req, res) => send(res));
+    return;
+  }
+
+  // Option B : pas de serveur existant -> on en crée un.
+  http.createServer((req, res) => {
+    if (!['/status', '/statut'].includes(req.url.split('?')[0])) { res.writeHead(404); return res.end(); }
+    send(res);
   }).listen(process.env.PORT || 3000);
 };
