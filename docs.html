@@ -91,6 +91,11 @@ body{display:flex;flex-direction:column;animation:up 8s linear infinite}
 .rel code{font:12.5px var(--m);padding:1px 7px;background:#000;border:1px solid var(--bd);border-radius:6px;color:var(--fg)}
 .sidehead{margin-top:0}
 
+main>section,main>.hero{display:none}main>.show{display:block}
+.only .ent:not(.sel),.only .rel:not(.sel){display:none}
+main>section{margin-top:0;padding-top:0;border-top:0}main>.hero{padding-bottom:24px}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+main>.show{animation:rise .35s ease both}@media(prefers-reduced-motion:reduce){main>.show{animation:none}}
 </style>
 </head>
 <body>
@@ -170,8 +175,8 @@ var FT=[
 ];
 
 var CHG=[],CHG_STATE="load";
-var X={fr:{dc:"Commandes Discord",search:"Rechercher une commande…",nores:"Aucun résultat",h1:"Documentation CoreLab",hl:"La référence complète : chaque commande de CoreLab, ses sous-commandes et ce qu’elle fait. Elle est générée à partir des commandes réellement chargées par le bot.",n_cmd:"commandes",n_cat:"sections",n_feat:"fonctionnalités",n_ver:"versions",h_start:"Où commencer",l_start:"Rien ne fonctionne tant qu’un module n’est pas activé. Deux routes, au choix :",st1:"ouvre le panneau de configuration complet du serveur",st2:"Inviter le bot sur votre serveur",st3:"Ctrl K ou / ouvre la recherche : elle couvre les noms et les descriptions, les flèches suffisent pour naviguer.",sub:"Sous-commande",desc:"Description",used:"a utilisé",sample:"Exemple : le bot répond sous cette forme.",site:"Site"},
-en:{dc:"Discord commands",search:"Search for a command…",nores:"No results",h1:"CoreLab documentation",hl:"The complete reference: every CoreLab command, its subcommands and what it does. It is generated from the commands actually loaded by the bot.",n_cmd:"commands",n_cat:"sections",n_feat:"features",n_ver:"versions",h_start:"Where to start",l_start:"Nothing works until a module has been enabled. Two routes, take your pick:",st1:"opens the full server settings panel",st2:"Invite the bot to your server",st3:"Ctrl K or / opens the search: it covers names and descriptions, the arrow keys are enough to move around.",sub:"Subcommand",desc:"Description",used:"used",sample:"Example: the bot answers in this shape.",site:"Site"}};
+var X={fr:{dc:"Commandes Discord",search:"Rechercher une commande…",nores:"Aucun résultat",h1:"Documentation CoreLab",hl:"La référence complète : chaque commande de CoreLab, ses sous-commandes et ce qu’elle fait. Elle est générée à partir des commandes réellement chargées par le bot.",n_cmd:"commandes",n_cat:"sections",n_feat:"fonctionnalités",n_ver:"versions",h_start:"Où commencer",l_start:"Rien ne fonctionne tant qu’un module n’est pas activé. Deux routes, au choix :",st1:"ouvre le panneau de configuration complet du serveur",st2:"Inviter le bot sur votre serveur",st3:"Ctrl K ou / ouvre la recherche : elle couvre les noms et les descriptions, les flèches suffisent pour naviguer.",sub:"Sous-commande",desc:"Description",used:"a utilisé",sample:"Exemple : le bot répond sous cette forme.",site:"Site",intro:"Introduction"},
+en:{dc:"Discord commands",search:"Search for a command…",nores:"No results",h1:"CoreLab documentation",hl:"The complete reference: every CoreLab command, its subcommands and what it does. It is generated from the commands actually loaded by the bot.",n_cmd:"commands",n_cat:"sections",n_feat:"features",n_ver:"versions",h_start:"Where to start",l_start:"Nothing works until a module has been enabled. Two routes, take your pick:",st1:"opens the full server settings panel",st2:"Invite the bot to your server",st3:"Ctrl K or / opens the search: it covers names and descriptions, the arrow keys are enough to move around.",sub:"Subcommand",desc:"Description",used:"used",sample:"Example: the bot answers in this shape.",site:"Site",intro:"Introduction"}};
 ["fr","en"].forEach(function(l){for(var k in X[l])U[l][k]=X[l][k]});
 var L="fr";
 try{L=localStorage.getItem("cd_lang")||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
@@ -200,7 +205,7 @@ return h+'</section>'}
 function loadChg(){try{fetch("changelog.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){CHG=normChg(j);CHG_STATE="ok";render();goHash()}).catch(function(){CHG_STATE="err";render()})}catch(e){CHG_STATE="err";render()}}
 function grp(t,items,head){var h='<details class="sg" open><summary>'+esc(t)+'</summary>';items.forEach(function(i){h+='<a href="#'+i[0]+'">'+esc(i[1])+'</a>'});return h+'</details>'}
 function side(){
-var u=U[L],o=L==="fr"?1:2,h=grp(u.gs,[["p-install",u.inst],["p-config",u.conf]]);
+var u=U[L],o=L==="fr"?1:2,h=grp(u.gs,[["home",u.intro],["p-install",u.inst],["p-config",u.conf]]);
 h+=grp(u.fe,[["p-features",u.fe]].concat(FG.map(function(g){return ["p-feat-"+g[0],g[o]]})));
 h+='<details class="sg" open><summary>'+u.dc+'</summary>';
 S.forEach(function(s){h+='<details class="sc" data-s="'+s[0]+'"><summary><a href="#p-slash-'+s[0]+'">'+esc(s[o])+'</a><em>'+s[3].length+'</em></summary>'+s[3].map(function(c){return '<a class="sl" href="#'+cid(s,c)+'">'+esc(c[0])+'</a>'}).join("")+'</details>'});
@@ -209,7 +214,7 @@ if(CHG.length)h+=grp(u.nw,[["p-changelog",u.nw]].concat(CHG.slice(0,8).map(funct
 document.getElementById("side").innerHTML=h}
 function featHtml(){
 var u=U[L],o=L==="fr"?0:1,h='<section id="p-features"><h2>'+u.h_fe+'</h2><p class="lead">'+u.l_fe+'</p>';
-FG.forEach(function(g){h+='<div class="fgroup" id="p-feat-'+g[0]+'">'+g[o+1]+'</div><div class="fgrid">';
+FG.forEach(function(g){h+='<div class="fgroup" id="p-feat-'+g[0]+'" data-g="'+g[0]+'">'+g[o+1]+'</div><div class="fgrid" data-g="'+g[0]+'">';
 FT.filter(function(f){return f[0]===g[0]}).forEach(function(f){
 h+='<div class="fcard"><div class="ic">'+f[1]+'</div><h3>'+esc(f[2+o])+(f[8]?'<span class="badge">'+u.prem+'</span>':'')+'</h3><p>'+esc(f[4+o])+'</p><ul>';
 f[6].forEach(function(b){h+='<li>'+esc(b[o])+'</li>'});h+='</ul><div class="tags">';
@@ -239,22 +244,28 @@ function render(){
 var u=U[L];document.documentElement.lang=L;document.title="CoreLab "+u.docs;
 document.querySelectorAll("[data-u]").forEach(function(e){e.textContent=u[e.dataset.u]});
 document.getElementById("sbl").textContent=u.search;document.getElementById("si").placeholder=u.search;
-side();main();spy();
+side();main();goHash();
 document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===L)});
 try{localStorage.setItem("cd_lang",L)}catch(e){}}
 function legacy(h){var m={installation:"p-install",configuration:"p-config",changelog:"p-changelog",features:"p-features"};if(m[h])return m[h];if(/^v\d/.test(h))return h;if(S.some(function(s){return s[0]===h}))return "p-slash-"+h;return h}
-function goHash(){var h=legacy((location.hash||"").slice(1)),el=h&&document.getElementById(h);if(el)el.scrollIntoView()}
-var ticking=false;
-function spy(){
-var els=document.querySelectorAll("main section[id],main .ent,main .fgroup,main .rel"),cur=null;
-els.forEach(function(e){if(e.getBoundingClientRect().top<=110)cur=e});
+function goHash(){show(legacy((location.hash||"").slice(1))||"home")}
+function show(id){
+var main=document.getElementById("main"),el=id&&id!=="home"?document.getElementById(id):null,host=[];
+if(id!=="home"&&!el)id="home";
+main.querySelectorAll(":scope>section,:scope>.hero").forEach(function(x){x.classList.remove("show","only")});
+main.querySelectorAll(".sel").forEach(function(x){x.classList.remove("sel")});
+main.querySelectorAll("[data-g]").forEach(function(x){x.style.display=""});
+var cat=null;
+if(id==="home"){host=[main.querySelector(".hero"),document.getElementById("p-start")]}
+else if(el.matches("section")){host=[el];if(el.dataset.s)cat=el.dataset.s}
+else{var sec=el.closest("main>section");host=[sec];
+if(el.matches(".ent,.rel")){sec.classList.add("only");el.classList.add("sel");if(el.dataset.s)cat=el.dataset.s}
+else if(el.dataset.g){main.querySelectorAll("[data-g]").forEach(function(x){if(x.dataset.g!==el.dataset.g)x.style.display="none"})}}
+host.forEach(function(x){if(x)x.classList.add("show")});
 document.querySelectorAll("#side a.on").forEach(function(a){a.classList.remove("on")});
-if(!cur)return;var a=document.querySelector('#side a[href="#'+cur.id+'"]');
-if(!a&&cur.dataset.s)a=document.querySelector('#side a[href="#p-slash-'+cur.dataset.s+'"]');
-var sc=cur.dataset.s&&document.querySelector('#side .sc[data-s="'+cur.dataset.s+'"]');
-if(sc)sc.open=true;
-if(a){a.classList.add("on");var sd=document.getElementById("side"),r=a.getBoundingClientRect();if(r.top<80||r.bottom>innerHeight-20)sd.scrollTop+=r.top-innerHeight/2}}
-window.addEventListener("scroll",function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){spy();ticking=false})},{passive:true});
+var a=document.querySelector('#side a[href="#'+id+'"]');if(a)a.classList.add("on");
+if(cat){var sc=document.querySelector('#side .sc[data-s="'+cat+'"]');if(sc)sc.open=true}
+window.scrollTo(0,0)}
 document.addEventListener("click",function(e){var b=e.target;
 if(b.classList&&b.classList.contains("cpy")){try{navigator.clipboard.writeText(b.dataset.c)}catch(x){}var o0=b.textContent;b.textContent=U[L].ok;setTimeout(function(){b.textContent=o0},1200);return}
 if(b.tagName==="BUTTON"&&b.parentNode.classList.contains("code")){var t=b.parentNode.querySelector("span").textContent;try{navigator.clipboard.writeText(t)}catch(x){}var old=b.textContent;b.textContent=U[L].ok;setTimeout(function(){b.textContent=old},1200);return}
