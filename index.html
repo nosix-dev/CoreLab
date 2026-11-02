@@ -63,6 +63,42 @@ html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease
 html.js .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
 body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;flex-direction:column}.wrap>footer{margin-top:auto}.wrap>*:nth-last-child(2){margin-bottom:60px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:8px}
+.stat{padding:24px;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);text-align:center}
+.stat b{display:block;font-size:clamp(30px,5vw,44px);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mut);font-size:13px}
+.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--fg);margin-right:6px;animation:p 2s infinite}
+.sec{margin-top:80px}
+.dcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));align-items:start;gap:18px}
+.dc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px;font-size:14px}
+.dc .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dc .av{width:34px;height:34px;border-radius:50%;background:var(--fg);color:#000;display:grid;place-items:center;font-weight:800;font-size:14px}
+.dc .top strong{font-size:14px}.dc .tag{font-size:10px;font-weight:700;background:var(--fg);color:#000;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+.dc .emb{border-left:4px solid var(--fg);background:#050505;border-radius:6px;padding:12px 14px}
+.dc .emb h4{margin:0 0 6px;font-size:15px}.dc .emb p{margin:0;color:var(--mut);font-size:13.5px}
+.dc .bar{height:8px;border-radius:99px;background:#1a1a1a;margin-top:12px;overflow:hidden}.dc .bar i{display:block;height:100%;width:68%;background:var(--fg)}
+.dc .bt{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:6px;background:var(--fg);color:#000;font-size:13px;font-weight:600}
+.dc .cap{margin:10px 2px 0;color:var(--mut);font-size:12.5px}
+.faq{max-width:780px}
+.faq details{border:1px solid var(--bd);border-radius:var(--r);background:var(--card);margin-bottom:10px;padding:0 20px}
+.faq summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:600;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--mut);font-size:20px;line-height:1}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{margin:0 0 16px;color:var(--mut);font-size:14.5px}
+.dc small{color:var(--mut);font-size:11px;margin-left:6px}.dc .msg{margin:0 0 10px;font-size:14px}
+.emb2{background:#050505;border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.emb2 .eh{display:flex;align-items:center;gap:10px;font:12px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em}.emb2 .eh small{margin-left:auto}
+.ico{width:32px;height:32px;border:1px solid var(--bd);border-radius:8px;display:grid;place-items:center;font-size:15px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:10px;border-top:1px solid var(--bd);padding-top:10px}
+.fl small{display:block;margin:0 0 2px}.fl b{font:13px ui-monospace,Menlo,Consolas,monospace;font-weight:600;word-break:break-word}.fl.wide{grid-column:1/-1}
+.fl code{display:block;border-left:3px solid var(--fg);padding:4px 8px;background:#0c0c0c;font-size:12px;word-break:break-all}
+.ft{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mut);margin-top:6px}
+.lt{margin:6px 0 4px;font-weight:600;font-size:14px}
+.bt2,.bt3{display:inline-block;border:1px solid var(--bd);background:#1a1a1a;border-radius:6px;padding:6px 12px;font-size:13px;margin:2px 6px 0 0}
+.banner{height:70px;margin:12px 0 8px;border-radius:8px;background:#111;border:1px solid var(--bd);display:grid;place-items:center;font-weight:800;letter-spacing:.3em;color:var(--mut)}
+.logo2{width:56px;height:56px;border-radius:8px;background:var(--fg);color:#000;display:grid;place-items:center;font-weight:800;font-size:24px;flex:none}
 </style>
 </head>
 <body>
@@ -91,16 +127,43 @@ body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;fle
 </div>
 </section>
 
-<section id="fonctions">
+<section class="sec" id="stats">
+<div class="eyebrow" data-t="e4"></div>
+<h2 data-t="h2d"></h2>
+<div class="stats">
+<div class="stat"><b data-c="servers">—</b><span data-t="st1"></span></div>
+<div class="stat"><b data-c="users">—</b><span data-t="st2"></span></div>
+<div class="stat"><b data-c="commands">—</b><span data-t="st3"></span></div>
+<div class="stat"><b data-c="latency_ms">—</b><span data-t="st4"></span></div>
+</div>
+</section>
+
+<section class="sec" id="fonctions">
 <div class="eyebrow" data-t="e1"></div>
 <h2 data-t="h2a"></h2>
 <div class="grid" id="grid"></div>
+</section>
+
+<section class="sec" id="apercus">
+<div class="eyebrow" data-t="e5"></div>
+<h2 data-t="h2e"></h2>
+<div class="dcs">
+<div><div class="dc"><div class="top"><div class="av">C</div><div><strong>CoreLab</strong><span class="tag">APP</span> <small>19:18</small></div></div><p class="msg">@Jérémie <span data-fr="vient d’atteindre le niveau 12 grâce au vocal !" data-en="just reached level 12 thanks to voice!"></span></p><div class="emb2"><div class="eh"><div class="ico">⬆</div><div><span>LEVEL UP</span><br><small style="margin:0">jeremie</small></div></div><div class="fg"><div class="fl"><small><span data-fr="Niveau" data-en="Level"></span></small><b>12</b></div><div class="fl"><small><span data-fr="XP gagné" data-en="XP earned"></span></small><b>+5 XP</b></div><div class="fl"><small><span data-fr="Via" data-en="Via"></span></small><b><span data-fr="Vocal" data-en="Voice"></span></b></div><div class="fl"><small><span data-fr="XP total" data-en="Total XP"></span></small><b>7 031 XP</b></div></div><div class="bar"><i style="width:4%"></i></div><div class="ft"><span>1 / 1 420 XP</span><span><span data-fr="Prochain niveau : 13" data-en="Next level: 13"></span></span></div></div></div><p class="cap" data-fr="Niveaux, XP et rôles de récompense" data-en="Levels, XP and reward roles"></p></div>
+<div><div class="dc"><p class="lt"><span data-fr="Invitation créée" data-en="Invite created"></span></p><div class="emb2"><div class="eh"><div class="ico">🔗</div><span><span data-fr="INVITATION CRÉÉE" data-en="INVITE CREATED"></span></span><small>14:06</small></div><div class="fg"><div class="fl"><small><span data-fr="Code" data-en="Code"></span></small><b>aB3dE5fG</b></div><div class="fl"><small><span data-fr="Créé par" data-en="Created by"></span></small><b>Lucas</b></div><div class="fl"><small><span data-fr="Salon" data-en="Channel"></span></small><b># test-bot</b></div><div class="fl"><small><span data-fr="Expire" data-en="Expires"></span></small><b><span data-fr="Jamais" data-en="Never"></span></b></div><div class="fl"><small><span data-fr="Utilisations max" data-en="Max uses"></span></small><b><span data-fr="Illimité" data-en="Unlimited"></span></b></div><div class="fl"><small><span data-fr="Durée max" data-en="Max age"></span></small><b><span data-fr="Permanente" data-en="Permanent"></span></b></div></div></div><p class="lt"><span data-fr="Salon créé" data-en="Channel created"></span></p><div class="emb2"><div class="eh"><div class="ico">📁</div><span><span data-fr="SALON CRÉÉ" data-en="CHANNEL CREATED"></span></span><small>14:06</small></div><div class="fg"><div class="fl"><small><span data-fr="Salon" data-en="Channel"></span></small><b>lien-discord</b></div><div class="fl"><small><span data-fr="Catégorie" data-en="Category"></span></small><b>LOGS</b></div><div class="fl"><small><span data-fr="Type" data-en="Type"></span></small><b>GuildText</b></div><div class="fl"><small><span data-fr="Par" data-en="By"></span></small><b>Lucas</b></div></div></div><p class="lt"><span data-fr="Message envoyé" data-en="Message sent"></span></p><div class="emb2"><div class="eh"><div class="ico">💬</div><span><span data-fr="MESSAGE ENVOYÉ" data-en="MESSAGE SENT"></span></span><small>14:06</small></div><div class="fg"><div class="fl"><small><span data-fr="Auteur" data-en="Author"></span></small><b>Lucas</b></div><div class="fl"><small><span data-fr="Salon" data-en="Channel"></span></small><b># lien-discord</b></div><div class="fl wide"><small><span data-fr="Contenu" data-en="Content"></span></small><code>https://discord.gg/aB3dE5fG</code></div></div></div><span class="bt2"><span data-fr="Voir le message" data-en="View message"></span> ↗</span></div><p class="cap" data-fr="Logs de serveur détaillés" data-en="Detailed server logs"></p></div>
+<div><div class="dc"><div class="top"><div class="av">C</div><div><strong>CoreLab</strong><span class="tag">APP</span> <small>13:56</small></div></div><div class="emb"><div style="display:flex;justify-content:space-between;gap:12px"><div><h4><span data-fr="Centre d’aide" data-en="Help center"></span></h4><p><span data-fr="Une question, un souci ? L’équipe te répond ici." data-en="A question, a problem? The team answers you here."></span></p><p style="font-style:italic;margin-top:8px">◯ <span data-fr="Réponse en général sous 24 h · 1 ticket ouvert" data-en="Usually replies within 24 h · 1 open ticket"></span></p></div><div class="logo2">C</div></div><div class="fg" style="margin-top:12px"><div class="fl"><b>🛒 <span data-fr="Commander" data-en="Order"></span></b><small style="margin:0"><span data-fr="Clique sur le bouton pour ouvrir un ticket" data-en="Click the button to open a ticket"></span></small></div><div class="fl"><b>💬 <span data-fr="Demande d’information" data-en="Information request"></span></b><small style="margin:0"><span data-fr="Clique sur le bouton pour ouvrir un ticket" data-en="Click the button to open a ticket"></span></small></div></div><div class="banner">STORE</div><small style="font-size:11px"><span data-fr="Un ticket par problème · Reste poli avec l’équipe" data-en="One ticket per issue · Stay polite with the team"></span></small></div><span class="bt3">🛒 <span data-fr="Commander" data-en="Order"></span></span><span class="bt3">💬 <span data-fr="Demande d’information" data-en="Information request"></span></span></div><p class="cap" data-fr="Tickets avec panneau personnalisable" data-en="Tickets with a customizable panel"></p></div>
+</div>
 </section>
 
 <section class="cmds" id="commandes">
 <div class="eyebrow" data-t="e2"></div>
 <h2 data-t="h2b"></h2>
 <div class="chips"><code>/config</code><code>/protection</code><code>/reglement</code><code>/embed</code><code>/vote</code><code>/notification</code><code>/traduction</code><code>/niveau</code><code>/classement</code><code>/eco</code><code>/crypto-panel</code><code>/agenda</code><code>/role-react</code><code>/planifier</code><code>/rp</code></div>
+</section>
+
+<section class="sec" id="faq">
+<div class="eyebrow" data-t="e6"></div>
+<h2 data-t="h2f"></h2>
+<div class="faq" id="faq-list"></div>
 </section>
 
 <footer><span data-t="f1"></span><span data-t="f2"></span></footer>
@@ -110,7 +173,7 @@ body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;fle
 (function(){
 var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1}):null;
 window.reveal=function(){
-document.querySelectorAll(".hero > *, section .eyebrow, section h2, .card, .chips").forEach(function(el){
+document.querySelectorAll(".hero > *, section .eyebrow, section h2, .card, .chips, .stat, .dc, .faq details").forEach(function(el){
 if(el.dataset.r)return;el.dataset.r="1";
 var sib=Array.prototype.indexOf.call(el.parentNode.children,el);
 el.classList.add("reveal");
@@ -125,12 +188,24 @@ fr:{n1:"Fonctionnalités",n2:"Commandes",n3:"Documentation",n0:"Accueil",n4:"Sup
 h1:"Le bot qui protège et gère tout votre serveur.",
 sub:"Multifonction, multilingue, pensé pour les grandes communautés Discord. Protection, tickets, niveaux, économie, notifications tout est personnalisable.",
 e1:"// Fonctionnalités",h2a:"Tout ce dont votre serveur a besoin",e2:"// Commandes",h2b:"Un aperçu des commandes",e3:"// Prêt ?",h2c:"Ajoutez CoreLab à votre serveur",
-f1:"© 2026 CoreLab Tous droits réservés",f2:"Confidentialité · Conditions · Support",title:"CoreLab"},
+f1:"© 2026 CoreLab Tous droits réservés",f2:"Confidentialité · Conditions · Support",title:"CoreLab",
+e4:"// En direct",h2d:"CoreLab en chiffres",st1:"Serveurs",st2:"Utilisateurs",st3:"Commandes",st4:"Latence (ms)",
+e5:"// Aperçus",h2e:"À quoi ça ressemble sur Discord",
+p1t:"🎫 Support",p1d:"Cliquez sur le bouton ci-dessous pour ouvrir un ticket. Le staff vous répondra rapidement.",p1b:"Ouvrir un ticket",p1c:"Tickets avec formulaire personnalisable",
+p2t:"🎉 Niveau 12 atteint !",p2d:"Bravo @Alex, tu passes au niveau 12. Encore 340 XP avant le prochain palier.",p2c:"Niveaux, XP et rôles de récompense",
+p3t:"🔨 Sanction · Avertissement",p3d:"Membre : @Alex · Raison : spam · Modérateur : @Staff",p3c:"Logs de modération clairs et personnalisables",
+e6:"// FAQ",h2f:"Questions fréquentes",},
 en:{n1:"Features",n2:"Commands",n3:"Documentation",n0:"Home",n4:"Support",n5:"Status",invite:"Invite the bot",badge:"CoreLab online",
 h1:"The bot that protects and manages your entire server.",
 sub:"Multi-function, multilingual, built for large Discord communities. Protection, tickets, levels, economy, notifications everything is customizable.",
 e1:"// Features",h2a:"Everything your server needs",e2:"// Commands",h2b:"A preview of the commands",e3:"// Ready?",h2c:"Add CoreLab to your server",
-f1:"© 2026 CoreLab All rights reserved",f2:"Privacy · Terms · Support",title:"CoreLab The all-in-one Discord bot"}
+f1:"© 2026 CoreLab All rights reserved",f2:"Privacy · Terms · Support",title:"CoreLab The all-in-one Discord bot",
+e4:"// Live",h2d:"CoreLab in numbers",st1:"Servers",st2:"Users",st3:"Commands",st4:"Latency (ms)",
+e5:"// Previews",h2e:"What it looks like on Discord",
+p1t:"🎫 Support",p1d:"Click the button below to open a ticket. The staff will reply shortly.",p1b:"Open a ticket",p1c:"Tickets with a customizable form",
+p2t:"🎉 Level 12 reached!",p2d:"Congrats @Alex, you reached level 12. 340 XP to go before the next milestone.",p2c:"Levels, XP and reward roles",
+p3t:"🔨 Sanction · Warning",p3d:"Member: @Alex · Reason: spam · Moderator: @Staff",p3c:"Clear, customizable moderation logs",
+e6:"// FAQ",h2f:"Frequently asked questions"}
 };
 var F=[
 ["◆","Protection avancée","Anti-scam, HoneyPot, âge minimum, sanctions et verrouillage de salons pour sécuriser votre serveur.","Advanced protection","Anti-scam, HoneyPot, minimum age, sanctions and channel locking to keep your server safe."],
@@ -146,21 +221,37 @@ var F=[
 ["⌕","Recherche de joueur","Trouvez un joueur et consultez son profil directement depuis Discord.","Player search","Find a player and view their profile right from Discord."],
 ["▣","Agenda & RP","Calendrier visuel d’événements et cartes RP générées en image (permis, carte d’identité…).","Agenda & RP","Visual event calendar and RP cards generated as images (license, ID card…)."]
 ];
+var Q=[
+["CoreLab est-il gratuit ?","Oui, les fonctions principales sont gratuites. Une offre Premium débloque des options supplémentaires.","Is CoreLab free?","Yes, the core features are free. A Premium plan unlocks extra options."],
+["Comment inviter CoreLab sur mon serveur ?","Cliquez sur « Inviter le bot », choisissez votre serveur et validez les permissions demandées.","How do I invite CoreLab to my server?","Click “Invite the bot”, pick your server and accept the requested permissions."],
+["Comment configurer le bot ?","Utilisez /config pour les réglages généraux, puis les commandes dédiées (/protection, /reglement, /niveau…). Tout est détaillé dans la documentation.","How do I set the bot up?","Use /config for general settings, then the dedicated commands (/protection, /reglement, /niveau…). Everything is detailed in the documentation."],
+["CoreLab est-il disponible en anglais ?","Oui, le bot et ce site sont bilingues FR / EN, et chaque membre peut choisir sa langue de traduction.","Is CoreLab available in French and English?","Yes, the bot and this site are bilingual FR / EN, and each member can pick their translation language."],
+["J’ai un problème, où demander de l’aide ?","Rejoignez le serveur de support via le lien « Support » : l’équipe vous répond directement.","I have a problem, where can I get help?","Join the support server via the “Support” link: the team will answer you directly."]
+];
+function faq(l){var o=l==="fr"?0:2,f=document.getElementById("faq-list");f.innerHTML="";
+Q.forEach(function(q){var d=document.createElement("details");d.innerHTML='<summary></summary><p></p>';d.children[0].textContent=q[o];d.children[1].textContent=q[o+1];f.appendChild(d)})}
+var STATS_URL="https://corelab-bot.onrender.com/statut",SV={};
+function fmt(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US")}
+function count(el,to){var from=parseFloat(el.dataset.v)||0,t0=null;el.dataset.v=to;
+if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=fmt(to);return}
+(function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900);el.textContent=fmt(Math.round(from+(to-from)*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(st)})(performance.now())}
+function paint(){document.querySelectorAll("[data-c]").forEach(function(e){var v=SV[e.dataset.c];if(typeof v==="number")count(e,v);else e.textContent="—"})}
+function loadStats(){fetch(STATS_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SV=j||{};paint()}).catch(function(){paint()})}
 var L="fr";
 try{var s=localStorage.getItem("cl_lang");L=s||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
 function set(l){
 L=l;document.documentElement.lang=l;document.title=D[l].title;
-document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=D[l][e.dataset.t]});
+document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=D[l][e.dataset.t]});document.querySelectorAll("[data-fr]").forEach(function(e){e.textContent=e.dataset[l]});
 var o=l==="fr"?0:2,g=document.getElementById("grid");g.innerHTML="";
 F.forEach(function(c){var d=document.createElement("div");d.className="card";
 d.innerHTML='<div class="ic"></div><h3></h3><p></p>';
 d.children[0].textContent=c[0];d.children[1].textContent=c[1+o];d.children[2].textContent=c[2+o];g.appendChild(d)});
 document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===l)});
-reveal();
+faq(l);paint();reveal();
 try{localStorage.setItem("cl_lang",l)}catch(e){}
 }
 document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){set(b.dataset.l)})});
-set(L);
+set(L);loadStats();setInterval(loadStats,30000);
 </script>
 </body>
 </html>
