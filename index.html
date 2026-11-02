@@ -236,7 +236,8 @@ function count(el,to){var from=parseFloat(el.dataset.v)||0,t0=null;el.dataset.v=
 if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=fmt(to);return}
 (function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900);el.textContent=fmt(Math.round(from+(to-from)*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(st)})(performance.now())}
 function paint(){document.querySelectorAll("[data-c]").forEach(function(e){var v=SV[e.dataset.c];if(typeof v==="number")count(e,v);else e.textContent="—"})}
-function loadStats(){fetch(STATS_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SV=j||{};paint()}).catch(function(){paint()})}
+function getStats(u){return fetch(u,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+function loadStats(){getStats(STATS_URL).catch(function(){return getStats(STATS_URL.replace("/statut","/status"))}).then(function(j){SV=j||{};paint()}).catch(function(){paint()})}
 var L="fr";
 try{var s=localStorage.getItem("cl_lang");L=s||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
 function set(l){
