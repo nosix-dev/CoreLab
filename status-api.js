@@ -1,6 +1,6 @@
 // status-api.js — à ajouter dans le dossier du bot, puis dans index.js :
 //   require('./status-api')(client);
-// Expose GET /status (JSON) avec les vraies stats de CoreLab. Aucune dépendance.
+// Expose GET /status et /statut (JSON) avec les vraies stats de CoreLab. Aucune dépendance.
 const http = require('http');
 const os = require('os');
 const fs = require('fs');
@@ -37,7 +37,7 @@ module.exports = (client) => {
   };
 
   http.createServer((req, res) => {
-    if (req.url.split('?')[0] !== '/status') { res.writeHead(404); return res.end(); }
+    if (!['/status', '/statut'].includes(req.url.split('?')[0])) { res.writeHead(404); return res.end(); }
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
