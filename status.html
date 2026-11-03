@@ -63,18 +63,18 @@ html.js .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
 body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;flex-direction:column}.wrap>footer{margin-top:auto}.wrap>*:nth-last-child(2){margin-bottom:60px}
 
-.hist{padding:20px;border:1px solid var(--bd);border-radius:var(--r);background:var(--card)}
+.hist{--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;padding:20px;border:1px solid var(--bd);border-radius:var(--r);background:var(--card)}
 .hh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .hh b{font:600 15px var(--m)}.hh span{font-size:13px;color:var(--mut)}
 .hbars{display:flex;gap:3px;height:42px}
-.hbars i{flex:1;min-width:0;border-radius:3px;background:var(--fg);cursor:pointer;outline-offset:2px}
-.hbars i.warn,.lg i.warn{background:linear-gradient(to top,var(--fg) 50%,transparent 50%);box-shadow:inset 0 0 0 1px var(--fg)}
-.hbars i.down,.lg i.down{background:transparent;box-shadow:inset 0 0 0 1px var(--mut)}
+.hbars i{flex:1;min-width:0;border-radius:3px;background:var(--ok);cursor:pointer;outline-offset:2px}
+.hbars i.warn,.lg i.warn{background:var(--warn)}
+.hbars i.down,.lg i.down{background:var(--bad)}
 .hbars i.none{background:var(--bd);opacity:.5;cursor:default}
 .hl{display:flex;justify-content:space-between;margin-top:10px;font:12px var(--m);color:var(--mut)}
 .lg{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
 .lg span{display:inline-flex;align-items:center;gap:6px}
-.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--fg)}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--ok)}
 #tip{position:fixed;left:0;top:0;z-index:20;pointer-events:none;padding:8px 12px;border:1px solid var(--fg);border-radius:10px;background:#000;font-size:12px;line-height:1.5;white-space:nowrap;opacity:0;transition:opacity .12s}
 @media(max-width:560px){.hbars{gap:2px}}
 </style>
