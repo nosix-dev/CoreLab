@@ -62,6 +62,21 @@ html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease
 html.js .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
 body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;flex-direction:column}.wrap>footer{margin-top:auto}.wrap>*:nth-last-child(2){margin-bottom:60px}
+
+.hist{padding:20px;border:1px solid var(--bd);border-radius:var(--r);background:var(--card)}
+.hh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.hh b{font:600 15px var(--m)}.hh span{font-size:13px;color:var(--mut)}
+.hbars{display:flex;gap:3px;height:42px}
+.hbars i{flex:1;min-width:0;border-radius:3px;background:var(--fg);cursor:pointer;outline-offset:2px}
+.hbars i.warn,.lg i.warn{background:linear-gradient(to top,var(--fg) 50%,transparent 50%);box-shadow:inset 0 0 0 1px var(--fg)}
+.hbars i.down,.lg i.down{background:transparent;box-shadow:inset 0 0 0 1px var(--mut)}
+.hbars i.none{background:var(--bd);opacity:.5;cursor:default}
+.hl{display:flex;justify-content:space-between;margin-top:10px;font:12px var(--m);color:var(--mut)}
+.lg{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mut)}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--fg)}
+#tip{position:fixed;left:0;top:0;z-index:20;pointer-events:none;padding:8px 12px;border:1px solid var(--fg);border-radius:10px;background:#000;font-size:12px;line-height:1.5;white-space:nowrap;opacity:0;transition:opacity .12s}
+@media(max-width:560px){.hbars{gap:2px}}
 </style>
 </head>
 <body>
@@ -84,6 +99,9 @@ body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;fle
 <h2 data-u="services"></h2>
 <div class="rows" id="rows"></div>
 
+<h2 data-u="hist"></h2>
+<div class="hist" id="hist"></div>
+
 <h2 data-u="system"></h2>
 <div class="grid" id="sys"></div>
 
@@ -93,11 +111,13 @@ body{display:flex;flex-direction:column}.wrap{flex:1;width:100%;display:flex;fle
 <footer><span data-u="f1"></span><span id="upd"></span></footer>
 </div>
 
+<div id="tip" role="tooltip"></div>
+
 <script>
 (function(){
 var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1}):null;
 window.reveal=function(){
-document.querySelectorAll(".head > *, h2, .rows, #sys, #tiles").forEach(function(el){
+document.querySelectorAll(".head > *, h2, .rows, #hist, #sys, #tiles").forEach(function(el){
 if(el.dataset.r)return;el.dataset.r="1";
 var sib=Array.prototype.indexOf.call(el.parentNode.children,el);
 el.classList.add("reveal");
@@ -108,7 +128,7 @@ if(io)io.observe(el);else el.classList.add("in");
 };
 })();
 /* URL de votre API JSON (voir format ci-dessous). Laisser vide = données de démonstration. */
-var API_URL="https://corelab-2.onrender.com/status";
+var API_URL="https://corelab-bot.onrender.com/statut";
 /* Format attendu :
 { "bot":"online|offline", "db_ms":9, "discord":"ok|degraded|down", "latency_ms":95, "uptime_s":162960,
   "servers":0, "users":0, "commands":0,
@@ -119,13 +139,13 @@ f1:"© 2026 CoreLab Tous droits réservés",all:"Tous les systèmes sont opérat
 demo:"Aucune donnée reçue : renseignez API_URL (voir status-api.js) pour afficher les vraies stats de CoreLab.",
 online:"En ligne",offline:"Hors ligne",ok:"Opérationnel",degraded:"Dégradé",dn:"Indisponible",
 sBot:"CoreLab",sDb:"Base de données",sDis:"API Discord",sLat:"Latence du bot",sUp:"Uptime",sSrv:"Serveurs",
-cpu:"Processeur",mem:"Mémoire",sto:"Stockage",cores:"cœur(s)",used:"utilisés",tS:"Serveurs",tU:"Utilisateurs",tC:"Commandes",tSt:"Statut",upd:"Mis à jour à ",none:"Aucun serveur récent",unit:"j"},
+cpu:"Processeur",mem:"Mémoire",sto:"Stockage",cores:"cœur(s)",used:"utilisés",tS:"Serveurs",tU:"Utilisateurs",tC:"Commandes",tSt:"Statut",upd:"Mis à jour à ",none:"Aucun serveur récent",unit:"j",hist:"Historique d’uptime",hN:"{n} derniers jours",hU:"d’uptime",hDown:"d’indisponibilité",hNone:"Aucune indisponibilité",hNoData:"Pas de données",hToday:"Aujourd’hui",hAgo:"il y a {n} jours",hWait:"Collecte de l’historique en cours…",hMin:"min"},
 en:{home:"Home",docs:"Documentation",status:"Status",cmds:"Commands",support:"Support",invite:"Invite the bot",title:"CoreLab Status",services:"Services",system:"System",bot:"Bot",recent:"Recent servers",
 f1:"© 2026 CoreLab All rights reserved",all:"All systems operational",wait:"Waiting for bot data…",some:"Degraded performance",down:"Outage in progress",
 demo:"No data received: set API_URL (see status-api.js) to display CoreLab’s real stats.",
 online:"Online",offline:"Offline",ok:"Operational",degraded:"Degraded",dn:"Unavailable",
 sBot:"CoreLab",sDb:"Database",sDis:"Discord API",sLat:"Bot latency",sUp:"Uptime",sSrv:"Servers",
-cpu:"Processor",mem:"Memory",sto:"Storage",cores:"core(s)",used:"used",tS:"Servers",tU:"Users",tC:"Commands",tSt:"Status",upd:"Updated at ",none:"No recent servers",unit:"d"}};
+cpu:"Processor",mem:"Memory",sto:"Storage",cores:"core(s)",used:"used",tS:"Servers",tU:"Users",tC:"Commands",tSt:"Status",upd:"Updated at ",none:"No recent servers",unit:"d",hist:"Uptime history",hN:"Last {n} days",hU:"uptime",hDown:"of downtime",hNone:"No downtime",hNoData:"No data",hToday:"Today",hAgo:"{n} days ago",hWait:"Collecting history…",hMin:"min"}};
 var DEMO={};
 var L="fr",data=DEMO,isDemo=true;
 try{L=localStorage.getItem("cs_lang")||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
@@ -159,14 +179,49 @@ bar(u.mem,bytes(d.memory.used)+" / "+bytes(d.memory.total)+" "+u.used,pct(d.memo
 bar(u.sto,bytes(d.storage.used)+" / "+bytes(d.storage.total)+" "+u.used,pct(d.storage.used,d.storage.total));
 function tile(v,l){return '<div class="tile"><b>'+v+'</b><span>'+l+'</span></div>'}
 document.getElementById("tiles").innerHTML=tile(E?D:nf(d.servers),u.tS)+tile(E?D:nf(d.users),u.tU)+tile(E?D:nf(d.commands),u.tC)+tile(E?D:(botS==="ok"?u.online:u.offline),u.tSt);
+renderHist(u,d,E);
 var dm=document.getElementById("demo");dm.hidden=!isDemo;dm.textContent=u.demo;
 document.getElementById("upd").textContent=E?"":u.upd+now;
 document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===L)});
 try{localStorage.setItem("cs_lang",L)}catch(e){}
 }
+var lastN=0;
+function HN(){return window.innerWidth<560?45:90}
+function pf(p){p=p>=100?100:Math.floor(p*100)/100;return p.toLocaleString(L==="fr"?"fr-FR":"en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function dur(m,u){return m<60?m+" "+u.hMin:Math.floor(m/60)+"h "+(m%60)+" "+u.hMin}
+function hideTip(){document.getElementById("tip").style.opacity=0}
+function showTip(el){var t=document.getElementById("tip"),r=el.getBoundingClientRect();t.innerHTML=el.dataset.tip;t.style.opacity=1;var w=t.offsetWidth;t.style.left=Math.max(8,Math.min(window.innerWidth-w-8,r.left+r.width/2-w/2))+"px";t.style.top=Math.max(8,r.top-t.offsetHeight-10)+"px"}
+function renderHist(u,d,E){
+hideTip();var N=HN();lastN=N;
+var hs=(!E&&Array.isArray(d.history))?d.history:null;
+if(!hs){try{hs=JSON.parse(localStorage.getItem("cs_hist")||"null")}catch(e){hs=null}}
+var map={};
+(Array.isArray(hs)?hs:[]).forEach(function(x){
+if(!x||!/^\d{4}-\d\d-\d\d$/.test(x.d))return;
+var t=+x.t,p=Math.min(+x.u,t);
+if(isFinite(t)&&t>0&&isFinite(p)&&p>=0)map[x.d]={u:p,t:t}});
+var loc=L==="fr"?"fr-FR":"en-GB",cells="",SU=0,ST=0;
+for(var i=N-1;i>=0;i--){
+var k=new Date(Date.now()-i*864e5).toISOString().slice(0,10),x=map[k],
+dt=new Date(k+"T00:00:00Z").toLocaleDateString(loc,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
+if(!x){cells+='<i class="none" data-tip="<b>'+dt+'</b><br>'+u.hNoData+'"></i>';continue}
+var p=x.u/x.t*100,c=p>=99.9?"":p>=95?"warn":"down";
+SU+=x.u;ST+=x.t;
+cells+='<i class="'+c+'" tabindex="0" data-tip="<b>'+dt+'</b><br>'+pf(p)+' % '+u.hU+'<br>'+(x.t-x.u>0?dur(x.t-x.u,u)+' '+u.hDown:u.hNone)+'"></i>'}
+document.getElementById("hist").innerHTML=
+'<div class="hh"><b>'+(ST?pf(SU/ST*100)+' % '+u.hU:u.hWait)+'</b><span>'+u.hN.replace("{n}",N)+'</span></div>'+
+'<div class="hbars">'+cells+'</div>'+
+'<div class="hl"><span>'+u.hAgo.replace("{n}",N)+'</span><span>'+u.hToday+'</span></div>'+
+'<div class="lg"><span><i></i>'+u.ok+'</span><span><i class="warn"></i>'+u.degraded+'</span><span><i class="down"></i>'+u.dn+'</span></div>'}
+(function(){var H=document.getElementById("hist");
+function on(e){var t=e.target;if(t&&t.dataset&&t.dataset.tip)showTip(t)}
+H.addEventListener("mouseover",on);H.addEventListener("focusin",on);H.addEventListener("click",on);
+H.addEventListener("mouseout",hideTip);H.addEventListener("focusout",hideTip);
+document.addEventListener("click",function(e){if(!H.contains(e.target))hideTip()});
+window.addEventListener("resize",function(){if(HN()!==lastN)render()})})();
 function load(){
 if(!API_URL){render();return}
-fetch(API_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){data=j;isDemo=false;render()}).catch(function(){data={};isDemo=true;render()});
+fetch(API_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){data=j;isDemo=false;try{localStorage.setItem("cs_hist",JSON.stringify(j.history||[]))}catch(e){}render()}).catch(function(){data={};isDemo=true;render()});
 }
 document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){L=b.dataset.l;render()})});
 load();setInterval(load,30000);reveal();
