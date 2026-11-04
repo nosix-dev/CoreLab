@@ -1,5 +1,45 @@
 [
   {
+    "version": "5.5.6",
+    "date": "2026-11-04",
+    "intro": "Deux nouvelles commandes pour suivre l'**activité de ton serveur et de tes membres**, avec des graphiques et des boutons de navigation.",
+    "intro_en": "Two new commands to track your **server and member activity**, with charts and navigation buttons.",
+    "modifications": {
+      "📊 Statistiques du serveur": [
+        "[+] `/server-stats` : affiche les messages du serveur sur 7, 14 ou 30 jours, avec le total, la moyenne par jour et le nombre d'utilisateurs actifs.",
+        "[+] **Vue d'ensemble** : courbe des messages, arrivées, départs et temps passé en vocal.",
+        "[+] **Top Users** : classement des membres les plus actifs.",
+        "[+] **Canaux** : classement des salons les plus actifs.",
+        "[+] **Activité Horaire** : heure de pointe et répartition matin, après-midi, soirée et nuit."
+      ],
+      "👤 Statistiques d'un membre": [
+        "[+] `/user-stats` : affiche l'activité d'un membre (messages, rang sur le serveur, jours actifs, temps en vocal, salon favori).",
+        "[+] Les mêmes vues que le serveur : messages par jour, salons et activité par heure."
+      ],
+      "🎨 Affichage": [
+        "[+] Graphiques sombres, dans le même style que les logs.",
+        "[+] Boutons de navigation et menu pour changer la période, réservés à la personne qui a lancé la commande."
+      ]
+    },
+    "modifications_en": {
+      "📊 Server statistics": [
+        "[+] `/server-stats`: shows server messages over 7, 14 or 30 days, with the total, daily average and number of active users.",
+        "[+] **Overview**: curve of messages, joins, leaves and voice time.",
+        "[+] **Top Users**: ranking of the most active members.",
+        "[+] **Channels**: ranking of the most active channels.",
+        "[+] **Hourly Activity**: peak hour and split between morning, afternoon, evening and night."
+      ],
+      "👤 Member statistics": [
+        "[+] `/user-stats`: shows a member's activity (messages, server rank, active days, voice time, favorite channel).",
+        "[+] Same views as the server: messages per day, channels and activity per hour."
+      ],
+      "🎨 Display": [
+        "[+] Dark charts, in the same style as the logs.",
+        "[+] Navigation buttons and menu to change the period, restricted to the person who ran the command."
+      ]
+    }
+  },
+  {
     "version": "5.5.4",
     "date": "2026-10-29",
     "intro": "Arrivée du **Modmail** : les membres écrivent en MP au bot et le staff répond depuis un salon privé.",
