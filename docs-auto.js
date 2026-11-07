@@ -9,7 +9,7 @@
  */
 (function () {
   // ⚠️ Remplace par l'adresse publique de ton bot (la même que celle utilisée pour /changelog)
-  var BOT_URL = 'https://TON-BOT.onrender.com';
+  var BOT_URL = 'https://corelab-bot.onrender.com';
   var ACCENT = '#E8510D';
 
   var root = document.getElementById('auto-docs');
