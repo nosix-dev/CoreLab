@@ -188,7 +188,10 @@ function code(t,d){return '<div class="code"><span>'+esc(t)+'</span>'+(d?'<i>'+e
 var TAGS={"+":"✨","~":"🔴","!":"⚠️","i":"ℹ️"};
 function fmt(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener" style="text-decoration:underline">$1</a>')}
 function pick(x){if(x&&typeof x==="object"&&!Array.isArray(x))return x[L]||x.fr||x.en||"";return x}
-function normChg(j){var a=Array.isArray(j)?j:(j&&Array.isArray(j.entries)?j.entries:j&&Array.isArray(j.releases)?j.releases:(j&&typeof j==="object"?[j]:[]));return a.filter(function(r){return r&&r.version!==undefined})}
+function botEntry(r){if(r&&Array.isArray(r.sections)&&!r.modifications){var T={add:"+",change:"~",warn:"!",info:"i"},m={};
+r.sections.forEach(function(sec){var k=sec.title||"";m[k]=(m[k]||[]).concat((sec.items||[]).map(function(i){return "["+(T[i.type]||"~")+"] "+i.text}))});
+r=Object.assign({},r,{modifications:m})}return r}
+function normChg(j){var a=Array.isArray(j)?j:(j&&Array.isArray(j.entries)?j.entries:j&&Array.isArray(j.releases)?j.releases:(j&&typeof j==="object"?[j]:[]));return a.map(botEntry).filter(function(r){return r&&r.version!==undefined})}
 function sectionsOf(r){var m=(L==="en"&&(r.modifications_en||r.changes_en))||r.modifications||r.changes||{};if(Array.isArray(m))m={"":m};return Object.keys(m).map(function(k){return {t:k,l:(Array.isArray(m[k])?m[k]:[m[k]]).map(pick).filter(Boolean)}}).filter(function(x){return x.l.length})}
 function chgHtml(){
 var u=U[L],h='<section id="p-changelog"><h2>'+u.h_nw+'</h2><p class="lead">'+u.l_nw+'</p>';
@@ -223,9 +226,12 @@ var sec=byKey[CAT2SEC[l.category&&l.category.key]]||byKey.util||S[S.length-1];
 sec[3].push([k,l.descriptionFr||l.description,l.description,liveSubs(l)])});
 return true}
 function loadDocs(){getJ("/docs").then(function(d){if(applyDocs(d))render()}).catch(function(){})}
+var CHG_LOCAL=[],CHG_BOT=[];
+function cmpV(a,b){var x=String(a).trim().split("."),y=String(b).trim().split(".");for(var i=0;i<Math.max(x.length,y.length);i++){var d=(parseInt(y[i],10)||0)-(parseInt(x[i],10)||0);if(d)return d}return 0}
+function mergeChg(){var seen={},out=[];CHG_BOT.concat(CHG_LOCAL).forEach(function(r){var v=String(r.version).trim();if(!seen[v]){seen[v]=1;out.push(r)}});return out.sort(function(a,b){return cmpV(a.version,b.version)})}
 function loadChg(){
-fetch("changelog.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){CHG=normChg(j);CHG_STATE="ok";render()}).catch(function(){CHG_STATE="err";render()});
-getJ("/changelog").then(function(j){var a=normChg(j);if(a.length){CHG=a;CHG_STATE="ok";render()}}).catch(function(){})}
+fetch("changelog.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){CHG_LOCAL=normChg(j);CHG=mergeChg();CHG_STATE="ok";render()}).catch(function(){if(!CHG.length){CHG_STATE="err";render()}});
+getJ("/changelog").then(function(j){CHG_BOT=normChg(j);if(CHG_BOT.length){CHG=mergeChg();CHG_STATE="ok";render()}}).catch(function(){})}
 function grp(t,items,head){var h='<details class="sg" open><summary>'+esc(t)+'</summary>';items.forEach(function(i){h+='<a href="#'+i[0]+'">'+esc(i[1])+'</a>'});return h+'</details>'}
 function side(){
 var u=U[L],o=L==="fr"?1:2,h=grp(u.gs,[["home",u.intro],["p-install",u.inst],["p-config",u.conf]]);
