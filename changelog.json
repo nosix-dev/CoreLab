@@ -1,5 +1,18 @@
 [
   {
+    "version": "5.5.22",
+    "date": "2026-11-07",
+    "titre": "Le blog des nouveautés",
+    "intro": "Le site a maintenant un **blog** : chaque nouveauté du bot y est publiée automatiquement, avec un article par version.",
+    "modifications": {
+      "📰 Blog": [
+        "[+] Nouvelle page **Blog** sur le site : un article par mise à jour, avec le titre, la date, le résumé et le détail des changements.",
+        "[+] Les articles sont publiés tout seuls : chaque nouvelle version ajoutée dans `update.json` apparaît dans le blog, du plus récent au plus ancien.",
+        "[~] Le lien **Blog** est ajouté dans le menu de l'accueil, du statut et de la documentation."
+      ]
+    }
+  },
+  {
     "version": "5.5.21",
     "date": "2026-11-07",
     "intro": "La **documentation du site** se met à jour toute seule : commandes, sous-commandes et changelog sont lus directement depuis le bot.",
@@ -9,7 +22,8 @@
         "[+] Le changelog du site est lu depuis le bot, donc chaque nouvelle version y apparaît automatiquement.",
         "[~] **/settings** est décrit comme les réglages du serveur (tickets, règlement, StarBoard…) et **/config** ouvre le panneau, comme sur le site."
       ]
-    }
+    },
+    "titre": "Site relié au bot"
   },
   {
     "version": "5.5.20",
@@ -20,7 +34,8 @@
         "[+] Le bot publie la liste complète de ses commandes (sous-commandes, options, permissions, catégories) et des modules de protection pour le site.",
         "[~] **/config** est classée dans la catégorie Administration de l'aide."
       ]
-    }
+    },
+    "titre": "Documentation automatique"
   },
   {
     "version": "5.5.19",
@@ -32,7 +47,8 @@
         "[-] Fini les images qui s'empilaient dans le message pendant la roue.",
         "[+] Le résultat s'affiche dans le même message une fois l'animation terminée."
       ]
-    }
+    },
+    "titre": "Roue en GIF"
   },
   {
     "version": "5.5.16",
@@ -42,7 +58,8 @@
       "🎡 Roue": [
         "[-] La même carte pouvait apparaître plusieurs fois côte à côte pendant l'animation, y compris autour de la carte gagnante : la bande est maintenant construite sans doublon proche."
       ]
-    }
+    },
+    "titre": "Roue sans cartes en double"
   },
   {
     "version": "5.5.15",
@@ -52,7 +69,8 @@
       "🎡 Roue": [
         "[-] L'image de la roue pouvait apparaître deux fois dans le même message après l'animation : une seule image reste maintenant affichée."
       ]
-    }
+    },
+    "titre": "Roue Pokémon corrigée"
   },
   {
     "version": "5.5.14",
@@ -63,7 +81,8 @@
         "[-] Les miniatures n'apparaissaient plus sur certaines vidéos : CoreLab prend maintenant la meilleure miniature disponible.",
         "[~] Même correction pour les annonces de live."
       ]
-    }
+    },
+    "titre": "Miniatures YouTube corrigées"
   },
   {
     "version": "5.5.13",
@@ -74,7 +93,8 @@
         "[~] **/settings panel** devient **/config** : une seule commande pour ouvrir le panneau de configuration du serveur.",
         "[~] Les autres sous-commandes ne changent pas : **/settings ticket**, **rules**, **starboard**, **language**, **notifications**, etc."
       ]
-    }
+    },
+    "titre": "/settings panel devient /config"
   },
   {
     "version": "5.5.10",
@@ -88,7 +108,8 @@
         "[+] Un bouton **Changelog** en haut à droite ouvre la page des changements.",
         "[~] Les boutons **Actualiser**, **Mode Simple**, **Verrouiller** et **Reset HoneyPot** restent en bas du panneau."
       ]
-    }
+    },
+    "titre": "Nouveau panneau de protection"
   },
   {
     "version": "5.5.9",
@@ -100,7 +121,8 @@
         "[~] Le rôle créé automatiquement pour le bot est maintenant **orange**.",
         "[~] Dans les modals de couleur, le choix par défaut est **Orange CoreLab** ; le blanc reste disponible."
       ]
-    }
+    },
+    "titre": "Nouvelle couleur orange"
   },
   {
     "version": "5.5.8",
@@ -118,7 +140,8 @@
       "📖 Aide": [
         "[~] La commande **/anime** apparaît dans la catégorie **Public** de /help."
       ]
-    }
+    },
+    "titre": "Collection de personnages d'anime"
   },
   {
     "version": "5.5.7",
@@ -143,7 +166,8 @@
         "[+] L'auteur est sanctionné (rôles dangereux retirés) et le propriétaire du serveur est alerté en MP.",
         "[+] Le module s'active dans **/protect-settings** et accepte une liste de personnes de confiance."
       ]
-    }
+    },
+    "titre": "Quêtes et menus de rôles"
   },
   {
     "version": "5.5.6",
