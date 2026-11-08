@@ -119,6 +119,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:
 .hero .hv{background:var(--ac);color:#fff}
 .post:hover,.nav2 a:hover{border-color:var(--ac)}
 .toc{border-left-color:rgba(232,81,13,.45)}
+
+/* ===== Profil auteur ===== */
+.au{background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:4px 14px 4px 4px;margin:-4px;border-radius:999px;transition:background .15s}
+.au:hover{background:rgba(232,81,13,.12)}
+.au:hover b{text-decoration:underline}
+.pf-o{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(18px + env(safe-area-inset-bottom,0px));background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:pfo .18s ease}
+.pf{position:relative;width:100%;max-width:440px;max-height:100%;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.7),0 0 0 1px rgba(232,81,13,.18);animation:pfc .22s ease}
+@keyframes pfo{from{opacity:0}}
+@keyframes pfc{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@media(prefers-reduced-motion:reduce){.pf-o,.pf{animation:none}}
+.pf-b{height:130px;background-size:cover;background-position:center;background-color:#120803;position:relative;
+background-image:radial-gradient(ellipse 80% 120% at 50% 0%,rgba(232,81,13,.65),transparent 72%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34.64' height='60' viewBox='0 0 34.64 60'%3E%3Cpath d='M17.32 10L34.64 20V40L17.32 50L0 40V20ZM17.32 30V50M17.32 30L0 20M17.32 30L34.64 20M17.32 0V10M17.32 50V60' fill='none' stroke='white' stroke-opacity='.12' stroke-width='1'/%3E%3C/svg%3E");background-size:auto,52px 90px}
+.pf-x{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#fff;font-size:16px;cursor:pointer;display:grid;place-items:center}
+.pf-x:hover{background:var(--ac);border-color:var(--ac)}
+.pf-h{padding:0 24px;margin-top:-54px;position:relative}
+.pf-av{width:108px;height:108px;border-radius:50%;border:4px solid var(--card);box-shadow:0 0 0 2px var(--ac),0 0 28px rgba(232,81,13,.5);background:#161616;display:grid;place-items:center;font-weight:800;font-size:44px;overflow:hidden;position:relative}
+.pf-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pf-n{font-size:28px;font-weight:800;letter-spacing:-.025em;line-height:1.15;margin:14px 0 8px}
+.pf-r{display:inline-block;font:700 12px var(--m);letter-spacing:.06em;text-transform:uppercase;color:var(--ac);border:1px solid rgba(232,81,13,.55);background:rgba(232,81,13,.1);border-radius:999px;padding:3px 12px}
+.pf-s{padding:20px 24px 24px}
+.pf-k{font:11px var(--m);letter-spacing:.14em;text-transform:uppercase;color:var(--ac);margin:0 0 8px}
+.pf-bio{border:1px solid var(--bd);background:#101010;border-radius:var(--r);padding:14px 16px;color:#d4d4d4;font-size:15px;margin:0 0 16px}
+.pf-st{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+.pf-st div{border:1px solid var(--bd);background:#101010;border-radius:var(--r);padding:12px 8px;text-align:center}
+.pf-st b{display:block;font-size:20px;letter-spacing:-.02em;color:var(--ac);line-height:1.2}
+.pf-st small{display:block;margin-top:2px;font-size:11px;color:var(--mut)}
+.pf-l{display:flex;flex-wrap:wrap;gap:10px}
+.pf-l a{flex:1 1 150px;text-align:center;padding:10px 14px;border-radius:var(--r);border:1px solid var(--bd);background:#101010;font-weight:600;font-size:14px}
+.pf-l a:hover{border-color:var(--ac);color:var(--ac)}
+.pf-l a.main{background:var(--ac);border-color:var(--ac);color:#fff}
+.pf-l a.main:hover{color:#fff;box-shadow:0 6px 22px rgba(232,81,13,.45)}
 </style>
 </head>
 <body>
@@ -136,10 +167,12 @@ var U={
 fr:{home:"Accueil",status:"Statut",docs:"Documentation",blog:"Blog",eyebrow:"Blog CoreLab",h1:"Les nouveautés de CoreLab",lead:"Chaque mise à jour du bot est publiée ici : ce qui change, ce qui arrive, de la plus récente à la plus ancienne.",latest:"Dernière version",read:"Lire l’article →",back:"← Tous les articles",prev:"Article précédent",next:"Article suivant",load:"Chargement…",err:"Impossible de charger les articles pour le moment. Réessaie dans un instant.",empty:"Aucun article pour le moment.",upd:"Mise à jour",f1:"© CoreLab — le blog se met à jour à chaque nouvelle version du bot."},
 en:{home:"Home",status:"Status",docs:"Documentation",blog:"Blog",eyebrow:"CoreLab blog",h1:"What’s new in CoreLab",lead:"Every bot update is posted here: what changes and what’s coming, from the most recent to the oldest.",latest:"Latest version",read:"Read the article →",back:"← All articles",prev:"Previous article",next:"Next article",load:"Loading…",err:"Unable to load the articles right now. Please try again shortly.",empty:"No articles yet.",upd:"Update",f1:"© CoreLab — the blog is updated with every new bot version."}
 };
-Object.assign(U.fr,{blogt:"Blog",toc:"Sur cette page",rd1:"minute de lecture",rdn:"minutes de lecture",tg:{"+":"Nouveau","~":"Amélioré","-":"Corrigé","!":"Attention","i":"Info"}});
-Object.assign(U.en,{blogt:"Blog",toc:"On this page",rd1:"min read",rdn:"min read",tg:{"+":"New","~":"Improved","-":"Fixed","!":"Heads-up","i":"Info"}});
-/* Auteur par défaut : modifie ici, ou ajoute "auteurs":[{"nom":"…","role":"…","avatar":"url"}] dans une entrée d'update.json */
-var AUTH=[{nom:"Bratony",avatar:"bratony.png",role:{fr:"Développeur principal",en:"Lead developer"}}];
+Object.assign(U.fr,{pf:{close:"Fermer",view:"Voir le profil",about:"À propos",arts:"Articles",last:"Dernière version",since:"Depuis",disc:"Serveur Discord"},blogt:"Blog",toc:"Sur cette page",rd1:"minute de lecture",rdn:"minutes de lecture",tg:{"+":"Nouveau","~":"Amélioré","-":"Corrigé","!":"Attention","i":"Info"}});
+Object.assign(U.en,{pf:{close:"Close",view:"View profile",about:"About",arts:"Articles",last:"Latest version",since:"Since",disc:"Discord server"},blogt:"Blog",toc:"On this page",rd1:"min read",rdn:"min read",tg:{"+":"New","~":"Improved","-":"Fixed","!":"Heads-up","i":"Info"}});
+/* Auteur par défaut (cliquable -> profil). Champs : nom, role, avatar, banner, bio, links:[{label,url,main}] — bio/role/label peuvent être {fr,en} */
+var AUTH=[{nom:"Bratony",avatar:"bratony.png",role:{fr:"Développeur principal",en:"Lead developer"},
+bio:{fr:"Développeur et mainteneur de **CoreLab**.",en:"Developer and maintainer of **CoreLab**."},
+links:[{label:{fr:"Serveur Discord",en:"Discord server"},url:"https://discord.gg/WecpyxrSBT"},{label:{fr:"Inviter le bot",en:"Invite the bot"},url:"https://discord.com/oauth2/authorize?client_id=1403513450273177772&scope=bot%20applications.commands&permissions=8",main:1}]}];
 var L="fr";
 try{L=localStorage.getItem("cd_lang")||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
 var LOCAL=[],FROMBOT=[],POSTS=[],STATE="load";
@@ -165,9 +198,30 @@ var EM="\\p{Extended_Pictographic}\\uFE0F?(?:\\u200D\\p{Extended_Pictographic}\\
 function emo(t){var m=String(t).match(new RegExp("^\\s*("+EM+")","u"));return m?m[1]:""}
 function yearOf(r){var d=String(r.date||"").slice(0,4);return /^\d{4}$/.test(d)?d:"—"}
 function readT(r){var w=(introOf(r)+" "+sections(r).map(function(s){return s.t+" "+s.l.join(" ")}).join(" ")).split(/\s+/).length,n=Math.max(1,Math.round(w/180)),u=U[L];return n+" "+(n>1?u.rdn:u.rd1)}
-function authHtml(r){var a=(Array.isArray(r.auteurs)&&r.auteurs.length)?r.auteurs:AUTH,h='<div class="auth">';
-a.forEach(function(x){var n=x.nom||x.name||"",ro=pick(x.role)||"",av=esc(n.charAt(0).toUpperCase())+(x.avatar?'<img src="'+esc(x.avatar)+'" alt="" onerror="this.remove()">':'');
-h+='<div class="au"><div class="av">'+av+'</div><div><b>'+esc(n)+'</b><small>'+esc(ro)+'</small></div></div>'});return h+'</div>'}
+function authorsOf(r){return (Array.isArray(r.auteurs)&&r.auteurs.length)?r.auteurs:AUTH}
+function avInner(x){var n=x.nom||x.name||"";return esc(n.charAt(0).toUpperCase())+(x.avatar?'<img src="'+esc(x.avatar)+'" alt="" onerror="this.remove()">':'')}
+function authHtml(r,pi){var u=U[L],h='<div class="auth">';
+authorsOf(r).forEach(function(x,k){var n=x.nom||x.name||"",ro=pick(x.role)||"";
+h+='<button type="button" class="au" data-pi="'+pi+'" data-ai="'+k+'" title="'+esc(u.pf.view)+'"><div class="av">'+avInner(x)+'</div><div><b>'+esc(n)+'</b><small>'+esc(ro)+'</small></div></button>'});return h+'</div>'}
+function profHtml(x){var u=U[L],t=u.pf,n=x.nom||x.name||"",mine=POSTS.filter(function(r){return authorsOf(r).some(function(y){return (y.nom||y.name)===n})}),
+last=mine[0],first=mine[mine.length-1],bio=pick(x.bio)||"",ds=first&&first.date?new Date(String(first.date).slice(0,10)+"T12:00:00").toLocaleDateString(L==="fr"?"fr-FR":"en-GB",{month:"short",year:"numeric"}):"";
+var h='<div class="pf-b" id="pfb"><button type="button" class="pf-x" aria-label="'+esc(t.close)+'">✕</button></div><div class="pf-h"><div class="pf-av">'+avInner(x)+'</div><div class="pf-n" id="pfn">'+esc(n)+'</div>'+(pick(x.role)?'<span class="pf-r">'+esc(pick(x.role))+'</span>':'')+'</div><div class="pf-s">';
+if(bio)h+='<div class="pf-k">'+t.about+'</div><div class="pf-bio">'+fmt(bio).replace(/\n/g,"<br>")+'</div>';
+h+='<div class="pf-st"><div><b>'+mine.length+'</b><small>'+t.arts+'</small></div><div><b>'+(last?'v'+esc(String(last.version).trim()):'—')+'</b><small>'+t.last+'</small></div><div><b style="font-size:14px;line-height:1.7">'+(ds||'—')+'</b><small>'+t.since+'</small></div></div>';
+var ls=(x.links||[]).filter(function(l){return l&&l.url});
+if(ls.length){h+='<div class="pf-l">';ls.forEach(function(l){h+='<a'+(l.main?' class="main"':'')+' href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(pick(l.label)||l.url)+'</a>'});h+='</div>'}
+return h+'</div>'}
+var PFO=null,PFK=null;
+function closeProf(){if(PFO){PFO.remove();PFO=null;document.body.style.overflow="";if(PFK){PFK.focus&&PFK.focus();PFK=null}}}
+function openProf(x,from){closeProf();PFK=from||null;var o=document.createElement("div");o.className="pf-o";
+o.innerHTML='<div class="pf" role="dialog" aria-modal="true" aria-labelledby="pfn">'+profHtml(x)+'</div>';
+document.body.appendChild(o);document.body.style.overflow="hidden";PFO=o;
+if(x.banner){try{o.querySelector("#pfb").style.backgroundImage="url("+JSON.stringify(String(x.banner))+")"}catch(e){}}
+o.addEventListener("click",function(e){if(e.target===o||(e.target.closest&&e.target.closest(".pf-x")))closeProf()});
+var c=o.querySelector(".pf-x");if(c)c.focus()}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".au[data-pi]");if(!b)return;var r=POSTS[+b.dataset.pi],x=r&&authorsOf(r)[+b.dataset.ai];if(x)openProf(x,b)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeProf()});
+window.addEventListener("hashchange",closeProf);
 function sideHtml(cur){var u=U[L],h='<aside class="side"><h3><a href="#">'+u.blogt+'</a></h3>',y="";
 POSTS.forEach(function(r,i){var yy=yearOf(r);if(yy!==y){y=yy;h+='<h4>'+yy+'</h4>'}
 h+='<a class="it'+(i===cur?' on':'')+'" href="#'+vid(r.version)+'">'+esc(titleOf(r))+' ('+esc(String(r.version).trim())+')</a>'});return h+'</aside>'}
@@ -185,7 +239,7 @@ if(introOf(r))h+='<p>'+fmt(introOf(r))+'</p>';
 if(secs.length){h+='<div class="chips">';secs.forEach(function(s){if(s.t)h+='<span class="chip">'+esc(s.t)+'</span>'});h+='</div>'}
 h+='<span class="more">'+u.read+'</span></a>'});return h}
 function postHtml(i){var u=U[L],r=POSTS[i],secs=sections(r);
-var h=sideHtml(i)+'<article class="art"><a class="back" href="#">'+u.back+'</a><h1>'+esc(titleOf(r))+'</h1>'+infoHtml(r,i)+authHtml(r);
+var h=sideHtml(i)+'<article class="art"><a class="back" href="#">'+u.back+'</a><h1>'+esc(titleOf(r))+'</h1>'+infoHtml(r,i)+authHtml(r,i);
 if(introOf(r))h+='<p class="sum">'+fmt(introOf(r))+'</p>';
 h+=heroHtml(r,secs);
 secs.forEach(function(sec,k){if(sec.t)h+='<h2 id="s'+k+'">'+esc(sec.t)+'</h2>';h+='<ul>'+sec.l.map(itemHtml).join('')+'</ul>'});
