@@ -120,7 +120,7 @@ en:{home:"Home",status:"Status",docs:"Documentation",blog:"Blog",eyebrow:"CoreLa
 Object.assign(U.fr,{blogt:"Blog",toc:"Sur cette page",rd1:"minute de lecture",rdn:"minutes de lecture",tg:{"+":"Nouveau","~":"Amélioré","-":"Corrigé","!":"Attention","i":"Info"}});
 Object.assign(U.en,{blogt:"Blog",toc:"On this page",rd1:"min read",rdn:"min read",tg:{"+":"New","~":"Improved","-":"Fixed","!":"Heads-up","i":"Info"}});
 /* Auteur par défaut : modifie ici, ou ajoute "auteurs":[{"nom":"…","role":"…","avatar":"url"}] dans une entrée d'update.json */
-var AUTH=[{nom:"Bratony",role:{fr:"Développeur principal",en:"Lead developer"}}];
+var AUTH=[{nom:"Bratony",avatar:"bratony.jpg",role:{fr:"Développeur principal",en:"Lead developer"}}];
 var L="fr";
 try{L=localStorage.getItem("cd_lang")||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
 var LOCAL=[],FROMBOT=[],POSTS=[],STATE="load";
