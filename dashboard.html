@@ -117,6 +117,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .form{padding:18px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.pvbox{margin:14px 0 6px}.pv{display:block;max-width:100%;border-radius:14px;margin:0 0 10px}
 </style>
 </head>
 <body>
@@ -134,7 +135,7 @@ var CLIENT_ID="1403513450273177772";
 
 var $=function(q,r){return (r||document).querySelector(q)};
 var app=$("#app"),token=null,ME=null,META={},DIRTY=false;
-try{token=sessionStorage.getItem("cl_dash")}catch(e){}
+try{token=localStorage.getItem("cl_dash")}catch(e){}
 
 function h(tag,attrs,kids){var e=document.createElement(tag);
 for(var k in (attrs||{})){var v=attrs[k];if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else if(k.slice(0,2)==="on")e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?"":v)}
@@ -144,13 +145,13 @@ function icon(id,hash,name,size){var s=size||48,w=h("span",{class:"av",style:"wi
 if(hash){w.appendChild(h("img",{src:"https://cdn.discordapp.com/icons/"+id+"/"+hash+".png?size=128",alt:""}))}else w.textContent=(name||"?").trim().charAt(0).toUpperCase();return w}
 function api(path,opt){opt=opt||{};opt.headers=Object.assign({Authorization:"Bearer "+token},opt.headers||{});
 return fetch(API+path,opt).then(function(r){if(r.status===401){logout(true);throw new Error("auth")}return r.json().then(function(j){if(!r.ok)throw j;return j})})}
-function logout(silent){try{sessionStorage.removeItem("cl_dash")}catch(e){}
+function logout(silent){try{localStorage.removeItem("cl_dash")}catch(e){}
 if(!silent&&token)fetch(API+"/api/logout",{method:"POST",headers:{Authorization:"Bearer "+token}}).catch(function(){});
 token=null;ME=null;META={};location.hash="";render()}
 
 /* ---- Jeton renvoyé par la connexion Discord ---- */
-var hm=location.hash.match(/token=([a-f0-9]+)/),he=location.hash.match(/error=(\w+)/),LOGIN_ERR=he?he[1]:"";
-if(hm){token=hm[1];try{sessionStorage.setItem("cl_dash",token)}catch(e){}}
+var hm=location.hash.match(/token=([\w.\-]+)/),he=location.hash.match(/error=(\w+)/),LOGIN_ERR=he?he[1]:"";
+if(hm){token=hm[1];try{localStorage.setItem("cl_dash",token)}catch(e){}}
 if(hm||he)history.replaceState(null,"",location.pathname);
 
 /* ---- Navigation ---- */
@@ -255,6 +256,11 @@ else{wrap.appendChild(label());var el;
 if(f.type==="longtext"){el=h("textarea",{id:id,maxlength:f.max||500});el.value=val||"";get=function(){return el.value}}
 else if(f.type==="number"){el=h("input",{type:"number",id:id,min:f.min,max:f.max});el.value=val;get=function(){return Number(el.value)}}
 else if(f.type==="color"){el=h("input",{type:"color",id:id});el.value=val||"#ffffff";get=function(){return el.value}}
+else if(f.type==="hexcolor"){var col=h("input",{type:"color",id:id}),on=!!val,st=h("span",{class:"h"}),off=h("button",{class:"btn ghost sm",type:"button",text:"Par défaut"});col.value=val||"#ffffff";
+function sync(){col.style.opacity=on?"1":".35";off.disabled=!on;st.textContent=on?col.value:"défaut"}
+col.addEventListener("input",function(){on=true;sync();onc()});off.addEventListener("click",function(){on=false;sync();onc()});sync();
+wrap.appendChild(h("div",{style:"display:flex;gap:10px;align-items:center"},[col,off,st]));get=function(){return on?col.value:""};el=null}
+else if(f.type==="optnumber"){el=h("input",{type:"number",id:id,min:f.min,max:f.max,placeholder:"Défaut"});el.value=(val===""||val==null)?"":val;get=function(){return el.value===""?"":Number(el.value)}}
 else if(f.type==="select"){el=h("select",{id:id});(f.options||[]).forEach(function(o){el.appendChild(opt(o.v,o.l))});
 if(val&&!(f.options||[]).some(function(o){return o.v===val}))el.appendChild(opt(val,val));el.value=val;get=function(){return el.value}}
 else if(f.type==="channel"||f.type==="category"){el=h("select",{id:id});el.appendChild(opt("","— Aucun —"));
@@ -272,6 +278,8 @@ return{wrap:wrap,get:get,locked:locked}}
 
 function errText(e){if(!e)return "Erreur réseau";
 if(e.error==="premium")return "Cette personnalisation est réservée aux abonnés Premium.";
+if(e.error==="too_big")return "Image trop lourde (8 Mo maximum).";
+if(e.error==="invalid_image")return "Ce n’est pas une image valide (PNG, JPG, WebP ou GIF).";
 if(e.reason)return (e.label?e.label+" : ":"")+e.reason;
 if(e.error==="forbidden")return "Vous n’avez pas accès à ce serveur.";
 return "Erreur : "+(e.error||"réseau")}
@@ -281,6 +289,20 @@ api("/api/guilds/"+G.id+"/modules/"+mid).then(function(d){c.innerHTML="";
 var meta=META[G.id],form=h("div",{class:"form"}),inputs={},last=null;
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:d.module.name}));
 c.appendChild(h("p",{class:"lead",text:d.module.desc}));
+if(d.module.preview){var pv=h("img",{class:"pv",alt:"Aperçu de la carte"}),pvm=h("p",{class:"muted",text:"Chargement de l’aperçu…"});pv.style.display="none";
+var loadPv=function(){pvm.textContent="Chargement de l’aperçu…";pvm.style.display="";
+fetch(API+"/api/guilds/"+G.id+"/preview/"+d.module.preview,{headers:{Authorization:"Bearer "+token}}).then(function(r){if(r.status===401){logout(true);throw new Error("auth")}if(!r.ok)throw new Error("x");return r.blob()})
+.then(function(b){if(pv.src)URL.revokeObjectURL(pv.src);pv.src=URL.createObjectURL(b);pv.style.display="";pvm.style.display="none"})
+.catch(function(e){if(e&&e.message==="auth")return;pvm.textContent="Aperçu indisponible pour le moment."})};
+c.appendChild(h("div",{class:"pvbox"},[pv,pvm,h("button",{class:"btn ghost sm",type:"button",text:"Actualiser l’aperçu",onclick:loadPv})]));
+c.appendChild(h("p",{class:"h",text:"L’aperçu montre la carte telle qu’elle est enregistrée, avec votre pseudo et votre avatar. Enregistrez pour voir vos changements."}));
+var bgp="/api/guilds/"+G.id+"/card-bg/"+d.module.preview,bgst=h("span",{class:"h"}),bgrm=h("button",{class:"btn ghost sm",type:"button",text:"Retirer l’image"}),bgin=h("input",{type:"file",accept:"image/png,image/jpeg,image/webp,image/gif",style:"display:none"});
+var bgStatus=function(){api(bgp).then(function(s){bgst.textContent=s.has?"Image de fond : ✅ enregistrée ("+s.ext+")":"Image de fond : aucune. La carte garde le style uniforme du bot (seuls le titre et le sous-titre comptent).";bgrm.disabled=!s.has}).catch(function(){})};
+bgin.addEventListener("change",function(){var f=bgin.files[0];bgin.value="";if(!f)return;if(f.size>8*1024*1024){toast("Image trop lourde (8 Mo maximum).",true);return}
+api(bgp,{method:"POST",headers:{"Content-Type":f.type||"application/octet-stream"},body:f}).then(function(){toast("Image de fond enregistrée ✓");bgStatus();loadPv()}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})});
+bgrm.addEventListener("click",function(){api(bgp+"?remove=1",{method:"POST"}).then(function(){toast("Image de fond retirée ✓");bgStatus();loadPv()}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})});
+c.appendChild(h("div",{class:"pvbox"},[bgst,h("div",{style:"display:flex;gap:8px;margin-top:8px"},[h("button",{class:"btn ghost sm",type:"button",text:"Choisir une image de fond",onclick:function(){bgin.click()}}),bgrm,bgin])]));
+bgStatus();loadPv()}
 var bar=h("div",{class:"save"},[h("span",{text:"Modifications non enregistrées"}),h("div",{style:"display:flex;gap:8px"},[
 h("button",{class:"btn ghost sm",type:"button",text:"Annuler",onclick:function(){DIRTY=false;render()}}),
 h("button",{class:"btn sm",type:"button",id:"sv",text:"Enregistrer",onclick:save})])]);
