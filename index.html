@@ -239,28 +239,7 @@ html{scroll-behavior:auto}
 .live .dot.off{background:#6b6877;animation:none}
 .live #liveState{color:var(--tx);font-weight:600}
 
-/* démo anti-scam */
-.demo{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start}
-.dctl{border:1px solid var(--ln);border-radius:20px;background:var(--s1);padding:22px;display:flex;flex-direction:column;gap:14px}
-.dctl small{color:var(--mu);font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.dchips{display:flex;flex-wrap:wrap;gap:8px}
-.dchips button{border:1px solid var(--ln);border-radius:999px;background:var(--bg);color:var(--tx);font:500 13.5px var(--f);padding:9px 15px;cursor:pointer;transition:border-color .15s,background .15s}
-.dchips button:hover{border-color:var(--ac);background:rgba(232,81,13,.12)}
-.dform{display:flex;gap:10px}
-.dform input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--ln);border-radius:999px;color:var(--tx);padding:12px 18px;font:500 15px var(--f)}
-.dform input:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
-.dnote{color:var(--mu);font-size:12.5px;margin:0}
-.dout{min-height:250px}
-.dout .ph{color:#949ba4;text-align:center;padding:90px 12px}
-.dout .nm,.dout .msg{transition:opacity .35s}
-.dout .msg{overflow-wrap:anywhere}
-.emb.ok{border-left-color:#23a55a}.emb.wr{border-left-color:#f0b232}
-.emb .chipsm span{background:rgba(232,81,13,.14);border-color:rgba(232,81,13,.4);color:#fff}
-.emb.ok .chipsm span{background:#1e1f22;border-color:#3a3c42;color:#b5bac1}
-.dout .row+.row{margin-top:14px}
-.dout .in{animation:in .4s}
-@media(max-width:860px){.demo{grid-template-columns:1fr}.dout .ph{padding:50px 12px}}
-@media(prefers-reduced-motion:reduce){.stat b.bump,.dout .in{animation:none}.dout .nm,.dout .msg{transition:none}}
+@media(prefers-reduced-motion:reduce){.stat b.bump{animation:none}}
 </style>
 </head>
 <body>
@@ -332,22 +311,6 @@ html{scroll-behavior:auto}
 </div>
 </div>
 <div class="after"></div>
-</div>
-</section>
-
-<!-- DEMO ANTI-SCAM -->
-<section class="pad" id="demo" style="padding-top:0">
-<div class="wrap">
-<div class="head rv"><h2 data-t="h2t"></h2><p class="lead" data-t="leadt"></p></div>
-<div class="demo rv">
-<div class="dctl">
-<small data-t="dex"></small>
-<div class="dchips" id="dChips"></div>
-<form class="dform" id="dForm" autocomplete="off"><input id="dInput" type="text" maxlength="300"><button class="btn sm" type="submit" data-t="dsend"></button></form>
-<p class="dnote" data-t="dnote"></p>
-</div>
-<div class="dm dout" id="dOut" aria-live="polite"></div>
-</div>
 </div>
 </section>
 
@@ -497,13 +460,6 @@ h2c:["Ajoutez CoreLab à votre serveur","Add CoreLab to your server"],cta:["Un c
 f1:["© 2026 CoreLab · Tous droits réservés","© 2026 CoreLab · All rights reserved"],
 st5:["Messages comptés","Messages counted"],st6:["Commandes utilisées","Commands used"],st7:["En ligne depuis","Online for"],st8:["Disponibilité (90 j)","Uptime (90 d)"],
 lon:["En ligne","Online"],loff:["Hors ligne","Offline"],
-h2t:["Testez l’anti-scam en direct.","Try the anti-scam live."],leadt:["Écrivez un message ou choisissez un exemple : voyez ce que CoreLab ferait sur votre serveur.","Write a message or pick an example: see what CoreLab would do on your server."],
-dex:["Exemples à essayer","Examples to try"],dsend:["Envoyer","Send"],dph:["Écrivez un message…","Type a message…"],
-dnote:["Démonstration simplifiée, exécutée dans votre navigateur : rien n’est envoyé. La vraie détection de CoreLab va plus loin.","Simplified demo running in your browser: nothing is sent. CoreLab’s real detection goes further."],
-dwait:["Le résultat de l’analyse s’affiche ici.","The analysis result shows up here."],dyou:["Vous","You"],
-dsafeT:["✅ Message autorisé","✅ Message allowed"],dsafeD:["Aucune menace détectée : CoreLab n’intervient pas.","No threat detected: CoreLab stays out of it."],
-dwarnT:["⚠️ Message suspect","⚠️ Suspicious message"],dwarnD:["Le message est gardé mais signalé dans vos logs : un modérateur peut décider.","The message is kept but flagged in your logs: a moderator can decide."],dwarnA:["Signalé aux logs","Flagged to logs"],
-dscore:["Risque","Risk"],dnone:["Aucune","None"],
 title:["CoreLab","CoreLab · The all-in-one Discord bot"],hello:["Choisissez une question à gauche, je vous réponds tout de suite.","Pick a question on the left and I’ll answer right away."]
 };
 var F=[
@@ -584,74 +540,12 @@ if(typeof c.commands_run==="number")j.commands_run=c.commands_run;
 SV=j;LAST=Date.now();FAIL=false;live();paint()}).catch(function(){FAIL=true;live();paint()})}
 document.addEventListener("visibilitychange",function(){if(!document.hidden)loadStats()});
 
-/* ---------- démo anti-scam ---------- */
-var OFFICIAL=/(^|\.)(discord\.com|discord\.gg|discordapp\.com|discord\.media|steamcommunity\.com|steampowered\.com|youtube\.com|youtu\.be)$/i,
-LINKRE="(?:https?:\\/\\/|www\\.)[^\\s]+|\\b[a-z0-9-]+(?:\\.[a-z0-9-]+)*\\.[a-z]{2,}\\/[^\\s]*",
-SHORT=/(^|\.)(bit\.ly|tinyurl\.com|t\.co|cutt\.ly|is\.gd|rb\.gy|shorturl\.at)$/i,
-LOGGER=/(grabify|iplogger|2no\.co|yip\.su)/i;
-var EX=[
-[["🎁 Nitro gratuit","🎁 Free Nitro"],["@everyone Nitro gratuit pour tout le monde : discord-gifts.example/claim","@everyone Free Nitro for everyone: discord-gifts.example/claim"]],
-[["🎮 Faux Steam","🎮 Fake Steam"],["Je t’offre un skin CS2, récupère-le ici : steamcommunlty.example/gift","I’m giving you a CS2 skin, grab it here: steamcommunlty.example/gift"]],
-[["📍 Lien traqueur","📍 Tracker link"],["Regarde cette vidéo drôle https://grabify.link/ABC123","Watch this funny video https://grabify.link/ABC123"]],
-[["₿ Arnaque crypto","₿ Crypto scam"],["Airdrop crypto limité ! Double your BTC → https://btc-double.example/claim","Limited crypto airdrop! Double your BTC → https://btc-double.example/claim"]],
-[["💬 Message normal","💬 Normal message"],["Salut tout le monde, quelqu’un pour une partie ce soir ?","Hi everyone, anyone up for a game tonight?"]]
-];
-function h(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function hostOf(l){return l.replace(/^https?:\/\//i,"").replace(/^www\./i,"").split(/[\/?#]/)[0].toLowerCase()}
-function analyse(txt){var fr=L==="fr",hits=[],links=txt.match(new RegExp(LINKRE,"gi"))||[],hosts=links.map(hostOf),mass=/@everyone|@here/i.test(txt);
-function add(w,a,b){hits.push({w:w,t:fr?a:b})}
-if(hosts.some(function(x){return LOGGER.test(x)}))add(60,"Lien traqueur d’adresse IP","IP-grabbing tracker link");
-if(hosts.some(function(x){return SHORT.test(x)}))add(20,"Lien raccourci qui masque la destination","Shortened link hiding the destination");
-if(hosts.some(function(x){return /(discord|steam|nitro|gift|claim|robux|bonus|airdrop)/.test(x)&&!OFFICIAL.test(x)}))add(40,"Domaine qui imite un site connu","Domain imitating a known site");
-if(/(nitro|steam|robux|v-?bucks|skin)/i.test(txt)&&/(free|gratuit|gift|cadeau|offert|offre|giveaway)/i.test(txt))add(35,"Faux cadeau (Nitro, Steam…)","Fake gift (Nitro, Steam…)");
-if(/(airdrop|bitcoin|\bbtc\b|crypto|\beth\b|double your|doubler)/i.test(txt)&&(links.length||/(free|gratuit|limit|invest)/i.test(txt)))add(40,"Promesse crypto trop belle","Too-good-to-be-true crypto offer");
-if(mass)links.length?add(30,"Mention de masse accompagnée d’un lien","Mass mention with a link"):add(15,"Mention de masse","Mass mention");
-if(links.length&&/(claim|r[ée]cup[eè]re|r[ée]clam|hurry|vite|limited|limit[ée]|expire|last chance|derni[èe]re chance)/i.test(txt))add(15,"Pression à l’urgence","Urgency pressure");
-if(/discord\.gg\/\w+|discord(?:app)?\.com\/invite\/\w+/i.test(txt))add(20,"Invitation vers un autre serveur","Invite to another server");
-var sc=Math.min(100,hits.reduce(function(a,x){return a+x.w},0));hits.sort(function(a,b){return b.w-a.w});
-return{score:sc,hits:hits,level:sc>=50?"block":sc>=20?"warn":"safe"}}
-function msgNode(txt){var p=h("p","msg");
-txt.split(new RegExp("(@everyone|@here|"+LINKRE+")","gi")).forEach(function(part,i){if(!part)return;
-if(i%2===0){p.appendChild(document.createTextNode(part));return}
-p.appendChild(part.charAt(0)==="@"?h("span","ment",part):h("a",null,part))});return p}
-function field(l,v){var f=h("div","fl");f.appendChild(h("small",null,l));f.appendChild(h("b",null,v));return f}
-var dTimer;
-function demoRun(txt){txt=(txt||"").trim().slice(0,300);if(!txt)return;
-var o=L==="fr"?0:1,out=$("#dOut"),r=analyse(txt),now=new Date().toLocaleTimeString(L==="fr"?"fr-FR":"en-US",{hour:"2-digit",minute:"2-digit"});
-clearTimeout(dTimer);out.innerHTML="";
-var row=h("div","row"),av=h("div","av g",T.dyou[o].charAt(0)),box=h("div");box.style.flex="1";
-var nm=h("div","nm",T.dyou[o]);nm.appendChild(h("span","ts",now));var msg=msgNode(txt);
-box.appendChild(nm);box.appendChild(msg);row.appendChild(av);row.appendChild(box);out.appendChild(row);
-dTimer=setTimeout(function(){
-var row2=h("div","row in"),av2=h("div","av","C"),b2=h("div"),n2=h("div","nm","CoreLab"),emb=h("div","emb"),bar=h("div","bar"),fill=h("i"),color,
-f=h("div","flds");b2.style.flex="1";n2.appendChild(h("span","tag","APP"));n2.appendChild(h("span","ts",now));
-if(r.level==="block"){nm.classList.add("gone");msg.classList.add("gone");color="var(--ac)";
-emb.appendChild(h("h4",null,T.m2t[o]));emb.appendChild(h("p",null,T.m2d[o]));
-f.appendChild(field(T.fm[o],"@"+T.dyou[o]));f.appendChild(field(T.fa[o],T.m2a[o]));f.appendChild(field(T.fr[o],r.hits[0].t))}
-else if(r.level==="warn"){emb.className="emb wr";color="#f0b232";
-emb.appendChild(h("h4",null,T.dwarnT[o]));emb.appendChild(h("p",null,T.dwarnD[o]));
-f.appendChild(field(T.fm[o],"@"+T.dyou[o]));f.appendChild(field(T.fa[o],T.dwarnA[o]));f.appendChild(field(T.fr[o],r.hits[0].t))}
-else{emb.className="emb ok";color="#23a55a";
-emb.appendChild(h("h4",null,T.dsafeT[o]));emb.appendChild(h("p",null,T.dsafeD[o]))}
-if(r.level!=="safe")emb.appendChild(f);
-var rl=h("div","rl");rl.style.cssText="display:flex;justify-content:space-between;margin-top:12px;font-size:12.5px;color:#b5bac1";
-rl.appendChild(h("span",null,T.dscore[o]));rl.appendChild(h("span",null,r.score+" / 100"));
-fill.style.background=color;bar.appendChild(fill);emb.appendChild(rl);emb.appendChild(bar);
-if(r.hits.length){var ch=h("div","chipsm");r.hits.forEach(function(x){ch.appendChild(h("span",null,x.t))});emb.appendChild(ch)}
-b2.appendChild(n2);b2.appendChild(emb);row2.appendChild(av2);row2.appendChild(b2);out.appendChild(row2);
-requestAnimationFrame(function(){requestAnimationFrame(function(){fill.style.width=Math.max(r.score,3)+"%"})})},reduce?0:650)}
-function demoInit(){var o=L==="fr"?0:1,c=$("#dChips"),inp=$("#dInput");c.innerHTML="";
-EX.forEach(function(e){var b=h("button",null,e[0][o]);b.type="button";b.addEventListener("click",function(){inp.value=e[1][o];demoRun(inp.value)});c.appendChild(b)});
-inp.placeholder=T.dph[o];inp.setAttribute("aria-label",T.dph[o]);
-clearTimeout(dTimer);var out=$("#dOut");out.innerHTML="";out.appendChild(h("div","ph",T.dwait[o]))}
-$("#dForm").addEventListener("submit",function(e){e.preventDefault();demoRun($("#dInput").value)});
-
 /* ---------- langue ---------- */
 function set(l){
 L=l;var i=l==="fr"?0:1;document.documentElement.lang=l;document.title=T.title[i];
 $$("[data-t]").forEach(function(e){var v=T[e.dataset.t];if(v)e.textContent=v[i]});
 $$(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===l)});
-grid();qs();demoInit();paint();live();observe();
+grid();qs();paint();live();observe();
 try{localStorage.setItem("cl_lang",l)}catch(e){}}
 $$(".lang button").forEach(function(b){b.addEventListener("click",function(){set(b.dataset.l)})});
 
