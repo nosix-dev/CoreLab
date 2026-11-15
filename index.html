@@ -149,9 +149,9 @@ h2{font-size:clamp(30px,4.6vw,52px);line-height:1.05;letter-spacing:-.035em;font
 .dcs figcaption{margin-top:12px;color:var(--mu);font-size:14px}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ln);border-radius:24px;background:var(--s1);overflow:hidden}
-.stat{padding:38px 22px;text-align:center;border-right:1px solid var(--ln)}
-.stat:last-child{border-right:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--ln);border-radius:24px;background:var(--ln);overflow:hidden}
+.stat{padding:34px 18px;text-align:center;background:var(--s1)}
+
 .stat b{display:block;font-size:clamp(34px,5vw,60px);letter-spacing:-.04em;line-height:1;color:var(--ac2);font-weight:800;font-variant-numeric:tabular-nums}
 .stat span{display:block;margin-top:10px;color:var(--mu);font-size:14px}
 .live{display:flex;align-items:center;gap:8px;margin-top:16px;color:var(--mu);font-size:13px}
@@ -220,7 +220,7 @@ nav ul li.cta{display:none}
 .scene{padding:12px}.dm{padding:12px;font-size:13px}
 .grid,.dcs{grid-template-columns:1fr}
 .card.wide{flex-direction:column;align-items:flex-start}
-.stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--ln)}
+.stats{grid-template-columns:1fr 1fr}
 .plans,.faqbox{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
@@ -231,6 +231,36 @@ html{scroll-behavior:auto}
 .scene,.step{transition:none}
 .bar i{transition:none}
 }
+
+/* compteurs en direct */
+.stat b[data-f]{font-size:clamp(26px,3.6vw,44px)}
+.stat b.bump{animation:bump .7s}
+@keyframes bump{30%{color:#fff;transform:scale(1.07)}}
+.live .dot.off{background:#6b6877;animation:none}
+.live #liveState{color:var(--tx);font-weight:600}
+
+/* démo anti-scam */
+.demo{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start}
+.dctl{border:1px solid var(--ln);border-radius:20px;background:var(--s1);padding:22px;display:flex;flex-direction:column;gap:14px}
+.dctl small{color:var(--mu);font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.dchips{display:flex;flex-wrap:wrap;gap:8px}
+.dchips button{border:1px solid var(--ln);border-radius:999px;background:var(--bg);color:var(--tx);font:500 13.5px var(--f);padding:9px 15px;cursor:pointer;transition:border-color .15s,background .15s}
+.dchips button:hover{border-color:var(--ac);background:rgba(232,81,13,.12)}
+.dform{display:flex;gap:10px}
+.dform input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--ln);border-radius:999px;color:var(--tx);padding:12px 18px;font:500 15px var(--f)}
+.dform input:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
+.dnote{color:var(--mu);font-size:12.5px;margin:0}
+.dout{min-height:250px}
+.dout .ph{color:#949ba4;text-align:center;padding:90px 12px}
+.dout .nm,.dout .msg{transition:opacity .35s}
+.dout .msg{overflow-wrap:anywhere}
+.emb.ok{border-left-color:#23a55a}.emb.wr{border-left-color:#f0b232}
+.emb .chipsm span{background:rgba(232,81,13,.14);border-color:rgba(232,81,13,.4);color:#fff}
+.emb.ok .chipsm span{background:#1e1f22;border-color:#3a3c42;color:#b5bac1}
+.dout .row+.row{margin-top:14px}
+.dout .in{animation:in .4s}
+@media(max-width:860px){.demo{grid-template-columns:1fr}.dout .ph{padding:50px 12px}}
+@media(prefers-reduced-motion:reduce){.stat b.bump,.dout .in{animation:none}.dout .nm,.dout .msg{transition:none}}
 </style>
 </head>
 <body>
@@ -305,6 +335,22 @@ html{scroll-behavior:auto}
 </div>
 </section>
 
+<!-- DEMO ANTI-SCAM -->
+<section class="pad" id="demo" style="padding-top:0">
+<div class="wrap">
+<div class="head rv"><h2 data-t="h2t"></h2><p class="lead" data-t="leadt"></p></div>
+<div class="demo rv">
+<div class="dctl">
+<small data-t="dex"></small>
+<div class="dchips" id="dChips"></div>
+<form class="dform" id="dForm" autocomplete="off"><input id="dInput" type="text" maxlength="300"><button class="btn sm" type="submit" data-t="dsend"></button></form>
+<p class="dnote" data-t="dnote"></p>
+</div>
+<div class="dm dout" id="dOut" aria-live="polite"></div>
+</div>
+</div>
+</section>
+
 <!-- RANKUP -->
 <section class="pad" id="rankup">
 <div class="wrap">
@@ -362,8 +408,12 @@ html{scroll-behavior:auto}
 <div class="stat"><b data-c="users">—</b><span data-t="st2"></span></div>
 <div class="stat"><b data-c="commands">—</b><span data-t="st3"></span></div>
 <div class="stat"><b data-c="latency_ms">—</b><span data-t="st4"></span></div>
+<div class="stat" hidden data-opt><b data-c="messages">—</b><span data-t="st5"></span></div>
+<div class="stat" hidden data-opt><b data-c="commands_run">—</b><span data-t="st6"></span></div>
+<div class="stat" hidden data-opt><b data-c="uptime_s" data-f="dur">—</b><span data-t="st7"></span></div>
+<div class="stat" hidden data-opt><b data-c="uptime90" data-f="pct">—</b><span data-t="st8"></span></div>
 </div>
-<div class="live"><i class="dot"></i><span data-t="live"></span></div>
+<div class="live"><i class="dot" id="liveDot"></i><span id="liveState"></span><span id="liveAge"></span></div>
 </div>
 </section>
 
@@ -438,13 +488,22 @@ h2e:["À quoi ça ressemble sur Discord","What it looks like on Discord"],
 p1t:["🎫 Support","🎫 Support"],p1d:["Cliquez sur le bouton ci-dessous pour ouvrir un ticket. Le staff vous répondra rapidement.","Click the button below to open a ticket. The staff will reply shortly."],p1b:["Ouvrir un ticket","Open a ticket"],p1c:["Tickets avec formulaire personnalisable","Tickets with a customizable form"],
 q2t:["🎉 Niveau 12 atteint !","🎉 Level 12 reached!"],q2d:["Bravo @Alex, tu passes au niveau 12. Encore 340 XP avant le prochain palier.","Congrats @Alex, you reached level 12. 340 XP to go before the next milestone."],q2c:["Niveaux, XP et rôles de récompense","Levels, XP and reward roles"],
 p3t:["🔨 Sanction · Avertissement","🔨 Sanction · Warning"],p3d:["Un avertissement a été enregistré dans les logs.","A warning was recorded in the logs."],p3c:["Logs de modération clairs et personnalisables","Clear, customizable moderation logs"],
-h2d:["CoreLab en chiffres","CoreLab in numbers"],st1:["Serveurs","Servers"],st2:["Utilisateurs","Users"],st3:["Commandes","Commands"],st4:["Latence (ms)","Latency (ms)"],live:["Chiffres en direct, actualisés toutes les 30 secondes.","Live numbers, refreshed every 30 seconds."],
+h2d:["CoreLab en chiffres","CoreLab in numbers"],st1:["Serveurs","Servers"],st2:["Utilisateurs","Users"],st3:["Commandes","Commands"],st4:["Latence (ms)","Latency (ms)"],live:["actualisé toutes les 15 secondes","refreshed every 15 seconds"],
 h2g:["Gratuit pour l’essentiel.","Free for the essentials."],leadg:["Les fonctions principales ne coûtent rien. Premium ajoute des options en plus.","The core features cost nothing. Premium adds extra options."],
 g1h:["Gratuit","Free"],g1p:["Pour démarrer et tenir un serveur.","To get started and run a server."],g1a:["Protection, anti-scam et modération","Protection, anti-scam and moderation"],g1b:["Tickets, embeds et règlement","Tickets, embeds and rules"],g1c:["Niveaux, XP et Rankup","Levels, XP and Rankup"],g1d:["Bilingue FR / EN et traduction","Bilingual FR / EN and translation"],
 g2p:["Pour aller plus loin.","To go further."],g2a:["Options supplémentaires débloquées","Extra options unlocked"],g2b:["Détails dans la documentation","Details in the documentation"],
 h2f:["Questions fréquentes","Frequently asked questions"],leadq:["Choisissez une question, CoreLab répond.","Pick a question, CoreLab answers."],
 h2c:["Ajoutez CoreLab à votre serveur","Add CoreLab to your server"],cta:["Un clic, quelques permissions, et tout est en place.","One click, a few permissions, and you’re set."],
 f1:["© 2026 CoreLab · Tous droits réservés","© 2026 CoreLab · All rights reserved"],
+st5:["Messages comptés","Messages counted"],st6:["Commandes utilisées","Commands used"],st7:["En ligne depuis","Online for"],st8:["Disponibilité (90 j)","Uptime (90 d)"],
+lon:["En ligne","Online"],loff:["Hors ligne","Offline"],
+h2t:["Testez l’anti-scam en direct.","Try the anti-scam live."],leadt:["Écrivez un message ou choisissez un exemple : voyez ce que CoreLab ferait sur votre serveur.","Write a message or pick an example: see what CoreLab would do on your server."],
+dex:["Exemples à essayer","Examples to try"],dsend:["Envoyer","Send"],dph:["Écrivez un message…","Type a message…"],
+dnote:["Démonstration simplifiée, exécutée dans votre navigateur : rien n’est envoyé. La vraie détection de CoreLab va plus loin.","Simplified demo running in your browser: nothing is sent. CoreLab’s real detection goes further."],
+dwait:["Le résultat de l’analyse s’affiche ici.","The analysis result shows up here."],dyou:["Vous","You"],
+dsafeT:["✅ Message autorisé","✅ Message allowed"],dsafeD:["Aucune menace détectée : CoreLab n’intervient pas.","No threat detected: CoreLab stays out of it."],
+dwarnT:["⚠️ Message suspect","⚠️ Suspicious message"],dwarnD:["Le message est gardé mais signalé dans vos logs : un modérateur peut décider.","The message is kept but flagged in your logs: a moderator can decide."],dwarnA:["Signalé aux logs","Flagged to logs"],
+dscore:["Risque","Risk"],dnone:["Aucune","None"],
 title:["CoreLab","CoreLab · The all-in-one Discord bot"],hello:["Choisissez une question à gauche, je vous réponds tout de suite.","Pick a question on the left and I’ll answer right away."]
 };
 var F=[
@@ -498,21 +557,101 @@ b.addEventListener("click",function(){$$("#qs button").forEach(function(x){x.cla
 chat(0,true)}
 
 /* ---------- stats ---------- */
-var STATS_URL="https://corelab-bot.onrender.com/statut";
-function fmt(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US")}
-function count(el,to){var from=parseFloat(el.dataset.v)||0,t0=null;el.dataset.v=to;
-if(reduce){el.textContent=fmt(to);return}
-(function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900);el.textContent=fmt(Math.round(from+(to-from)*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(st)})(performance.now())}
-function paint(){$$("[data-c]").forEach(function(e){var v=SV[e.dataset.c];if(typeof v==="number")count(e,v);else e.textContent="—"})}
+var STATS_URL="https://corelab-bot.onrender.com/statut",LAST=0,FAIL=false;
+function fmt(n,d){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US",d?{minimumFractionDigits:d,maximumFractionDigits:d}:{})}
+function fmtDur(s){s=Math.max(0,Math.floor(s));var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),u=L==="fr"?["j","h","min"]:["d","h","min"];
+return d>0?d+u[0]+" "+h+u[1]:h>0?h+u[1]+" "+m+u[2]:m+u[2]}
+function count(el,to,dec){var from=parseFloat(el.dataset.v);if(isNaN(from))from=0;var t0=null,suf=dec?" %":"";el.dataset.v=to;
+if(from>0&&from!==to&&!reduce){el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
+if(reduce||from===to){el.textContent=fmt(to,dec)+suf;return}
+(function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900),v=from+(to-from)*(1-Math.pow(1-k,3));el.textContent=fmt(dec?v:Math.round(v),dec)+suf;if(k<1)requestAnimationFrame(st)})(performance.now())}
+function paint(){$$("[data-c]").forEach(function(e){var v=SV[e.dataset.c],f=e.dataset.f,box=e.parentNode;
+if(typeof v!=="number"||isNaN(v)){if(box.hasAttribute("data-opt"))box.hidden=true;else e.textContent="—";return}
+box.hidden=false;
+if(f==="dur")e.textContent=fmtDur(v+(Date.now()-LAST)/1000);else if(f==="pct")count(e,v,1);else count(e,v)})}
+function live(){var o=L==="fr"?0:1,off=FAIL||(SV.bot&&SV.bot!=="online"),d=$("#liveDot");if(!d)return;
+d.classList.toggle("off",!!off);
+$("#liveState").textContent=off?T.loff[o]:T.lon[o];
+var sec=LAST?Math.max(0,Math.round((Date.now()-LAST)/1000)):0;
+$("#liveAge").textContent=" · "+(LAST?(o?"updated "+sec+"s ago":"mis à jour il y a "+sec+" s")+" · ":"")+T.live[o]}
 function getStats(u){return fetch(u,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
-function loadStats(){getStats(STATS_URL).catch(function(){return getStats(STATS_URL.replace("/statut","/status"))}).then(function(j){SV=j||{};paint()}).catch(function(){paint()})}
+function loadStats(){if(document.hidden)return;
+getStats(STATS_URL).catch(function(){return getStats(STATS_URL.replace("/statut","/status"))}).then(function(j){
+j=j||{};var h=j.history,u=0,t=0,c=j.counters||{};
+if(h&&h.length){h.forEach(function(x){u+=x.u;t+=x.t});if(t>0)j.uptime90=u/t*100}
+if(typeof c.messages==="number")j.messages=c.messages;
+if(typeof c.commands_run==="number")j.commands_run=c.commands_run;
+SV=j;LAST=Date.now();FAIL=false;live();paint()}).catch(function(){FAIL=true;live();paint()})}
+document.addEventListener("visibilitychange",function(){if(!document.hidden)loadStats()});
+
+/* ---------- démo anti-scam ---------- */
+var OFFICIAL=/(^|\.)(discord\.com|discord\.gg|discordapp\.com|discord\.media|steamcommunity\.com|steampowered\.com|youtube\.com|youtu\.be)$/i,
+LINKRE="(?:https?:\\/\\/|www\\.)[^\\s]+|\\b[a-z0-9-]+(?:\\.[a-z0-9-]+)*\\.[a-z]{2,}\\/[^\\s]*",
+SHORT=/(^|\.)(bit\.ly|tinyurl\.com|t\.co|cutt\.ly|is\.gd|rb\.gy|shorturl\.at)$/i,
+LOGGER=/(grabify|iplogger|2no\.co|yip\.su)/i;
+var EX=[
+[["🎁 Nitro gratuit","🎁 Free Nitro"],["@everyone Nitro gratuit pour tout le monde : discord-gifts.example/claim","@everyone Free Nitro for everyone: discord-gifts.example/claim"]],
+[["🎮 Faux Steam","🎮 Fake Steam"],["Je t’offre un skin CS2, récupère-le ici : steamcommunlty.example/gift","I’m giving you a CS2 skin, grab it here: steamcommunlty.example/gift"]],
+[["📍 Lien traqueur","📍 Tracker link"],["Regarde cette vidéo drôle https://grabify.link/ABC123","Watch this funny video https://grabify.link/ABC123"]],
+[["₿ Arnaque crypto","₿ Crypto scam"],["Airdrop crypto limité ! Double your BTC → https://btc-double.example/claim","Limited crypto airdrop! Double your BTC → https://btc-double.example/claim"]],
+[["💬 Message normal","💬 Normal message"],["Salut tout le monde, quelqu’un pour une partie ce soir ?","Hi everyone, anyone up for a game tonight?"]]
+];
+function h(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function hostOf(l){return l.replace(/^https?:\/\//i,"").replace(/^www\./i,"").split(/[\/?#]/)[0].toLowerCase()}
+function analyse(txt){var fr=L==="fr",hits=[],links=txt.match(new RegExp(LINKRE,"gi"))||[],hosts=links.map(hostOf),mass=/@everyone|@here/i.test(txt);
+function add(w,a,b){hits.push({w:w,t:fr?a:b})}
+if(hosts.some(function(x){return LOGGER.test(x)}))add(60,"Lien traqueur d’adresse IP","IP-grabbing tracker link");
+if(hosts.some(function(x){return SHORT.test(x)}))add(20,"Lien raccourci qui masque la destination","Shortened link hiding the destination");
+if(hosts.some(function(x){return /(discord|steam|nitro|gift|claim|robux|bonus|airdrop)/.test(x)&&!OFFICIAL.test(x)}))add(40,"Domaine qui imite un site connu","Domain imitating a known site");
+if(/(nitro|steam|robux|v-?bucks|skin)/i.test(txt)&&/(free|gratuit|gift|cadeau|offert|offre|giveaway)/i.test(txt))add(35,"Faux cadeau (Nitro, Steam…)","Fake gift (Nitro, Steam…)");
+if(/(airdrop|bitcoin|\bbtc\b|crypto|\beth\b|double your|doubler)/i.test(txt)&&(links.length||/(free|gratuit|limit|invest)/i.test(txt)))add(40,"Promesse crypto trop belle","Too-good-to-be-true crypto offer");
+if(mass)links.length?add(30,"Mention de masse accompagnée d’un lien","Mass mention with a link"):add(15,"Mention de masse","Mass mention");
+if(links.length&&/(claim|r[ée]cup[eè]re|r[ée]clam|hurry|vite|limited|limit[ée]|expire|last chance|derni[èe]re chance)/i.test(txt))add(15,"Pression à l’urgence","Urgency pressure");
+if(/discord\.gg\/\w+|discord(?:app)?\.com\/invite\/\w+/i.test(txt))add(20,"Invitation vers un autre serveur","Invite to another server");
+var sc=Math.min(100,hits.reduce(function(a,x){return a+x.w},0));hits.sort(function(a,b){return b.w-a.w});
+return{score:sc,hits:hits,level:sc>=50?"block":sc>=20?"warn":"safe"}}
+function msgNode(txt){var p=h("p","msg");
+txt.split(new RegExp("(@everyone|@here|"+LINKRE+")","gi")).forEach(function(part,i){if(!part)return;
+if(i%2===0){p.appendChild(document.createTextNode(part));return}
+p.appendChild(part.charAt(0)==="@"?h("span","ment",part):h("a",null,part))});return p}
+function field(l,v){var f=h("div","fl");f.appendChild(h("small",null,l));f.appendChild(h("b",null,v));return f}
+var dTimer;
+function demoRun(txt){txt=(txt||"").trim().slice(0,300);if(!txt)return;
+var o=L==="fr"?0:1,out=$("#dOut"),r=analyse(txt),now=new Date().toLocaleTimeString(L==="fr"?"fr-FR":"en-US",{hour:"2-digit",minute:"2-digit"});
+clearTimeout(dTimer);out.innerHTML="";
+var row=h("div","row"),av=h("div","av g",T.dyou[o].charAt(0)),box=h("div");box.style.flex="1";
+var nm=h("div","nm",T.dyou[o]);nm.appendChild(h("span","ts",now));var msg=msgNode(txt);
+box.appendChild(nm);box.appendChild(msg);row.appendChild(av);row.appendChild(box);out.appendChild(row);
+dTimer=setTimeout(function(){
+var row2=h("div","row in"),av2=h("div","av","C"),b2=h("div"),n2=h("div","nm","CoreLab"),emb=h("div","emb"),bar=h("div","bar"),fill=h("i"),color,
+f=h("div","flds");b2.style.flex="1";n2.appendChild(h("span","tag","APP"));n2.appendChild(h("span","ts",now));
+if(r.level==="block"){nm.classList.add("gone");msg.classList.add("gone");color="var(--ac)";
+emb.appendChild(h("h4",null,T.m2t[o]));emb.appendChild(h("p",null,T.m2d[o]));
+f.appendChild(field(T.fm[o],"@"+T.dyou[o]));f.appendChild(field(T.fa[o],T.m2a[o]));f.appendChild(field(T.fr[o],r.hits[0].t))}
+else if(r.level==="warn"){emb.className="emb wr";color="#f0b232";
+emb.appendChild(h("h4",null,T.dwarnT[o]));emb.appendChild(h("p",null,T.dwarnD[o]));
+f.appendChild(field(T.fm[o],"@"+T.dyou[o]));f.appendChild(field(T.fa[o],T.dwarnA[o]));f.appendChild(field(T.fr[o],r.hits[0].t))}
+else{emb.className="emb ok";color="#23a55a";
+emb.appendChild(h("h4",null,T.dsafeT[o]));emb.appendChild(h("p",null,T.dsafeD[o]))}
+if(r.level!=="safe")emb.appendChild(f);
+var rl=h("div","rl");rl.style.cssText="display:flex;justify-content:space-between;margin-top:12px;font-size:12.5px;color:#b5bac1";
+rl.appendChild(h("span",null,T.dscore[o]));rl.appendChild(h("span",null,r.score+" / 100"));
+fill.style.background=color;bar.appendChild(fill);emb.appendChild(rl);emb.appendChild(bar);
+if(r.hits.length){var ch=h("div","chipsm");r.hits.forEach(function(x){ch.appendChild(h("span",null,x.t))});emb.appendChild(ch)}
+b2.appendChild(n2);b2.appendChild(emb);row2.appendChild(av2);row2.appendChild(b2);out.appendChild(row2);
+requestAnimationFrame(function(){requestAnimationFrame(function(){fill.style.width=Math.max(r.score,3)+"%"})})},reduce?0:650)}
+function demoInit(){var o=L==="fr"?0:1,c=$("#dChips"),inp=$("#dInput");c.innerHTML="";
+EX.forEach(function(e){var b=h("button",null,e[0][o]);b.type="button";b.addEventListener("click",function(){inp.value=e[1][o];demoRun(inp.value)});c.appendChild(b)});
+inp.placeholder=T.dph[o];inp.setAttribute("aria-label",T.dph[o]);
+clearTimeout(dTimer);var out=$("#dOut");out.innerHTML="";out.appendChild(h("div","ph",T.dwait[o]))}
+$("#dForm").addEventListener("submit",function(e){e.preventDefault();demoRun($("#dInput").value)});
 
 /* ---------- langue ---------- */
 function set(l){
 L=l;var i=l==="fr"?0:1;document.documentElement.lang=l;document.title=T.title[i];
 $$("[data-t]").forEach(function(e){var v=T[e.dataset.t];if(v)e.textContent=v[i]});
 $$(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===l)});
-grid();qs();paint();observe();
+grid();qs();demoInit();paint();live();observe();
 try{localStorage.setItem("cl_lang",l)}catch(e){}}
 $$(".lang button").forEach(function(b){b.addEventListener("click",function(){set(b.dataset.l)})});
 
@@ -584,7 +723,7 @@ var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeou
 (function(){var t=$(".term");if(!t)return;if(!("IntersectionObserver" in window)){t.classList.add("go");return}
 var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){t.classList.add("go");o.disconnect()}},{threshold:.4});o.observe(t)})();
 
-marquee();set(L);onScroll();loadStats();setInterval(loadStats,30000);
+marquee();set(L);onScroll();loadStats();setInterval(loadStats,15000);setInterval(function(){if(!document.hidden){live();var e=$("[data-f=\"dur\"]");if(e&&!FAIL&&LAST&&typeof SV.uptime_s==="number")e.textContent=fmtDur(SV.uptime_s+(Date.now()-LAST)/1000)}},1000);
 </script>
 </body>
 </html>
