@@ -81,13 +81,14 @@ rail.children[1].textContent=LB[secs[k].id][en];
 
 /* ── sons discrets (synthétisés par le navigateur, désactivés par défaut) ── */
 var snd=false,AC,ICONS='<svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
-try{snd=localStorage.getItem("cl_snd")==="1"}catch(e){}
+try{snd=localStorage.getItem("cl_snd")!=="0"}catch(e){snd=true}if(lite)snd=false;
 function ac(){if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==="suspended")AC.resume();return AC}
-function tone(f0,f1,d,ty,v,dl){var a=ac();if(!a)return;var t=a.currentTime+(dl||0),o=a.createOscillator(),g=a.createGain();
+function unlock(){if(lite)return;["pointerdown","keydown","touchstart"].forEach(function(ev){var f=function(){ac();removeEventListener(ev,f,true)};addEventListener(ev,f,true)})}
+function tone(f0,f1,d,ty,v,dl){var a=ac();if(!a||a.state!=="running")return;var t=a.currentTime+(dl||0),o=a.createOscillator(),g=a.createGain();
 o.type=ty||"sine";o.frequency.setValueAtTime(f0,t);if(f1)o.frequency.exponentialRampToValueAtTime(f1,t+d);
 g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);
 o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.03)}
-function whoosh(){var a=ac();if(!a)return;var t=a.currentTime,n=Math.floor(a.sampleRate*.7),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);
+function whoosh(){var a=ac();if(!a||a.state!=="running")return;var t=a.currentTime,n=Math.floor(a.sampleRate*.7),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);
 for(var i=0;i<n;i++)d[i]=Math.random()*2-1;
 var s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();s.buffer=b;f.type="bandpass";f.Q.value=1.2;
 f.frequency.setValueAtTime(250,t);f.frequency.exponentialRampToValueAtTime(3200,t+.5);
@@ -120,7 +121,7 @@ addEventListener("pageshow",function(e){if(e.persisted)document.documentElement.
 var tick=false;
 function onScroll(){tick=false;hero();railUpdate()}
 function init(){
-glow();mark();portal();if(!lite)sound();
+glow();mark();portal();unlock();if(!lite)sound();
 if(!lite)stars();
 if(!lite&&fine&&!reduce)light();
 cards();
