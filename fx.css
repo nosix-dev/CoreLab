@@ -1,0 +1,77 @@
+/* CoreLab FX : effets néon partagés (index, statut, docs, blog, dashboard) */
+
+/* ── logo néon (menu) : halo qui respire, rotation d'un quart de tour au survol ── */
+.logo img{filter:drop-shadow(0 0 6px rgba(232,81,13,.75)) drop-shadow(0 0 16px rgba(232,81,13,.4));animation:fxPulse 3.2s ease-in-out infinite;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.logo:hover img{animation:none;filter:drop-shadow(0 0 9px #ff7a3d) drop-shadow(0 0 26px rgba(232,81,13,.85));transform:rotate(90deg) scale(1.1)}
+@keyframes fxPulse{50%{filter:drop-shadow(0 0 3px rgba(232,81,13,.5)) drop-shadow(0 0 9px rgba(232,81,13,.25))}}
+
+/* ── fond : étoiles + lueur qui suit la souris ── */
+#fxbg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+#fxlight{position:fixed;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;background:radial-gradient(circle,rgba(232,81,13,.14),transparent 65%);pointer-events:none;z-index:-1;opacity:0;transition:opacity .5s;will-change:transform}
+
+/* ── mots qui brillent dans les titres ── */
+h1 em,h2 em,.gl{font-style:normal;color:var(--ac2,#ff7a3d);text-shadow:0 0 14px rgba(232,81,13,.7),0 0 40px rgba(232,81,13,.4);animation:fxFlick 6s infinite}
+@keyframes fxFlick{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.78}}
+
+/* ── barre de progression néon, boutons, chiffres ── */
+#prog{box-shadow:0 0 12px var(--ac),0 0 28px rgba(232,81,13,.6)}
+.btn{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);transform:translateX(-120%);pointer-events:none}
+.btn:hover::after{transform:translateX(120%);transition:transform .7s}
+.stat b{text-shadow:0 0 22px rgba(232,81,13,.55)}
+
+/* ── révélation avec flou ── */
+.js .rv{filter:blur(6px);transition:opacity .6s,transform .6s,filter .6s}
+.js .rv.in{filter:none}
+
+/* ── cartes : bordure lumineuse qui suit le curseur + inclinaison 3D ── */
+.fxc{position:relative}
+.fxc:hover{box-shadow:0 0 30px -8px rgba(232,81,13,.4)}
+.fxg{position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),#ff7a3d,transparent 65%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.fxc:hover>.fxg{opacity:1}
+.js .fxc.fxt{transition:transform .1s linear,border-color .2s,opacity .6s,filter .6s}
+
+/* ── aperçus Discord en « coverflow » 3D ── */
+@media(min-width:861px){
+.dcs{perspective:1400px;align-items:center}
+.js .dcs figure.in{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .6s,filter .6s}
+.js .dcs figure.in:nth-child(1){transform:rotateY(18deg) scale(.94)}
+.js .dcs figure.in:nth-child(2){transform:translateY(-10px) scale(1.04)}
+.js .dcs figure.in:nth-child(3){transform:rotateY(-18deg) scale(.94)}
+.js .dcs figure.in:hover{transform:rotateY(0) scale(1.06)}
+}
+
+/* ── logo du hero : halo, anneaux qui tournent, crochets ── */
+.neon{position:absolute;left:50%;top:calc(50% - 3svh);width:min(62vw,46svh,360px);aspect-ratio:1;pointer-events:none;transform:translate(-50%,-50%) scale(calc(1 + var(--hp,0) * .6));opacity:max(0,calc(1 - var(--hp,0) * 2.4))}
+.intro.static .neon{display:none}
+.neon .aura{position:absolute;inset:-28%;border-radius:50%;background:radial-gradient(circle,rgba(232,81,13,.4),rgba(232,81,13,.12) 42%,transparent 68%);filter:blur(10px);animation:fxBreathe 4s ease-in-out infinite}
+@keyframes fxBreathe{50%{transform:scale(1.12);opacity:.75}}
+.neon svg{position:absolute;inset:-14%;width:128%;height:128%;overflow:visible}
+.neon svg *{fill:none;stroke:#ff7a3d;stroke-width:.7;filter:drop-shadow(0 0 3px #e8510d)}
+.neon .ra,.neon .rb,.neon .rc,.neon .rd{transform-origin:0 0;transform-box:view-box}
+.neon .ra{animation:fxSpin 40s linear infinite}.neon .ra circle{stroke-dasharray:3 5}
+.neon .rb{animation:fxSpin 28s linear infinite reverse}
+.neon .rc{animation:fxSpin 36s linear infinite}
+.neon .rd{animation:fxSpin 14s linear infinite}.neon .rd circle{fill:#ffb089;stroke:none}
+@keyframes fxSpin{to{transform:rotate(360deg)}}
+.neon::before,.neon::after{content:"";position:absolute;top:41%;height:18%;width:7%;border:2px solid #ff7a3d;box-shadow:0 0 10px #e8510d,inset 0 0 8px rgba(232,81,13,.5);animation:fxPulse2 3s ease-in-out infinite}
+.neon::before{left:-30%;border-right:0}.neon::after{right:-30%;border-left:0}
+@keyframes fxPulse2{50%{opacity:.45}}
+@media(max-width:700px){.neon::before,.neon::after{display:none}}
+
+/* ── rail de sections (index) ── */
+#fxrail{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;text-align:right;pointer-events:none;font-family:var(--f,system-ui)}
+#fxrail .n{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff}
+#fxrail .n i{font-style:normal;color:var(--mu,#a09cad);opacity:.5}
+#fxrail .l{margin-top:6px;font:700 10px var(--mono,monospace);letter-spacing:.2em;text-transform:uppercase}
+#fxrail .l::after{content:"";display:inline-block;width:34px;height:1px;margin-left:10px;vertical-align:middle;background:var(--ac);box-shadow:0 0 8px var(--ac)}
+#fxrail .t{display:flex;flex-direction:column;align-items:flex-end;gap:7px;margin-top:14px}
+#fxrail .t b{display:block;width:8px;height:1px;background:var(--ln,#2b2934);transition:width .3s,background .3s}
+#fxrail .t b.on{width:22px;background:var(--ac);box-shadow:0 0 8px var(--ac)}
+@media(max-width:1360px){#fxrail{display:none}}
+
+@media(prefers-reduced-motion:reduce){
+.logo img,.neon *,.neon::before,.neon::after,h1 em,h2 em,.gl{animation:none!important}
+.js .rv{filter:none}
+#fxlight{display:none}
+}

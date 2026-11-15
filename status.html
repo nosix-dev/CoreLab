@@ -122,6 +122,7 @@ header.sh nav{padding:0!important;border:0!important;min-height:64px;flex-wrap:n
 header.sh .tin{max-width:1120px;margin:0 auto;padding:0 22px!important;display:block}
 .wrap{max-width:1120px}
 </style>
+<link rel="stylesheet" href="fx.css">
 </head>
 <body>
 <header class="sh"><div class="tin">
@@ -272,5 +273,6 @@ fetch(API_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(functi
 document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){L=b.dataset.l;render()})});
 load();setInterval(load,30000);reveal();
 </script>
+<script src="fx.js" defer></script>
 </body>
 </html>

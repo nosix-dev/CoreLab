@@ -229,6 +229,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .nfbtn{display:inline-block;margin-top:10px;padding:7px 16px;border-radius:6px;background:#4e5058;color:#fff;font-size:13.5px;font-weight:600}
 @media(max-width:900px){.nfaddrow{grid-template-columns:1fr}.nfed{grid-template-columns:1fr}.nfside{position:static;order:-1}}
 </style>
+<link rel="stylesheet" href="fx.css">
 </head>
 <body>
 <header><div class="bar">
@@ -702,5 +703,6 @@ api("/api/me").then(function(m){ME=m;render()}).catch(function(e){if(!(e&&e.mess
 renderHeader();var r=route();if(r.g)viewGuild(r);else viewServers()}
 render();
 </script>
+<script src="fx.js" defer data-lite></script>
 </body>
 </html>

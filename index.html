@@ -241,6 +241,7 @@ html{scroll-behavior:auto}
 
 @media(prefers-reduced-motion:reduce){.stat b.bump{animation:none}}
 </style>
+<link rel="stylesheet" href="fx.css">
 </head>
 <body>
 <div id="prog"></div>
@@ -269,6 +270,7 @@ html{scroll-behavior:auto}
 <!-- ACCUEIL -->
 <section class="intro" id="accueil">
 <div class="pin">
+<div class="neon" aria-hidden="true"><i class="aura"></i><svg viewBox="-100 -100 200 200"><g class="ra"><circle r="96"/></g><g class="rb"><rect x="-70" y="-70" width="140" height="140"/></g><g class="rc"><rect x="-70" y="-70" width="140" height="140" transform="rotate(45)"/></g><g class="rd"><circle cy="-96" r="2.4"/><circle cx="96" r="2.4"/><circle cy="96" r="2.4"/><circle cx="-96" r="2.4"/></g></svg></div>
 <canvas id="dust" aria-hidden="true"></canvas>
 <div class="heroTxt wrap">
 <span class="badge"><i class="dot"></i><span data-t="badge"></span></span>
@@ -427,10 +429,10 @@ html{scroll-behavior:auto}
 var T={
 n0:["Accueil","Home"],nprot:["Protection","Protection"],nrank:["Rankup","Rankup"],nfn:["Fonctions","Features"],nfaq:["FAQ","FAQ"],n3:["Documentation","Documentation"],n4:["Support","Support"],n5:["Statut","Status"],n6:["Blog","Blog"],n7:["Dashboard","Dashboard"],
 invite:["Inviter le bot","Invite the bot"],badge:["CoreLab en ligne","CoreLab online"],hi:["Bienvenue chez CoreLab.","Welcome to CoreLab."],
-h1:["Le bot qui protège et gère tout votre serveur.","The bot that protects and manages your entire server."],
+h1:["Le bot qui protège et gère <em>tout votre serveur</em>.","The bot that protects and manages <em>your entire server</em>."],
 sub:["Multifonction, multilingue, pensé pour les grandes communautés Discord. Protection, tickets, niveaux, économie, notifications : tout est personnalisable.","Multi-function, multilingual, built for large Discord communities. Protection, tickets, levels, economy, notifications: everything is customizable."],
 scroll:["Faites défiler pour la voir se désintégrer.","Scroll to watch it fall apart."],
-h2p:["Pendant que votre équipe dort.","While your team sleeps."],
+h2p:["Pendant que votre équipe <em>dort</em>.","While your team <em>sleeps</em>."],
 leadp:["Une scène qui arrive plus souvent qu’on ne le croit, et ce que CoreLab en fait.","A scene that happens more often than you think, and what CoreLab does about it."],
 p1h:["Un faux cadeau apparaît.","A fake gift shows up."],p1p:["Un compte inconnu poste un lien « Nitro gratuit » dans un salon très fréquenté. Il suffit d’un clic malheureux.","An unknown account posts a “free Nitro” link in a busy channel. One unlucky click is all it takes."],
 p2h:["CoreLab le repère et agit.","CoreLab spots it and acts."],p2p:["L’anti-scam et le HoneyPot détectent le piège, suppriment le message et sanctionnent le compte, sans attendre un modérateur.","Anti-scam and HoneyPot detect the trap, delete the message and sanction the account, without waiting for a moderator."],
@@ -438,7 +440,7 @@ p3h:["Tout est consigné.","Everything is logged."],p3p:["Chaque sanction arrive
 m1:["Nitro gratuit pour tout le monde, c’est ici :","Free Nitro for everyone, claim it here:"],
 m2t:["🛡️ Anti-scam","🛡️ Anti-scam"],m2d:["Message supprimé. Le compte a été sanctionné automatiquement.","Message deleted. The account was sanctioned automatically."],m2a:["Exclusion temporaire","Timeout"],
 fm:["Membre","Member"],fa:["Action","Action"],fr:["Raison","Reason"],fmod:["Modérateur","Moderator"],lv:["Niveau","Level"],
-h2r:["Les membres actifs méritent un rôle.","Active members deserve a role."],
+h2r:["Les membres actifs méritent <em>un rôle</em>.","Active members deserve <em>a role</em>."],
 leadr:["Nouveau : Rankup donne des rôles selon les messages envoyés et le temps passé en vocal.","New: Rankup hands out roles based on messages sent and time spent in voice."],
 r1h:["CoreLab compte pour vous.","CoreLab keeps count for you."],r1p:["Messages et temps en vocal sont suivis pour chaque membre. Le salon AFK et le casque coupé ne comptent pas.","Messages and voice time are tracked for each member. The AFK channel and a muted headset don’t count."],
 r2h:["Un palier, un rôle.","One milestone, one role."],r2p:["Avec /rankup setup, vous fixez des paliers : un nombre de messages, un temps en vocal, ou les deux. Le rôle est donné dès que c’est atteint.","With /rankup setup you set milestones: a number of messages, voice time, or both. The role is given as soon as it’s reached."],
@@ -446,17 +448,17 @@ r3h:["On félicite, sans rien faire.","Congratulations, hands-free."],r3p:["Un s
 k1t:["🏆 Ma progression","🏆 My progress"],k1m:["Messages","Messages"],k1v:["Temps en vocal","Voice time"],k1r:["Rôle visé","Target role"],
 k2t:["⚙️ Nouveau palier","⚙️ New milestone"],k2d:["Le rôle est donné quand la condition est remplie.","The role is given when the condition is met."],k2v:["Vocal","Voice"],k2c1:["Les deux","Both"],k2c2:["L’un des deux","Either"],
 k3m:["vient de monter en grade !","just ranked up!"],k3t:["🏆 Rankup","🏆 Rankup"],k3d:["Nouveau rôle obtenu : @Habitué","New role earned: @Habitué"],
-h2a:["Tout ce dont votre serveur a besoin","Everything your server needs"],leadf:["Treize modules, tous configurables depuis Discord.","Thirteen modules, all configurable from Discord."],
-h2e:["À quoi ça ressemble sur Discord","What it looks like on Discord"],
+h2a:["Tout ce dont votre serveur <em>a besoin</em>","Everything your server <em>needs</em>"],leadf:["Treize modules, tous configurables depuis Discord.","Thirteen modules, all configurable from Discord."],
+h2e:["À quoi ça ressemble <em>sur Discord</em>","What it looks like <em>on Discord</em>"],
 p1t:["🎫 Support","🎫 Support"],p1d:["Cliquez sur le bouton ci-dessous pour ouvrir un ticket. Le staff vous répondra rapidement.","Click the button below to open a ticket. The staff will reply shortly."],p1b:["Ouvrir un ticket","Open a ticket"],p1c:["Tickets avec formulaire personnalisable","Tickets with a customizable form"],
 q2t:["🎉 Niveau 12 atteint !","🎉 Level 12 reached!"],q2d:["Bravo @Alex, tu passes au niveau 12. Encore 340 XP avant le prochain palier.","Congrats @Alex, you reached level 12. 340 XP to go before the next milestone."],q2c:["Niveaux, XP et rôles de récompense","Levels, XP and reward roles"],
 p3t:["🔨 Sanction · Avertissement","🔨 Sanction · Warning"],p3d:["Un avertissement a été enregistré dans les logs.","A warning was recorded in the logs."],p3c:["Logs de modération clairs et personnalisables","Clear, customizable moderation logs"],
-h2d:["CoreLab en chiffres","CoreLab in numbers"],st1:["Serveurs","Servers"],st2:["Utilisateurs","Users"],st3:["Commandes","Commands"],st4:["Latence (ms)","Latency (ms)"],live:["actualisé toutes les 15 secondes","refreshed every 15 seconds"],
-h2g:["Gratuit pour l’essentiel.","Free for the essentials."],leadg:["Les fonctions principales ne coûtent rien. Premium ajoute des options en plus.","The core features cost nothing. Premium adds extra options."],
+h2d:["CoreLab <em>en chiffres</em>","CoreLab <em>in numbers</em>"],st1:["Serveurs","Servers"],st2:["Utilisateurs","Users"],st3:["Commandes","Commands"],st4:["Latence (ms)","Latency (ms)"],live:["actualisé toutes les 15 secondes","refreshed every 15 seconds"],
+h2g:["<em>Gratuit</em> pour l’essentiel.","<em>Free</em> for the essentials."],leadg:["Les fonctions principales ne coûtent rien. Premium ajoute des options en plus.","The core features cost nothing. Premium adds extra options."],
 g1h:["Gratuit","Free"],g1p:["Pour démarrer et tenir un serveur.","To get started and run a server."],g1a:["Protection, anti-scam et modération","Protection, anti-scam and moderation"],g1b:["Tickets, embeds et règlement","Tickets, embeds and rules"],g1c:["Niveaux, XP et Rankup","Levels, XP and Rankup"],g1d:["Bilingue FR / EN et traduction","Bilingual FR / EN and translation"],
 g2p:["Pour aller plus loin.","To go further."],g2a:["Options supplémentaires débloquées","Extra options unlocked"],g2b:["Détails dans la documentation","Details in the documentation"],
-h2f:["Questions fréquentes","Frequently asked questions"],leadq:["Choisissez une question, CoreLab répond.","Pick a question, CoreLab answers."],
-h2c:["Ajoutez CoreLab à votre serveur","Add CoreLab to your server"],cta:["Un clic, quelques permissions, et tout est en place.","One click, a few permissions, and you’re set."],
+h2f:["Questions <em>fréquentes</em>","Frequently asked <em>questions</em>"],leadq:["Choisissez une question, CoreLab répond.","Pick a question, CoreLab answers."],
+h2c:["Ajoutez CoreLab <em>à votre serveur</em>","Add CoreLab <em>to your server</em>"],cta:["Un clic, quelques permissions, et tout est en place.","One click, a few permissions, and you’re set."],
 f1:["© 2026 CoreLab · Tous droits réservés","© 2026 CoreLab · All rights reserved"],
 st5:["Messages comptés","Messages counted"],st6:["Commandes utilisées","Commands used"],st7:["En ligne depuis","Online for"],st8:["Disponibilité (90 j)","Uptime (90 d)"],
 lon:["En ligne","Online"],loff:["Hors ligne","Offline"],
@@ -543,7 +545,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)load
 /* ---------- langue ---------- */
 function set(l){
 L=l;var i=l==="fr"?0:1;document.documentElement.lang=l;document.title=T.title[i];
-$$("[data-t]").forEach(function(e){var v=T[e.dataset.t];if(v)e.textContent=v[i]});
+$$("[data-t]").forEach(function(e){var v=T[e.dataset.t];if(v){var s=v[i];if(s.indexOf("<em>")>-1)e.innerHTML=s;else e.textContent=s}});
 $$(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===l)});
 grid();qs();paint();live();observe();
 try{localStorage.setItem("cl_lang",l)}catch(e){}}
@@ -619,5 +621,6 @@ var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){t.classList
 
 marquee();set(L);onScroll();loadStats();setInterval(loadStats,15000);setInterval(function(){if(!document.hidden){live();var e=$("[data-f=\"dur\"]");if(e&&!FAIL&&LAST&&typeof SV.uptime_s==="number")e.textContent=fmtDur(SV.uptime_s+(Date.now()-LAST)/1000)}},1000);
 </script>
+<script src="fx.js" defer></script>
 </body>
 </html>
