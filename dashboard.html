@@ -116,6 +116,35 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .logo small{display:none}
 .form{padding:18px}
 }
+
+/* ---- Suivi : journal d'audit, transcripts, absences du staff ---- */
+.side nav a .ic{display:inline-flex;align-items:center;gap:10px}
+.side nav a .ic svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.side nav a.sv.on{background:rgba(232,81,13,.14);color:var(--ac2);box-shadow:inset 0 0 0 1px rgba(232,81,13,.45)}
+.tb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.tb .find{width:auto;flex:1;min-width:180px;margin:0}
+.fchips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.fchips button{border:1px solid var(--ln);background:var(--s1);color:var(--mu);padding:6px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.fchips button:hover{color:var(--tx);border-color:var(--mu)}
+.fchips button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.alog{display:grid;gap:8px}
+.ae{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);transition:border-color .2s}
+.ae:hover{border-color:var(--mu)}
+.ae .ai{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:17px}
+.ae b{display:block;font-size:14.5px;overflow-wrap:anywhere}
+.ae span.d{display:block;color:var(--mu);font-size:13px;overflow-wrap:anywhere}
+.ae time{color:var(--mu);font-size:12.5px;white-space:nowrap;text-align:right}
+.ae time em{display:block;font-style:normal;font-size:11.5px;opacity:.75}
+.ae .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 7px;border-radius:6px;margin-right:6px;background:var(--s2);color:var(--mu);vertical-align:1px}
+.live2{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mu);cursor:pointer}
+.live2 input{accent-color:var(--ac)}
+.trl{display:grid;gap:8px}
+.tr{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}
+.tr .ti{flex:1;min-width:0}.tr b{display:block;overflow-wrap:anywhere}.tr span.d{color:var(--mu);font-size:13px}
+.abs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) auto;gap:10px;align-items:end;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);margin:0 0 18px}
+.abs input,.abs select{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg)}
+.abs .mini span{display:block;font-size:12px;color:var(--mu);margin-bottom:4px}
+@media(max-width:600px){.ae{grid-template-columns:38px minmax(0,1fr)}.ae time{grid-column:2;text-align:left}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 .pvbox{margin:14px 0 6px}.pv{display:block;max-width:100%;border-radius:14px;margin:0 0 10px}
 
@@ -305,6 +334,9 @@ var nav=h("nav"),groups=[];
 var top=h("div",{class:"ng"});top.appendChild(h("div",{class:"gl",text:"GÉNÉRAL"}));
 top.appendChild(h("a",{href:"#/g/"+G.id,class:!r.m?"on":"","data-n":"vue d’ensemble"},"Vue d’ensemble"));
 top.appendChild(h("a",{href:"#/g/"+G.id+"/antiscam_test",class:r.m==="antiscam_test"?"on":"","data-n":"test anti-scam"},"Test anti-scam"));nav.appendChild(top);
+var sui=h("div",{class:"ng"});sui.appendChild(h("div",{class:"gl",text:"SUIVI"}));
+SUIVI.forEach(function(m){var ic=h("span",{class:"ic"});ic.innerHTML=m.svg;ic.appendChild(h("span",{text:m.name}));
+sui.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:"sv"+(r.m===m.id?" on":""),"data-n":m.name.toLowerCase()+" "+m.kw},ic))});nav.appendChild(sui);groups.push(sui);
 var by={},order=[];G.modules.forEach(function(m){if(!by[m.group]){by[m.group]=[];order.push(m.group)}by[m.group].push(m)});
 order.forEach(function(k){var box=h("div",{class:"ng"});box.appendChild(h("div",{class:"gl",text:k.toUpperCase()}));
 by[k].forEach(function(m){box.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
@@ -315,7 +347,7 @@ groups.forEach(function(box){var any=false;[].forEach.call(box.querySelectorAll(
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="notifs")notifsView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -570,6 +602,87 @@ var b=$("#sv");b.disabled=true;
 api("/api/guilds/"+G.id+"/modules/"+mid,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
 .then(function(){DIRTY=false;toast("Enregistré ✓");render()}).catch(function(e){b.disabled=false;toast(errText(e),true)})}
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
+
+
+/* ---- Suivi : Journal d’audit · Transcripts · Absences du staff ---- */
+var SUIVI=[
+{id:"audit",name:"Journal d’audit",kw:"logs historique audit",svg:'<svg viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>'},
+{id:"transcripts",name:"Transcripts",kw:"tickets archives",svg:'<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>'},
+{id:"absences",name:"Absences du staff",kw:"congés staff absence",svg:'<svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m14.5 13.5-5 5"/><path d="m9.5 13.5 5 5"/></svg>'}
+];
+function fmtDT(ts){try{var d=new Date(ts);return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return ""}}
+function fmtHM(ts){try{return new Date(ts).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}catch(e){return ""}}
+function noEndpoint(box,what){box.innerHTML="";box.appendChild(h("div",{class:"empty",text:what+" n’est pas encore activé côté bot : l’endpoint du panel est introuvable. Une fois ajouté au bot CoreLab, cette page se remplira automatiquement."}))}
+
+var AUD_CATS=[["","Tout"],["messages","Messages"],["members","Membres"],["moderation","Modération"],["channels","Salons"],["roles","Rôles"],["voice","Vocal"],["server","Serveur"]];
+var AUD_STY={messages:["#5865f2","💬"],members:["#3ba55d","👤"],moderation:["#ed4245","🔨"],channels:["#e8510d","#️⃣"],roles:["#d9941a","🏷️"],voice:["#9b59b6","🎙️"],server:["#6b6878","⚙️"]};
+function auditView(c,G){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Journal d’audit"}));
+c.appendChild(h("p",{class:"lead",text:"Tout ce qui se passe sur « "+G.name+" » : messages modifiés ou supprimés, arrivées et départs, sanctions, salons, rôles, vocal et réglages du serveur."}));
+var cat="",q="",cursor=null,timer=0,busy=false,first=true;
+var chips=h("div",{class:"fchips"}),list=h("div",{class:"alog"}),more=h("button",{class:"btn ghost sm",type:"button",text:"Charger plus",style:"display:none;margin:14px auto 0"});
+var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un membre, un salon, un mot…","aria-label":"Rechercher dans le journal"});
+var auto=h("input",{type:"checkbox"}),status=h("span",{class:"h"});
+var tb=h("div",{class:"tb"},[search,h("button",{class:"btn ghost sm",type:"button",text:"Actualiser",onclick:function(){load(true)}}),h("label",{class:"live2"},[auto,"Temps réel"])]);
+AUD_CATS.forEach(function(k){var b=h("button",{type:"button",class:k[0]===cat?"on":"",text:k[1],onclick:function(){cat=k[0];[].forEach.call(chips.children,function(x){x.className=x===b?"on":""});load(true)}});chips.appendChild(b)});
+c.appendChild(chips);c.appendChild(tb);c.appendChild(list);c.appendChild(more);c.appendChild(status);
+function row(e){var st=AUD_STY[e.category]||AUD_STY.server;
+var ic=h("div",{class:"ai",style:"background:"+st[0],text:st[1]});
+var who=e.actor&&e.actor.name?e.actor.name:"";
+var main=h("div",{},[h("b",{},[h("span",{class:"tag",text:(AUD_CATS.filter(function(k){return k[0]===e.category})[0]||[0,"Serveur"])[1].toUpperCase()}),e.title||e.action||"Évènement"]),
+h("span",{class:"d",text:[who?"Par "+who:"",e.target&&e.target.name?"Cible : "+e.target.name:"",e.details||""].filter(Boolean).join(" · ")})]);
+var tm=h("time",{datetime:e.ts||""},[fmtHM(e.ts),h("em",{text:fmtDT(e.ts)})]);
+return h("div",{class:"ae"},[ic,main,tm])}
+function load(reset){if(busy)return;busy=true;if(reset){cursor=null;if(!timer||first)list.innerHTML="";}
+status.textContent="Chargement…";
+api("/api/guilds/"+G.id+"/audit?limit=50"+(cat?"&type="+encodeURIComponent(cat):"")+(q?"&q="+encodeURIComponent(q):"")+(!reset&&cursor?"&before="+encodeURIComponent(cursor):""))
+.then(function(d){first=false;var es=d.entries||[];if(reset)list.innerHTML="";es.forEach(function(e){list.appendChild(row(e))});
+cursor=d.next||null;more.style.display=cursor?"":"none";
+if(!list.children.length)list.appendChild(h("div",{class:"empty",text:"Aucun évènement pour le moment. Le journal se remplit au fil de l’eau dès que quelque chose se passe sur le serveur."}));
+status.textContent=es.length?"Dernière mise à jour à "+fmtHM(Date.now()):""})
+.catch(function(e){if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error)){noEndpoint(list,"Le journal d’audit")}else list.innerHTML="";if(!e||e.error&&e.error!=="not_found"&&e.error!=="unknown_route")list.appendChild(h("p",{class:"err",text:"Impossible de charger le journal."}));status.textContent="";stop()})
+.then(function(){busy=false})}
+function stop(){clearInterval(timer);timer=0;auto.checked=false}
+more.addEventListener("click",function(){load(false)});
+var qt=0;search.addEventListener("input",function(){clearTimeout(qt);qt=setTimeout(function(){q=search.value.trim();load(true)},350)});
+auto.addEventListener("change",function(){clearInterval(timer);timer=0;if(auto.checked)timer=setInterval(function(){if(!list.isConnected){stop();return}load(true)},15000)});
+load(true)}
+
+function transcriptsView(c,G){
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Transcripts"}));
+c.appendChild(h("p",{class:"lead",text:"Les archives des tickets fermés sur le serveur : ouvrez une conversation complète à tout moment."}));
+var box=h("div",{class:"trl"});c.appendChild(box);box.appendChild(h("p",{class:"muted",text:"Chargement…"}));
+api("/api/guilds/"+G.id+"/transcripts").then(function(d){box.innerHTML="";var ts=d.transcripts||[];
+if(!ts.length){box.appendChild(h("div",{class:"empty",text:"Aucun transcript pour le moment. Ils apparaîtront ici à la fermeture des tickets."}));return}
+ts.forEach(function(t){var safe=t.url&&/^https:\/\//.test(t.url);
+box.appendChild(h("div",{class:"tr"},[h("div",{class:"ti"},[h("b",{text:t.name||("Ticket "+(t.id||""))}),h("span",{class:"d",text:[t.user?"Ouvert par "+t.user:"",t.closedBy?"fermé par "+t.closedBy:"",t.ts?fmtDT(t.ts):"",t.messages!=null?t.messages+" messages":""].filter(Boolean).join(" · ")})]),
+safe?h("a",{class:"btn ghost sm",href:t.url,target:"_blank",rel:"noopener noreferrer",text:"Ouvrir"}):null]))})})
+.catch(function(e){if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les transcripts");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les transcripts."}))}})}
+
+function absencesView(c,G){
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Absences du staff"}));
+c.appendChild(h("p",{class:"lead",text:"Déclarez les absences des membres du staff pour que toute l’équipe sache qui est disponible."}));
+var meta=META[G.id]||{},box=h("div",{class:"trl"}),members=meta.members||[];
+var who=h("input",{type:"text",maxlength:60,placeholder:"Pseudo ou ID du membre"}),from=h("input",{type:"date"}),to=h("input",{type:"date"}),why=h("input",{type:"text",maxlength:120,placeholder:"Raison (facultatif)"});
+var add=h("button",{class:"btn sm",type:"button",text:"Ajouter",onclick:function(){
+if(!who.value.trim()||!from.value||!to.value){toast("Membre, début et fin sont requis.",true);return}
+if(to.value<from.value){toast("La fin doit être après le début.",true);return}
+add.disabled=true;
+api("/api/guilds/"+G.id+"/absences",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({member:who.value.trim(),from:from.value,to:to.value,reason:why.value.trim()})})
+.then(function(){toast("Absence ajoutée ✓");who.value=why.value="";from.value=to.value="";add.disabled=false;load()})
+.catch(function(e){add.disabled=false;if(e&&e.message==="auth")return;toast(errText(e),true)})}});
+c.appendChild(h("div",{class:"abs"},[h("label",{class:"mini"},[h("span",{text:"Membre"}),who]),h("label",{class:"mini"},[h("span",{text:"Du"}),from]),h("label",{class:"mini"},[h("span",{text:"Au"}),to]),h("label",{class:"mini"},[h("span",{text:"Raison"}),why]),add]));
+c.appendChild(box);
+function load(){box.innerHTML="";box.appendChild(h("p",{class:"muted",text:"Chargement…"}));
+api("/api/guilds/"+G.id+"/absences").then(function(d){box.innerHTML="";var as=d.absences||[],now=new Date().toISOString().slice(0,10);
+if(!as.length){box.appendChild(h("div",{class:"empty",text:"Aucune absence déclarée."}));return}
+as.forEach(function(a){var cur=a.from<=now&&now<=a.to,past=a.to<now;
+box.appendChild(h("div",{class:"tr",style:past?"opacity:.55":""},[h("div",{class:"ti"},[h("b",{},[a.member||"?",cur?h("span",{class:"pill on",style:"margin-left:8px",text:"EN COURS"}):null]),h("span",{class:"d",text:fmtDT(a.from)+" → "+fmtDT(a.to)+(a.reason?" · "+a.reason:"")})]),
+h("button",{class:"btn ghost sm",type:"button",text:"Supprimer",onclick:function(){if(!confirm("Supprimer cette absence ?"))return;
+api("/api/guilds/"+G.id+"/absences/"+encodeURIComponent(a.id),{method:"DELETE"}).then(function(){toast("Absence supprimée ✓");load()}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})}})]))})})
+.catch(function(e){if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les absences du staff");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les absences."}))}})}
+load()}
 
 /* ---- Notifications : suivre des chaînes, activer/désactiver, personnaliser les embeds ---- */
 var NF_PF=[
