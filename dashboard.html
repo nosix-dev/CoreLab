@@ -674,15 +674,34 @@ api("/api/guilds/"+G.id+"/absences",{method:"POST",headers:{"Content-Type":"appl
 .catch(function(e){add.disabled=false;if(e&&e.message==="auth")return;toast(errText(e),true)})}});
 c.appendChild(h("div",{class:"abs"},[h("label",{class:"mini"},[h("span",{text:"Membre"}),who]),h("label",{class:"mini"},[h("span",{text:"Du"}),from]),h("label",{class:"mini"},[h("span",{text:"Au"}),to]),h("label",{class:"mini"},[h("span",{text:"Raison"}),why]),add]));
 c.appendChild(box);
-function load(){box.innerHTML="";box.appendChild(h("p",{class:"muted",text:"Chargement…"}));
-api("/api/guilds/"+G.id+"/absences").then(function(d){box.innerHTML="";var as=d.absences||[],now=new Date().toISOString().slice(0,10);
-if(!as.length){box.appendChild(h("div",{class:"empty",text:"Aucune absence déclarée."}));return}
-as.forEach(function(a){var cur=a.from<=now&&now<=a.to,past=a.to<now;
-box.appendChild(h("div",{class:"tr",style:past?"opacity:.55":""},[h("div",{class:"ti"},[h("b",{},[a.member||"?",cur?h("span",{class:"pill on",style:"margin-left:8px",text:"EN COURS"}):null]),h("span",{class:"d",text:fmtDT(a.from)+" → "+fmtDT(a.to)+(a.reason?" · "+a.reason:"")})]),
-h("button",{class:"btn ghost sm",type:"button",text:"Supprimer",onclick:function(){if(!confirm("Supprimer cette absence ?"))return;
-api("/api/guilds/"+G.id+"/absences/"+encodeURIComponent(a.id),{method:"DELETE"}).then(function(){toast("Absence supprimée ✓");load()}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})}})]))})})
-.catch(function(e){if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les absences du staff");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les absences."}))}})}
-load()}
+var ST={pending:["En attente",""],upcoming:["À venir","on"],active:["En cours","on"],past:["Terminée",""],returned:["Retour signalé",""],refused:["Refusée",""],cancelled:["Annulée",""]};
+var FL={all:"Toutes",pending:"En attente",ok:"Approuvées",done:"Terminées / annulées"},flt="all",cache=[];
+function inF(a){if(flt==="all")return true;if(flt==="pending")return a.status==="pending";if(flt==="ok")return a.status==="upcoming"||a.status==="active";return a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled"}
+function dt(ts){try{return new Date(ts).toLocaleString("fr-FR",{timeZone:"Europe/Paris",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
+function act(a,path,ok,method){return api("/api/guilds/"+G.id+"/absences/"+encodeURIComponent(a.id)+(path||""),{method:method||"POST"}).then(function(){toast(ok);load(true)}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})}
+var bar=h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px"});
+c.insertBefore(bar,box);
+function draw(){bar.innerHTML="";Object.keys(FL).forEach(function(k){var n=cache.filter(function(a){var o=flt;flt=k;var r=inF(a);flt=o;return r}).length;
+bar.appendChild(h("button",{class:"btn sm"+(k===flt?"":" ghost"),type:"button",text:FL[k]+" · "+n,onclick:function(){flt=k;draw()}}))});
+box.innerHTML="";var as=cache.filter(inF);
+if(!as.length){box.appendChild(h("div",{class:"empty",text:"Aucune absence dans cette vue."}));return}
+as.forEach(function(a){var st=ST[a.status]||[a.status,""],off=a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled";
+var det=[];det.push(dt(a.start)+" → "+dt(a.end)+" · "+a.duration);if(a.reason)det.push("Motif : "+a.reason);if(a.info)det.push("Infos : "+a.info);
+det.push("Soumise le "+dt(a.createdAt)+(a.source==="discord"?" via /absence":" depuis le dashboard"));
+if(a.decidedBy&&(a.status!=="pending"))det.push("Traitée par "+a.decidedBy);
+if(a.extension)det.push("Prolongation demandée jusqu’au "+dt(a.extension.end)+(a.extension.reason?" ("+a.extension.reason+")":""));
+var btns=[];
+if(a.status==="pending"){btns.push(h("button",{class:"btn sm",type:"button",text:"Approuver",onclick:function(){act(a,"/approve","Absence approuvée ✓")}}));btns.push(h("button",{class:"btn ghost sm",type:"button",text:"Refuser",onclick:function(){if(confirm("Refuser cette demande ?"))act(a,"/refuse","Demande refusée")}}))}
+if(a.status!=="cancelled"&&a.status!=="refused")btns.push(h("button",{class:"btn ghost sm",type:"button",text:a.status==="pending"?"Annuler":"Supprimer",onclick:function(){if(confirm("Annuler cette absence ?"))act(a,"","Absence annulée ✓","DELETE")}}));
+box.appendChild(h("div",{class:"tr",style:(off?"opacity:.6;":"")+"margin-bottom:10px;align-items:flex-start"},[
+a.avatar?h("img",{src:a.avatar,alt:"",width:36,height:36,style:"border-radius:50%;flex:none"}):null,
+h("div",{class:"ti"},[h("b",{},[a.member||"?",h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"d",style:"display:block",text:t})}))),
+h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]))})}
+function load(quiet){if(!quiet){box.innerHTML="";box.appendChild(h("p",{class:"muted",text:"Chargement…"}))}
+api("/api/guilds/"+G.id+"/absences").then(function(d){cache=d.absences||[];draw()})
+.catch(function(e){if(quiet)return;if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les absences du staff");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les absences."}))}})}
+load();
+var tm=setInterval(function(){if(!document.body.contains(box)){clearInterval(tm);return}load(true)},15000)}
 
 /* ---- Notifications : suivre des chaînes, activer/désactiver, personnaliser les embeds ---- */
 var NF_PF=[
