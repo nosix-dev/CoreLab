@@ -620,7 +620,7 @@ var AUD_STY={messages:["#5865f2","💬"],members:["#3ba55d","👤"],moderation:[
 function auditView(c,G){
 c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Journal d’audit"}));
-c.appendChild(h("p",{class:"lead",text:"Tout ce qui se passe sur « "+G.name+" » : messages modifiés ou supprimés, arrivées et départs, sanctions, salons, rôles, vocal et réglages du serveur."}));
+c.appendChild(h("p",{class:"lead",text:"Tout ce qui est négatif sur « "+G.name+" » : messages supprimés, expulsions, bannissements, mutes et timeouts, avertissements, départs, salons et rôles supprimés."}));
 var cat="",q="",cursor=null,timer=0,busy=false,first=true;
 var chips=h("div",{class:"fchips"}),list=h("div",{class:"alog"}),more=h("button",{class:"btn ghost sm",type:"button",text:"Charger plus",style:"display:none;margin:14px auto 0"});
 var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un membre, un salon, un mot…","aria-label":"Rechercher dans le journal"});
