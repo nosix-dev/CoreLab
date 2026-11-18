@@ -67,8 +67,6 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .side nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:10px;font-size:14.5px;color:var(--mu);transition:background .15s,color .15s}
 .side nav a:hover{background:var(--s1);color:var(--tx)}
 .side nav a.on{background:rgba(232,81,13,.16);color:var(--tx)}
-.fn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fcmd{flex:none;font-style:normal;font-size:10.5px;color:var(--mu);opacity:.8;letter-spacing:0}
 .dotk{width:7px;height:7px;border-radius:50%;background:var(--ln);flex:none}.dotk.on{background:var(--ok)}.dotk.none{background:transparent}
 .content{min-width:0;max-width:860px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:34px}
@@ -453,12 +451,6 @@ var box=catBox(k.toUpperCase(),open),n=by[k].length;
 by[k].forEach(function(m){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
 if(k.toLowerCase()==="serveur"){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/notifs",class:r.m==="notifs"?"on":"","data-n":"notifications youtube twitch tiktok instagram medal"},"🔔 Notifications"));n++}
 box.count(n)});
-FEATURES.forEach(function(g){
-var open=!!(r.m&&g[1].some(function(f){return r.m==="f_"+f[0]}));
-var box=catBox(g[0].toUpperCase(),open);
-g[1].forEach(function(f){
-box.list.appendChild(h("a",{href:"#/g/"+G.id+"/f_"+f[0],class:r.m==="f_"+f[0]?"on":"","data-n":f[1].toLowerCase()+" "+f[2].toLowerCase()},[h("span",{class:"fn",text:f[1]}),h("em",{class:"fcmd",text:f[3]})]))});
-box.count(g[1].length)});
 find.addEventListener("input",function(){var q=find.value.trim().toLowerCase();
 [].forEach.call(nav.querySelectorAll(".ng"),function(box){var any=false;
 [].forEach.call(box.querySelectorAll("a"),function(a){var ok=!q||a.getAttribute("data-n").indexOf(q)>-1;a.style.display=ok?"":"none";if(ok)any=true});
@@ -467,7 +459,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m.indexOf("f_")===0)featureView(content,G,r.m.slice(2));else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -550,10 +542,7 @@ c.appendChild(h("h3",{style:"margin:0;font-size:20px",text:on+" module"+(on>1?"s
 order.forEach(function(k){c.appendChild(h("div",{class:"gt",text:k.toUpperCase()}));
 c.appendChild(h("div",{class:"mods"},by[k].map(function(m){
 return h("a",{class:"mod",href:"#/g/"+G.id+"/"+m.id},[h("h3",{},[m.name,m.enabled===null?null:h("span",{class:"pill"+(m.enabled?" on":""),text:m.enabled?"ACTIF":"DÉSACTIVÉ"})]),h("p",{text:m.desc})])})))});
-FEATURES.forEach(function(g){
-c.appendChild(h("div",{class:"gt",text:g[0].toUpperCase()}));
-c.appendChild(h("div",{class:"mods"},g[1].map(function(f){
-return h("a",{class:"mod",href:"#/g/"+G.id+"/f_"+f[0]},[h("h3",{},[f[1],h("span",{class:"pill",text:f[3]})]),h("p",{text:f[2]})])})))})}
+}
 
 /* ---- Test anti-scam : simulation locale, rien n’est envoyé ---- */
 var AS_OFFICIAL=/(^|\.)(discord\.com|discord\.gg|discordapp\.com|discord\.media|steamcommunity\.com|steampowered\.com|youtube\.com|youtu\.be)$/i,
@@ -729,89 +718,6 @@ colL.appendChild(form);deps();if(pm&&live)live();
 
 
 /* ---- Suivi : Journal d’audit · Transcripts · Absences du staff ---- */
-/* ---- Catalogue de toutes les fonctions du bot (commandes sans panneau de réglages) ---- */
-var FEATURES=[
-["Modération",[
-["kick","Expulser un membre","Expulse un membre du serveur.","/kick"],
-["ban","Bannir un membre","Bannit définitivement un membre du serveur.","/ban"],
-["warn","Avertir un membre","Enregistre un avertissement avec un motif.","/warn"],
-["warninfos","Avertissements d’un membre","Affiche l’historique des avertissements d’un membre.","/warninfos"],
-["purge","Nettoyer des messages","Supprime des messages en masse dans un salon.","/purge"],
-["note","Notes privées du staff","Ajoute, liste ou supprime des notes privées sur un membre.","/note"],
-["modmail","Modmail","Les membres écrivent au bot en MP, le staff répond depuis un salon.","/modmail"],
-["role-delete","Suppression de rôles","Choisit les rôles à supprimer et la raison.","/role-delete"],
-["verrouillage","Verrouillage de salons","Verrouille ou déverrouille un salon, ou tout le serveur.","/verrouiller"],
-["role-temporaire","Rôles temporaires","Attribue un rôle pour une durée puis le retire.","/role-temporaire"]
-]],
-["Membres",[
-["avatar","Avatar d’un membre","Affiche l’avatar d’un membre en grand.","/avatar"],
-["pseudo","Pseudo du serveur","Change ou réinitialise son pseudo sur le serveur.","/pseudo-definir"],
-["role-react","Rôles par boutons","Publie un message avec des boutons de rôles à choisir.","/role-react"],
-["candidature","Candidatures","Envoie un MP aux responsables quand quelqu’un postule.","/candidature"],
-["reputation","Réputation","Remercie un membre (+1 rep), consulte un profil et le classement.","/reputation"],
-["social","Mariage, amis et clans","Propose un mariage, gère ses amis et crée ou dirige un clan.","/social"],
-["rp","Roleplay","Profil RP, carte d’identité, permis et passeport.","/rp"],
-["formulaire","Formulaires","Crée des formulaires réutilisables et remplis-les.","/formulaire"],
-["suggestion","Suggestions","Soumets une suggestion au staff avec images.","/suggestion"]
-]],
-["Animation",[
-["jeu","Mini-jeux","Quiz, pendu, devine le nombre, 8balls et mots enchaînés.","/jeu"],
-["anime","Collection d’anime","Collectionne des personnages d’anime façon Mudae.","/anime"],
-["poke-wheel","Roue Pokémon","Tourne la roue pour obtenir un objet, un lieu ou une carte.","/poke-wheel"],
-["poke-fight","Combats de cartes","Combats de cartes Pokémon en duel contre un membre.","/poke-fight"],
-["marche","Marché & enchères","Marché et enchères de cartes Pokémon entre membres.","/marche"],
-["vote","Sondages","Crée un sondage à choix multiples avec boutons et images.","/vote"],
-["event","Événements","Crée et gère des événements avec inscriptions.","/event"],
-["agenda","Agenda","Calendrier des réunions et événements du serveur.","/agenda"],
-["lfg","Recherche de joueurs","Trouve une équipe pour jouer en deux clics.","/lfg"],
-["concours","Giveaways","Lance un giveaway avec lot, durée et tirage au sort.","/concours"],
-["sondage","Sondages interactifs","Crée, ferme et liste des sondages interactifs.","/sondage"]
-]],
-["Protection",[
-["blacklist","Liste noire","Blackliste un membre pour qu’il ne puisse plus rejoindre le serveur.","/blacklist-membre"],
-["interserveur","Réseau inter-serveurs","Relie un salon à un réseau et bloque des membres.","/interserveur"],
-["discon","Niveau de danger (DISCON)","Met en place le panneau DISCON du niveau de danger du serveur.","/discon"]
-]],
-["Économie",[
-["eco","Économie","Argent, gains quotidiens, jeux et classement des fortunes.","/eco"],
-["quests","Quêtes","Quêtes quotidiennes et hebdomadaires avec récompenses.","/quests"]
-]],
-["Outils",[
-["bot-infos","Informations du bot","Affiche les informations de CoreLab.","/bot-infos"],
-["help","Aide","Liste les commandes disponibles selon les modules activés.","/help"],
-["server-stats","Statistiques d’activité","Messages, top membres, salons et heures pour le serveur.","/server-stats"],
-["user-stats","Statistiques d’un membre","Messages, rang, salons, heures et vocal d’un membre.","/user-stats"],
-["annonce","Annonces","Publie une annonce mise en forme dans un salon.","/annonce"],
-["message","Message personnalisé","Envoie un message du bot dans un salon.","/message"],
-["embed","Embeds personnalisés","Crée et gère des embeds réutilisables.","/embed"],
-["backup","Sauvegarde du serveur","Sauvegarde ou restaure la structure du serveur.","/backup"],
-["crypto-panel","Panneau crypto","Configure les wallets crypto et publie le panneau.","/crypto-panel"],
-["premium","Premium","Avantages, abonnements et statut du compte.","/premium"],
-["vote-bot","Voter pour CoreLab","Vote pour CoreLab sur top.gg et Botillon.","/vote-bot"],
-["invite","Inviter CoreLab","Donne le lien d’invitation du bot.","/invite"],
-["rappel","Rappels","Programme des rappels et les liste.","/rappel"],
-["planifier","Messages programmés","Programme un message automatique récurrent.","/planifier"],
-["purge-temp","Purge automatique","Supprime les messages après un délai dans un salon.","/purge-temp"],
-["notification","Notifications (commandes)","Gère YouTube, Twitch, blog et Medal depuis Discord.","/notification"],
-["texte-vocal","Texte en vocal","Convertit un texte en message vocal.","/texte-vocal"]
-]]
-];
-function findFeature(id){var out=null;FEATURES.forEach(function(g){g[1].forEach(function(f){if(f[0]===id)out={cat:g[0],f:f}})});return out}
-function featureView(c,G,id){
-var r=findFeature(id),f=r?r.f:[id,"Fonction","",""],box=h("div",{class:"form"});
-c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:f[1]}));
-c.appendChild(h("p",{class:"lead",text:f[2]||"Fonction du bot CoreLab."}));
-box.appendChild(h("div",{class:"sec",text:"Commande Discord"}));
-var cp=h("button",{class:"btn ghost sm",type:"button",text:"Copier",onclick:function(){
-try{navigator.clipboard.writeText(f[3]).then(function(){toast("Commande copiée ✓")},function(){toast("Copie impossible",true)})}catch(e){toast("Copie impossible",true)}}});
-box.appendChild(h("div",{style:"display:flex;gap:10px;align-items:center;flex-wrap:wrap"},[
-h("code",{style:"font-size:15px;padding:10px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--bg)",text:f[3]||"—"}),cp]));
-box.appendChild(h("p",{class:"h",style:"margin:0",text:"Cette fonction s’utilise directement dans Discord. Les fonctions qui ont un panneau de réglages sont dans les catégories de modules à gauche."}));
-box.appendChild(h("div",{class:"sec",text:"Catégorie"}));
-box.appendChild(h("p",{class:"h",style:"margin:0",text:r?r.cat:"—"}));
-box.appendChild(h("p",{class:"h",style:"margin:0",text:"Serveur : "+G.name}));
-c.appendChild(box)}
-
 var SUIVI=[
 {id:"audit",name:"Journal d’audit",kw:"logs historique audit",svg:'<svg viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>'},
 {id:"transcripts",name:"Transcripts",kw:"tickets archives",svg:'<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>'},
