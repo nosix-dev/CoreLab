@@ -171,6 +171,10 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .jtb{border-top:1px solid var(--ln);padding:4px 0 8px}.jtb .jl{grid-template-columns:130px minmax(0,1fr);padding:7px 0}
 .jtb .jl>span{text-transform:none;letter-spacing:0;font-size:13px;font-weight:600}
 .jf{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--ln)}
+.jat{display:grid;gap:12px}.jai{display:grid;gap:6px}.jan{font-size:12.5px;color:var(--mu)}
+.jimg{display:block;border:1px solid var(--ln);border-radius:12px;background:var(--s2);overflow:hidden;min-height:48px}
+.jimg img{display:block;max-width:100%;max-height:320px;margin:0 auto;object-fit:contain}
+.jimg.off{padding:14px;font-size:13px;color:var(--mu);text-align:center}
 @media(max-width:700px){.jr{grid-template-columns:40px minmax(0,1fr)}.jtm{grid-column:2;text-align:left}.jr .btn{grid-column:2;justify-self:start}.jl{grid-template-columns:1fr;gap:2px}}
 .live2{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mu);cursor:pointer}
 .live2 input{accent-color:var(--ac)}
@@ -688,12 +692,24 @@ function close(){ov.remove();document.removeEventListener("keydown",esc)}
 function esc(ev){if(ev.key==="Escape")close()}
 document.addEventListener("keydown",esc);ov.addEventListener("click",function(ev){if(ev.target===ov)close()});
 var cat=(AUD_CATS.filter(function(k){return k[0]===e.category})[0]||[0,"Serveur"])[1];
-var ch=e.channel?h("span",{class:"jch",text:"# "+e.channel.name}):null;
-var tech=h("details",{class:"jtech"},[h("summary",{},[h("span",{text:"Données techniques"}),h("code",{text:e.code+" · "+String(e.id)})]),
-h("div",{class:"jtb"},[line("Code de l’action",h("code",{text:e.code})),line("Identifiant",h("code",{text:String(e.id)})),line("ID de la cible",e.target&&e.target.id?h("code",{text:e.target.id}):null),line("ID de l’auteur",e.actor&&e.actor.id?h("code",{text:e.actor.id}):null),line("Salon",ch),e.category==="messages"?line("Contenu",e.content?h("span",{class:"jct",text:e.content}):"—"):null,line("Message",e.messageId?h("code",{text:e.messageId}):null)])]);
+function mkch(){return e.channel?h("span",{class:"jch",text:"# "+e.channel.name}):null}
+function sz(n){return n>1048576?(n/1048576).toFixed(1)+" Mo":n>1024?Math.round(n/1024)+" Ko":(n||0)+" o"}
+function imgNode(at){var wrap=h("a",{class:"jimg",target:"_blank",rel:"noopener noreferrer"}),im=h("img",{alt:at.name,loading:"lazy"});wrap.appendChild(im);
+function fallback(){if(at.url&&/^https:\/\//.test(at.url)&&!im.dataset.f){im.dataset.f="1";im.src=at.url;wrap.href=at.url}else{wrap.className="jimg off";wrap.removeAttribute("href");wrap.textContent="Image indisponible · "+at.name}}
+im.addEventListener("error",fallback);
+if(at.media){fetch(API+"/api/guilds/"+G.id+"/audit-media/"+encodeURIComponent(at.media),{headers:{Authorization:"Bearer "+token}}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(bl){var u=URL.createObjectURL(bl);im.src=u;wrap.href=u}).catch(fallback)}else fallback();
+return wrap}
+var isMsg=e.category==="messages",ats=e.attachments||[];
+var attBox=ats.length?h("div",{class:"jat"},ats.map(function(at){var img=(at.type||"").indexOf("image/")===0;return h("div",{class:"jai"},[h("span",{class:"jan",text:at.name+" · "+(at.type||"fichier")+" · "+sz(at.size)}),img?imgNode(at):null])})):null;
+var sent=e.sentAt?new Date(e.sentAt).toLocaleString("fr-FR",{timeZone:TZ,day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}):null;
+var tech=h("details",{class:"jtech",open:isMsg},[h("summary",{},[h("span",{text:"Données techniques"}),h("code",{text:e.code+" · "+String(e.id)})]),
+h("div",{class:"jtb"},[line("Code de l’action",h("code",{text:e.code})),line("Identifiant",h("code",{text:String(e.id)})),line("ID de la cible",e.target&&e.target.id?h("code",{text:e.target.id}):null),line("ID de l’auteur",e.actor&&e.actor.id?h("code",{text:e.actor.id}):null),line("Salon",mkch()),line("ID du salon",e.channel&&e.channel.id?h("code",{text:e.channel.id}):null),
+isMsg?line("Contenu",e.content?h("span",{class:"jct",text:e.content}):(ats.length?"(aucun texte)":"Non conservé (message hors cache du bot)")):null,
+line("Message",e.messageId?h("code",{text:e.messageId}):null),line("Envoyé le",sent),line("Réponse à",e.replyTo?h("code",{text:e.replyTo}):null),
+ats.length?line("Pièces jointes ("+ats.length+")",attBox):null])]);
 var box=h("div",{class:"jmd"},[
 h("div",{class:"jh"},[h("div",{class:"ji",style:"color:"+st[0]+";background:"+st[0]+"22;border-color:"+st[0]+"44",text:st[1]}),h("div",{class:"jhx"},[h("b",{text:e.title}),h("span",{text:e.source+" · "+cat})]),h("span",{class:"jb"+(e.source==="Bot"?" bot":""),text:e.source}),h("button",{class:"jx",type:"button","aria-label":"Fermer",text:"✕",onclick:close})]),
-h("div",{class:"jbd"},[line("Description",h("div",{},segs(e.description))),line("Auteur",e.actor&&e.actor.name?e.actor.name:"—"),line("Cible",e.target&&e.target.name?e.target.name:null),line("Salon",ch),line("Contenu",e.content?h("span",{class:"jct",text:e.content}):null),line("Raison",e.reason||null),line("Détails",e.details||null),line("Date",new Date(e.ts).toLocaleString("fr-FR",{timeZone:TZ,weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}).replace(/^./,function(m){return m.toUpperCase()})+" · "+rel(e.ts)),tech]),
+h("div",{class:"jbd"},[line("Description",h("div",{},segs(e.description))),line("Auteur",e.actor&&e.actor.name?e.actor.name:"—"),line("Cible",e.target&&e.target.name?e.target.name:null),line("Salon",mkch()),line("Contenu",e.content?h("span",{class:"jct",text:e.content}):null),line("Raison",e.reason||null),line("Détails",e.details||null),line("Date",new Date(e.ts).toLocaleString("fr-FR",{timeZone:TZ,weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}).replace(/^./,function(m){return m.toUpperCase()})+" · "+rel(e.ts)),tech]),
 h("div",{class:"jf"},[h("button",{class:"btn ghost sm",type:"button",text:"Copier le lien",onclick:function(){var u=location.href.split("#")[0]+"#audit="+e.id;try{navigator.clipboard.writeText(u).then(function(){toast("Lien copié ✓")},function(){toast("Copie impossible",true)})}catch(x){toast("Copie impossible",true)}}}),h("button",{class:"btn sm",type:"button",text:"Fermer",onclick:close})])]);
 ov.appendChild(box);document.body.appendChild(ov)}
 function addEntries(es){var gk="",grp=null,last=list.lastElementChild;
