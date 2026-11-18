@@ -188,6 +188,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;margin:0 0 10px;font-size:13.5px}
 .tr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tr em{font-style:normal;color:var(--mu);font-variant-numeric:tabular-nums}
 .tr div{grid-column:1/-1;height:5px;border-radius:99px;background:var(--s2);overflow:hidden}.tr div i{display:block;height:100%;border-radius:99px;background:var(--ac)}
+.arow{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;margin:0 0 10px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}.arow .ati{flex:1;min-width:0}.arow .ati b{display:block;margin-bottom:4px;overflow-wrap:anywhere}.arow .ad{display:block;color:var(--mu);font-size:13px;overflow-wrap:anywhere;margin-top:2px}
 .empty{padding:26px;border:1px dashed var(--ln);border-radius:var(--r);color:var(--mu);text-align:center;font-size:14.5px}
 @media(max-width:900px){
 .pvsplit{grid-template-columns:1fr;gap:16px}
@@ -693,9 +694,9 @@ if(a.extension)det.push("Prolongation demandée jusqu’au "+dt(a.extension.end)
 var btns=[];
 if(a.status==="pending"){btns.push(h("button",{class:"btn sm",type:"button",text:"Approuver",onclick:function(){act(a,"/approve","Absence approuvée ✓")}}));btns.push(h("button",{class:"btn ghost sm",type:"button",text:"Refuser",onclick:function(){if(confirm("Refuser cette demande ?"))act(a,"/refuse","Demande refusée")}}))}
 if(a.status!=="cancelled"&&a.status!=="refused")btns.push(h("button",{class:"btn ghost sm",type:"button",text:a.status==="pending"?"Annuler":"Supprimer",onclick:function(){if(confirm("Annuler cette absence ?"))act(a,"","Absence annulée ✓","DELETE")}}));
-box.appendChild(h("div",{class:"tr",style:(off?"opacity:.6;":"")+"margin-bottom:10px;align-items:flex-start"},[
+box.appendChild(h("div",{class:"arow",style:(off?"opacity:.6":"")},[
 a.avatar?h("img",{src:a.avatar,alt:"",width:36,height:36,style:"border-radius:50%;flex:none"}):null,
-h("div",{class:"ti"},[h("b",{},[a.member||"?",h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"d",style:"display:block",text:t})}))),
+h("div",{class:"ati"},[h("b",{},[a.member||"?",h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"ad",text:t})}))),
 h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]))})}
 function load(quiet){if(!quiet){box.innerHTML="";box.appendChild(h("p",{class:"muted",text:"Chargement…"}))}
 api("/api/guilds/"+G.id+"/absences").then(function(d){cache=d.absences||[];draw()})
