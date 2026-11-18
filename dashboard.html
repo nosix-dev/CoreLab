@@ -185,8 +185,9 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .live2{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mu);cursor:pointer}
 .live2 input{accent-color:var(--ac)}
 .trl{display:grid;gap:8px}
-.tr{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}
-.tr .ti{flex:1;min-width:0}.tr b{display:block;overflow-wrap:anywhere}.tr span.d{color:var(--mu);font-size:13px}
+.trx{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}
+.trx .btn{flex:none;width:auto}
+.trx .trxi{flex:1;min-width:0}.trx b{display:block;overflow-wrap:anywhere}.trx span.d{display:block;color:var(--mu);font-size:13px;white-space:normal}
 .abs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) auto;gap:10px;align-items:end;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);margin:0 0 18px}
 .abs input,.abs select{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg)}
 .abs .mini span{display:block;font-size:12px;color:var(--mu);margin-bottom:4px}
@@ -751,7 +752,7 @@ var box=h("div",{class:"trl"});c.appendChild(box);box.appendChild(h("p",{class:"
 api("/api/guilds/"+G.id+"/transcripts").then(function(d){box.innerHTML="";var ts=d.transcripts||[];
 if(!ts.length){box.appendChild(h("div",{class:"empty",text:"Aucun transcript pour le moment. Ils apparaîtront ici à la fermeture des tickets."}));return}
 ts.forEach(function(t){var safe=t.url&&/^https:\/\//.test(t.url);
-box.appendChild(h("div",{class:"tr"},[h("div",{class:"ti"},[h("b",{text:t.name||("Ticket "+(t.id||""))}),h("span",{class:"d",text:[t.user?"Ouvert par "+t.user:"",t.closedBy?"fermé par "+t.closedBy:"",t.ts?fmtDT(t.ts):"",t.messages!=null?t.messages+" messages":""].filter(Boolean).join(" · ")})]),
+box.appendChild(h("div",{class:"trx"},[h("div",{class:"trxi"},[h("b",{text:t.name||("Ticket "+(t.id||""))}),h("span",{class:"d",text:[t.user?"Ouvert par "+t.user:"",t.closedBy?"fermé par "+t.closedBy:"",t.ts?fmtDT(t.ts):"",t.messages!=null?t.messages+" messages":""].filter(Boolean).join(" · ")})]),
 safe?h("a",{class:"btn ghost sm",href:t.url,target:"_blank",rel:"noopener noreferrer",text:"Ouvrir"}):null]))})})
 .catch(function(e){if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les transcripts");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les transcripts."}))}})}
 
