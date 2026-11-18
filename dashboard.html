@@ -124,6 +124,46 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 }
 
 /* ---- Suivi : journal d'audit, transcripts, absences du staff ---- */
+
+/* ---- Calendrier des absences (mois / semaine / jour) ---- */
+.cal-tabs{display:flex;gap:8px;margin:0 0 14px}
+.cal-tb{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.cal-nav{display:flex;gap:6px}
+.cal-t{font-size:20px;flex:1;min-width:160px}
+.cal-vs{display:inline-flex;border:1px solid var(--ln);border-radius:999px;overflow:hidden}
+.cal-vs button{border:0;background:var(--s1);color:var(--mu);padding:8px 16px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
+.cal-vs button:hover{color:var(--tx)}
+.cal-vs button.on{background:var(--ac);color:#fff}
+.cal-lgs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.cal-lg{--c:#8a8696;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ln);background:var(--s1);color:var(--tx);padding:5px 12px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s}
+.cal-lg i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.cal-lg em{font-style:normal;color:var(--mu);font-weight:500}
+.cal-lg.off{opacity:.45;text-decoration:line-through}
+.cal-sc{overflow-x:auto;border:1px solid var(--ln);border-radius:14px;background:var(--s1)}
+.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));min-width:680px}
+.cal-h{padding:9px 10px;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--ln);border-right:1px solid var(--ln)}
+.cal-h.today{color:var(--ac2)}
+.cal-c{min-height:104px;padding:6px;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);display:flex;flex-direction:column;gap:4px;min-width:0}
+.cal-c.wk{min-height:260px}
+.cal-g>*:nth-child(7n){border-right:0}
+.cal-c.out{background:rgba(0,0,0,.2)}
+.cal-c.out .cal-n{opacity:.45}
+.cal-c.today{box-shadow:inset 0 0 0 2px var(--ac)}
+.cal-n{align-self:flex-start;border:0;background:none;color:var(--tx);font:inherit;font-size:13px;font-weight:700;min-width:26px;height:26px;border-radius:13px;cursor:pointer}
+.cal-n:hover{background:var(--s2)}
+.cal-c.today .cal-n{background:var(--ac);color:#fff}
+.cv{--c:#8a8696;display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:0;border-left:3px solid var(--c);background:var(--s2);color:var(--tx);padding:3px 7px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;min-width:0}
+.cv:hover{filter:brightness(1.25)}
+.cv span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cv em{font-style:normal;color:var(--mu);font-size:11px;margin-left:auto;white-space:nowrap;padding-left:4px}
+.cv.pending{border-left-style:dashed}
+.cv.active{box-shadow:inset 0 0 0 1px var(--c)}
+.cv.past,.cv.returned{opacity:.7}
+.cv.cancelled,.cv.refused{opacity:.55;text-decoration:line-through}
+.cal-more{border:0;background:none;color:var(--mu);font:inherit;font-size:11.5px;font-weight:600;text-align:left;padding:1px 4px;cursor:pointer}
+.cal-more:hover{color:var(--tx)}
+.cal-dh{display:flex;align-items:center;gap:10px;margin:0 0 12px;color:var(--mu);font-size:13.5px}
+@media(max-width:700px){.cal-c{min-height:84px}.cal-t{font-size:17px}.cal-vs button{padding:7px 12px}}
 .side nav a .ic{display:inline-flex;align-items:center;gap:10px}
 .side nav a .ic svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .side nav a.sv.on{background:rgba(232,81,13,.14);color:var(--ac2);box-shadow:inset 0 0 0 1px rgba(232,81,13,.45)}
@@ -772,16 +812,20 @@ c.appendChild(h("div",{class:"abs"},[h("label",{class:"mini"},[h("span",{text:"M
 c.appendChild(box);
 var ST={pending:["En attente",""],upcoming:["À venir","on"],active:["En cours","on"],past:["Terminée",""],returned:["Retour signalé",""],refused:["Refusée",""],cancelled:["Annulée",""]};
 var FL={all:"Toutes",pending:"En attente",ok:"Approuvées",done:"Terminées / annulées"},flt="all",cache=[];
+var tab="cal",view="month",cur=pk(Date.now()),hid={};
+var CS={active:["En cours","#3ba55d"],upcoming:["À venir","#5865f2"],pending:["En attente","#e0a526"],past:["Terminée","#6b6878"],returned:["Retour signalé","#1fb6c9"],cancelled:["Annulée","#8a8696"],refused:["Refusée","#ed4245"]};
 function inF(a){if(flt==="all")return true;if(flt==="pending")return a.status==="pending";if(flt==="ok")return a.status==="upcoming"||a.status==="active";return a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled"}
 function dt(ts){try{return new Date(ts).toLocaleString("fr-FR",{timeZone:"Europe/Paris",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
 function act(a,path,ok,method){return api("/api/guilds/"+G.id+"/absences/"+encodeURIComponent(a.id)+(path||""),{method:method||"POST"}).then(function(){toast(ok);load(true)}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})}
 var bar=h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px"});
 c.insertBefore(bar,box);
-function draw(){bar.innerHTML="";Object.keys(FL).forEach(function(k){var n=cache.filter(function(a){var o=flt;flt=k;var r=inF(a);flt=o;return r}).length;
+var tabsEl=h("div",{class:"cal-tabs"});c.insertBefore(tabsEl,bar);
+function draw(){tabsDraw();if(tab==="cal"){bar.style.display="none";drawCal();return}bar.style.display="flex";bar.innerHTML="";Object.keys(FL).forEach(function(k){var n=cache.filter(function(a){var o=flt;flt=k;var r=inF(a);flt=o;return r}).length;
 bar.appendChild(h("button",{class:"btn sm"+(k===flt?"":" ghost"),type:"button",text:FL[k]+" · "+n,onclick:function(){flt=k;draw()}}))});
 box.innerHTML="";var as=cache.filter(inF);
 if(!as.length){box.appendChild(h("div",{class:"empty",text:"Aucune absence dans cette vue."}));return}
-as.forEach(function(a){var st=ST[a.status]||[a.status,""],off=a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled";
+as.forEach(function(a){box.appendChild(rowOf(a))})}
+function rowOf(a){var st=ST[a.status]||[a.status,""],off=a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled";
 var det=[];det.push(dt(a.start)+" → "+dt(a.end)+" · "+a.duration);if(a.reason)det.push("Motif : "+a.reason);if(a.info)det.push("Infos : "+a.info);
 det.push("Soumise le "+dt(a.createdAt)+(a.source==="discord"?" via /absence":" depuis le dashboard"));
 if(a.decidedBy&&(a.status!=="pending"))det.push("Traitée par "+a.decidedBy);
@@ -789,10 +833,50 @@ if(a.extension)det.push("Prolongation demandée jusqu’au "+dt(a.extension.end)
 var btns=[];
 if(a.status==="pending"){btns.push(h("button",{class:"btn sm",type:"button",text:"Approuver",onclick:function(){act(a,"/approve","Absence approuvée ✓")}}));btns.push(h("button",{class:"btn ghost sm",type:"button",text:"Refuser",onclick:function(){if(confirm("Refuser cette demande ?"))act(a,"/refuse","Demande refusée")}}))}
 if(a.status!=="cancelled"&&a.status!=="refused")btns.push(h("button",{class:"btn ghost sm",type:"button",text:a.status==="pending"?"Annuler":"Supprimer",onclick:function(){if(confirm("Annuler cette absence ?"))act(a,"","Absence annulée ✓","DELETE")}}));
-box.appendChild(h("div",{class:"arow",style:(off?"opacity:.6":"")},[
+return h("div",{class:"arow",style:(off?"opacity:.6":"")},[
 a.avatar?h("img",{src:a.avatar,alt:"",width:36,height:36,style:"border-radius:50%;flex:none"}):null,
 h("div",{class:"ati"},[h("b",{},[a.member||"?",h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"ad",text:t})}))),
-h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]))})}
+h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)])}
+function pk(ts){var p={};new Intl.DateTimeFormat("en-US",{timeZone:"Europe/Paris",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(ts)).forEach(function(x){p[x.type]=x.value});return p.year+"-"+p.month+"-"+p.day}
+function kd(k){return new Date(k+"T12:00:00Z")}
+function ka(k,n){var d=kd(k);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function wd(k){return (kd(k).getUTCDay()+6)%7}
+function mon(k){return ka(k,-wd(k))}
+function fd(k,o){o.timeZone="UTC";return kd(k).toLocaleDateString("fr-FR",o)}
+function cap(t){return t.charAt(0).toUpperCase()+t.slice(1)}
+function hm(ts){try{return new Date(ts).toLocaleTimeString("fr-FR",{timeZone:"Europe/Paris",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
+function span(a){var es=new Date(a.start).getTime(),ee=new Date(a.end).getTime();if(isNaN(es))return["9999-12-31","9999-12-31"];if(!(ee>es))ee=es+1;return[pk(es),pk(ee-1)]}
+function evOn(k){return cache.filter(function(a){if(hid[a.status])return false;var r=span(a);return r[0]<=k&&k<=r[1]}).sort(function(x,y){return new Date(x.start)-new Date(y.start)})}
+function go(k){view="day";cur=k;draw()}
+function shift(n){if(n===0){cur=pk(Date.now());return}
+if(view==="month"){var d=kd(cur);d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+n);cur=d.toISOString().slice(0,10)}else cur=ka(cur,n*(view==="week"?7:1))}
+function ctitle(){if(view==="month")return cap(fd(cur,{month:"long",year:"numeric"}));
+if(view==="week"){var m=mon(cur);return fd(m,{day:"numeric",month:"short"})+" – "+fd(ka(m,6),{day:"numeric",month:"short",year:"numeric"})}
+return cap(fd(cur,{weekday:"long",day:"numeric",month:"long",year:"numeric"}))}
+function tabsDraw(){tabsEl.innerHTML="";[["cal","Calendrier"],["list","Liste"]].forEach(function(t){tabsEl.appendChild(h("button",{class:"btn sm"+(tab===t[0]?"":" ghost"),type:"button",text:t[1],onclick:function(){tab=t[0];draw()}}))})}
+function chip(a,k){var c=(CS[a.status]||["",""])[1]||"#8a8696",r=span(a),t="";
+if(view==="week"){if(k===r[0]&&k===r[1])t=hm(a.start)+"–"+hm(a.end);else if(k===r[0])t="dès "+hm(a.start);else if(k===r[1])t="→ "+hm(a.end)}
+var tip=(a.member||"?")+" · "+(CS[a.status]?CS[a.status][0]:a.status)+"\n"+dt(a.start)+" → "+dt(a.end)+(a.reason?"\nMotif : "+a.reason:"");
+return h("button",{class:"cv "+a.status,type:"button",style:"--c:"+c,title:tip,onclick:function(){go(k)}},[h("span",{text:a.member||"?"}),t?h("em",{text:t}):null])}
+function drawCal(){box.innerHTML="";var today=pk(Date.now()),cnt={};cache.forEach(function(a){cnt[a.status]=(cnt[a.status]||0)+1});
+function nb(t,n){return h("button",{class:"btn ghost sm",type:"button",text:t,onclick:function(){shift(n);draw()}})}
+box.appendChild(h("div",{class:"cal-tb"},[h("div",{class:"cal-nav"},[nb("‹",-1),nb("Aujourd’hui",0),nb("›",1)]),h("b",{class:"cal-t",text:ctitle()}),
+h("div",{class:"cal-vs"},[["month","Mois"],["week","Semaine"],["day","Jour"]].map(function(v){return h("button",{type:"button",class:view===v[0]?"on":"",text:v[1],onclick:function(){view=v[0];draw()}})}))]));
+box.appendChild(h("div",{class:"cal-lgs"},Object.keys(CS).map(function(k){return h("button",{type:"button",class:"cal-lg"+(hid[k]?" off":""),style:"--c:"+CS[k][1],title:"Afficher / masquer",onclick:function(){hid[k]=!hid[k];draw()}},[h("i"),CS[k][0]+" ",h("em",{text:String(cnt[k]||0)})])})));
+if(view==="day"){var es=evOn(cur);
+box.appendChild(h("div",{class:"cal-dh",text:es.length?es.length+" absence"+(es.length>1?"s":"")+" ce jour-là"+(cur===today?" (aujourd’hui)":""):""}));
+if(!es.length)box.appendChild(h("div",{class:"empty",text:"Aucune absence ce jour-là."}));
+es.forEach(function(a){box.appendChild(rowOf(a))});return}
+var g=h("div",{class:"cal-g"}),first,n;
+if(view==="month"){first=mon(cur.slice(0,8)+"01");var dim=new Date(Date.UTC(+cur.slice(0,4),+cur.slice(5,7),0)).getUTCDate();n=Math.ceil((wd(cur.slice(0,8)+"01")+dim)/7)*7}
+else{first=mon(cur);n=7}
+for(var i=0;i<7;i++){var hk=ka(first,i);g.appendChild(h("div",{class:"cal-h"+(view==="week"&&hk===today?" today":""),text:cap(fd(hk,view==="week"?{weekday:"short",day:"numeric"}:{weekday:"short"}))}))}
+for(var j=0;j<n;j++){(function(k){var es=evOn(k),out=view==="month"&&k.slice(0,7)!==cur.slice(0,7),mx=view==="month"?3:50,kids=[];
+kids.push(h("button",{class:"cal-n",type:"button",text:String(+k.slice(8)),title:"Voir le jour",onclick:function(){go(k)}}));
+es.slice(0,mx).forEach(function(a){kids.push(chip(a,k))});
+if(es.length>mx)kids.push(h("button",{class:"cal-more",type:"button",text:"+"+(es.length-mx)+" autre"+(es.length-mx>1?"s":""),onclick:function(){go(k)}}));
+g.appendChild(h("div",{class:"cal-c"+(view==="week"?" wk":"")+(out?" out":"")+(k===today?" today":"")},kids))})(ka(first,j))}
+box.appendChild(h("div",{class:"cal-sc"},[g]))}
 function load(quiet){if(!quiet){box.innerHTML="";box.appendChild(h("p",{class:"muted",text:"Chargement…"}))}
 api("/api/guilds/"+G.id+"/absences").then(function(d){cache=d.absences||[];draw()})
 .catch(function(e){if(quiet)return;if(e&&e.message==="auth")return;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,"Les absences du staff");else{box.innerHTML="";box.appendChild(h("p",{class:"err",text:"Impossible de charger les absences."}))}})}
