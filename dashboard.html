@@ -293,6 +293,17 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .rules-message p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
 .rules-accept{display:inline-flex;margin-top:12px;padding:7px 11px;border-radius:6px;background:#248046;color:#fff;font-size:12px;font-weight:600}
 .rules-status{display:block;margin-top:12px}
+.autoresponses-list{display:grid;gap:12px;margin-top:16px}
+.autoresponse-item{display:grid;gap:12px;padding:16px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
+.autoresponse-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.autoresponse-head b{overflow-wrap:anywhere}
+.autoresponse-fields{display:grid;grid-template-columns:minmax(160px,.8fr) minmax(220px,1.4fr) minmax(140px,.6fr);gap:10px}
+.autoresponse-fields input,.autoresponse-fields textarea,.autoresponse-fields select{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--bg)}
+.autoresponse-fields textarea{min-height:82px;resize:vertical}
+.autoresponse-extra{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.autoresponse-extra select{width:100%;min-height:92px;padding:8px;border:1px solid var(--ln);border-radius:10px;background:var(--bg)}
+.autoresponse-actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:900px){.autoresponse-fields,.autoresponse-extra{grid-template-columns:1fr}}
 .ticket-create-modal{width:min(1500px,100%);max-height:calc(100vh - 32px);overflow:auto;border:1px solid var(--ln);border-radius:18px;background:var(--bg);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .ticket-create-head{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--ln)}
 .ticket-create-head>div{flex:1;min-width:0}.ticket-create-head b{display:block;font-size:17px}.ticket-create-head span{font-size:13px;color:var(--mu)}
@@ -516,7 +527,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -1029,6 +1040,89 @@ busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=pan
 }
 api(base).then(function(data){panels=data.panels||[];selected=null;listStatus.textContent="";draw()})
 .catch(function(e){if(e&&e.message==="auth")return;listStatus.className="err";listStatus.textContent=ticketError(e)})
+}
+
+function autoresponsesView(c,G){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"💬 Réponses automatiques"}));
+c.appendChild(h("p",{class:"lead",text:"Choisis les mots ou phrases qui déclenchent une réponse, puis limite éventuellement sa réponse à certains salons ou rôles."}));
+var base="/api/guilds/"+G.id+"/autoresponses",enabled=false,busy=false,list=h("div",{class:"autoresponses-list"});
+var add=h("button",{class:"btn",type:"button",text:"＋ Ajouter une réponse",disabled:busy});
+var toggle=h("button",{class:"btn ghost sm",type:"button",text:"Activer",disabled:busy});
+toggle.addEventListener("click",function(){
+busy=true;toggle.disabled=true;
+api(base+"/toggle",{method:"POST"}).then(function(data){
+enabled=data.enabled;busy=false;toggle.disabled=false;
+toggle.textContent=enabled?"Désactiver":"Activer";
+var statePill=c.querySelector(".pill");if(statePill){statePill.textContent=enabled?"SYSTÈME ACTIVÉ":"SYSTÈME DÉSACTIVÉ";statePill.className="pill"+(enabled?" on":"")}
+toast(enabled?"Réponses automatiques activées ✓":"Réponses automatiques désactivées ✓");
+}).catch(function(e){busy=false;toggle.disabled=false;if(e&&e.message==="auth")return;toast(errText(e),true)})
+});
+c.appendChild(h("div",{style:"display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"},[
+h("span",{class:"pill"+(enabled?" on":""),text:enabled?"SYSTÈME ACTIVÉ":"SYSTÈME DÉSACTIVÉ"}),
+h("div",{style:"display:flex;gap:8px"},[toggle,add])
+]));
+c.appendChild(list);
+
+function selectMany(label,items,selected){
+var select=h("select",{multiple:true,size:Math.max(3,Math.min(6,items.length))}),sel=selected||[];
+items.forEach(function(item){select.appendChild(opt(item.id,item.name,{selected:sel.indexOf(item.id)>-1}))});
+return h("label",{class:"ticket-field"},[h("span",{text:label}),select,h("small",{class:"h",text:"Laisser vide = aucune restriction."})]);
+}
+function drawItem(item){
+var keyword=h("input",{type:"text",maxlength:"100",placeholder:"Mot-clé ou phrase"}),response=h("textarea",{maxlength:"1000",placeholder:"Réponse envoyée par CoreLab"});
+var mode=h("select",{},[h("option",{value:"contains",text:"Contient le mot-clé"}),h("option",{value:"exact",text:"Phrase exacte uniquement"})]);
+var enabledBox=h("input",{type:"checkbox"}),index=item.index;
+keyword.value=item.keyword||"";response.value=item.response||"";mode.value=item.mode||"contains";enabledBox.checked=item.enabled!==false;
+var meta=META[G.id]||{},channelSelect=selectMany("Salons autorisés",(meta.channels||[]).map(function(x){return{id:x.id,name:"# "+x.name}}),item.channelIds||[]);
+var roleSelect=selectMany("Rôles autorisés",(meta.roles||[]).filter(function(r){return r.ok}).map(function(r){return{id:r.id,name:r.name}}),item.roleIds||[]);
+var channelControl=channelSelect.querySelector("select"),roleControl=roleSelect.querySelector("select");
+var save=h("button",{class:"btn sm",type:"button",text:"Enregistrer"}),remove=h("button",{class:"btn ghost sm",type:"button",text:"Supprimer"});
+save.addEventListener("click",function(){
+var body={keyword:keyword.value,response:response.value,mode:mode.value,enabled:enabledBox.checked,
+channelIds:[].filter.call(channelControl.options,function(o){return o.selected}).map(function(o){return o.value}),
+roleIds:[].filter.call(roleControl.options,function(o){return o.selected}).map(function(o){return o.value})};
+busy=true;save.disabled=true;save.textContent="Enregistrement…";
+api(base+"/"+index,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+.then(function(){toast("Réponse automatique enregistrée ✓");load()})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);busy=false;save.disabled=false;save.textContent="Enregistrer"})
+});
+remove.addEventListener("click",function(){
+if(!confirm("Supprimer cette réponse automatique ?"))return;
+busy=true;api(base+"/"+index,{method:"DELETE"}).then(function(){toast("Réponse supprimée ✓");load()}).catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);busy=false})
+});
+var card=h("div",{class:"autoresponse-item"},[
+h("div",{class:"autoresponse-head"},[
+h("b",{text:"Réponse "+(index+1)}),
+h("label",{class:"ticket-check"},[enabledBox,h("span",{text:"Active"})])
+]),
+h("div",{class:"autoresponse-fields"},[
+h("label",{class:"ticket-field"},[h("span",{text:"Mot-clé / déclencheur"}),keyword]),
+h("label",{class:"ticket-field"},[h("span",{text:"Réponse envoyée"}),response]),
+h("label",{class:"ticket-field"},[h("span",{text:"Correspondance"}),mode])
+]),
+h("div",{class:"autoresponse-extra"},[channelSelect,roleSelect,h("div",{class:"autoresponse-actions"},[save,remove])])
+]);
+return card
+}
+function load(){
+busy=true;api(base).then(function(data){
+enabled=data.enabled!==false;busy=false;
+var statePill=c.querySelector(".pill");if(statePill){statePill.textContent=enabled?"SYSTÈME ACTIVÉ":"SYSTÈME DÉSACTIVÉ";statePill.className="pill"+(enabled?" on":"")}
+toggle.textContent=enabled?"Désactiver":"Activer";
+list.innerHTML="";
+if(!(data.responses||[]).length)list.appendChild(h("div",{class:"empty",text:"Aucune réponse automatique. Ajoute un mot-clé et la réponse que CoreLab devra envoyer."}));
+(data.responses||[]).forEach(function(item){list.appendChild(drawItem(item))});
+}).catch(function(e){busy=false;if(e&&e.message==="auth")return;list.innerHTML="";list.appendChild(h("p",{class:"err",text:"Impossible de charger les réponses automatiques."}))})
+}
+add.addEventListener("click",function(){
+if(busy)return;
+busy=true;add.disabled=true;
+api(base,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({keyword:"nouveau mot-cle",response:"Écris ici la réponse automatique.",mode:"contains",enabled:true,channelIds:[],roleIds:[]})})
+.then(function(){toast("Réponse ajoutée ✓");busy=false;add.disabled=false;load()})
+.catch(function(e){busy=false;add.disabled=false;if(e&&e.message==="auth")return;toast(errText(e),true)})
+});
+load();
 }
 
 function rulesView(c,G){
