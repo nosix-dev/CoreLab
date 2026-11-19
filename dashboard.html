@@ -315,6 +315,26 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .ai-limit-info{display:grid;gap:7px;padding:16px;margin:0 0 18px;border:1px solid rgba(232,81,13,.42);border-radius:14px;background:rgba(232,81,13,.08)}
 .ai-limit-info b{color:var(--tx);font-size:15px}
 .ai-limit-info span{color:var(--mu);font-size:13.5px}
+.serverstats-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:18px;align-items:start}
+.serverstats-options,.serverstats-preview{padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
+.serverstats-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.serverstats-type{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--bg);cursor:pointer}
+.serverstats-type input{accent-color:var(--ac)}
+.serverstats-preview{position:sticky;top:calc(var(--nav) + 18px)}
+.serverstats-preview-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--ln);font-size:13.5px}
+.serverstats-preview-row:last-child{border-bottom:0}
+.captcha-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,390px);gap:18px;align-items:start}
+.captcha-preview{position:sticky;top:calc(var(--nav) + 18px);padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
+.captcha-card{margin-top:12px;padding:16px;border:1px solid #3b3942;border-left:4px solid #3ba55d;border-radius:8px;background:#313338;color:#dbdee1}
+.captcha-card.off{border-left-color:#ed4245}
+.captcha-card h3{margin:0 0 8px;color:#fff;font-size:16px}
+.captcha-card p{margin:0 0 12px;font-size:13px}
+.captcha-code{display:inline-block;padding:10px 16px;border-radius:8px;background:#202225;color:#fff;font:700 18px var(--mono);letter-spacing:5px}
+.captcha-fields{display:grid;gap:7px;margin-top:12px;font-size:12.5px;color:#b5bac1}
+.captcha-fields b{color:#fff}
+@media(max-width:900px){.captcha-layout{grid-template-columns:1fr}.captcha-preview{position:static}}
+@media(max-width:900px){.serverstats-layout{grid-template-columns:1fr}.serverstats-preview{position:static}}
+@media(max-width:600px){.serverstats-types{grid-template-columns:1fr}}
 @media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
 @media(max-width:900px){.rules-editor{grid-template-columns:1fr}.rules-preview{position:static}}
 @media(max-width:720px){.ticket-editor{grid-template-columns:1fr}.ticket-steps{position:static;display:flex;overflow:auto}.ticket-steps button{white-space:nowrap}.ticket-preview{grid-column:auto}.ticket-reason,.ticket-question{grid-template-columns:1fr}.ticket-panels{flex-wrap:nowrap;overflow:auto}}
@@ -530,7 +550,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="serverstats")serverstatsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -1045,6 +1065,68 @@ api(base).then(function(data){panels=data.panels||[];selected=null;listStatus.te
 .catch(function(e){if(e&&e.message==="auth")return;listStatus.className="err";listStatus.textContent=ticketError(e)})
 }
 
+function serverstatsView(c,G){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"📊 Statistiques du serveur"}));
+c.appendChild(h("p",{class:"lead",text:"Crée une catégorie et choisis les salons vocaux verrouillés qui affichent les statistiques du serveur."}));
+var base="/api/guilds/"+G.id+"/serverstats",busy=false,types=[],selected=new Set();
+var category=h("select"),typesBox=h("div",{class:"serverstats-types"}),preview=h("div",{class:"serverstats-preview"});
+var save=h("button",{class:"btn",type:"button",text:"Créer / appliquer les compteurs"});
+var status=h("span",{class:"h"});
+category.appendChild(opt("__create","＋ Créer automatiquement « 📊 CoreLabStats »"));
+category.appendChild(opt("","— Désactiver tous les compteurs"));
+(META[G.id]&&META[G.id].categories||[]).forEach(function(x){category.appendChild(opt(x.id,x.name))});
+function drawPreview(){
+preview.innerHTML="";
+preview.appendChild(h("b",{text:"Compteurs sélectionnés"}));
+if(!selected.size){preview.appendChild(h("p",{class:"h",text:"Aucun compteur sélectionné."}))}
+types.filter(function(t){return selected.has(t.type)}).forEach(function(t){
+preview.appendChild(h("div",{class:"serverstats-preview-row"},[h("span",{text:t.emoji+" "+t.label}),h("b",{text:String(t.value)})]));
+});
+}
+function drawTypes(){
+typesBox.innerHTML="";
+types.forEach(function(t){
+var cb=h("input",{type:"checkbox",checked:selected.has(t.type)});
+cb.addEventListener("change",function(){if(cb.checked)selected.add(t.type);else selected.delete(t.type);drawPreview()});
+typesBox.appendChild(h("label",{class:"serverstats-type"},[cb,h("span",{text:t.emoji+" "+t.label})]));
+});
+drawPreview();
+}
+category.addEventListener("change",drawPreview);
+save.addEventListener("click",function(){
+if(busy)return;
+if(selected.size&&!category.value){toast("Choisis une catégorie ou active la création automatique.",true);return}
+busy=true;save.disabled=true;save.textContent="Application…";
+api(base,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+categoryId:category.value==="__create"?"":category.value,
+createCategory:category.value==="__create",
+types:[].slice.call(selected)
+})}).then(function(data){
+busy=false;save.disabled=false;save.textContent="Créer / appliquer les compteurs";
+status.textContent=data.enabled?data.counters.length+" compteur(s) actif(s).":"Tous les compteurs ont été désactivés.";
+toast(data.enabled?"Statistiques appliquées ✓":"Statistiques désactivées ✓");
+load();
+}).catch(function(e){busy=false;save.disabled=false;save.textContent="Créer / appliquer les compteurs";if(e&&e.message==="auth")return;toast(errText(e),true)})
+});
+function load(){
+api(base).then(function(data){
+types=data.types||[];selected=new Set((data.counters||[]).map(function(x){return x.type}));
+if(data.categoryId){category.value=data.categoryId;if(!category.querySelector('option[value="'+data.categoryId+'"]'))category.appendChild(opt(data.categoryId,"Catégorie actuelle"))}
+else if(!category.value)category.value="__create";
+drawTypes();status.textContent=data.enabled?"Compteurs actuellement actifs.":"La fonctionnalité est désactivée.";
+}).catch(function(e){if(e&&e.message==="auth")return;status.className="err";status.textContent="Impossible de charger les compteurs du serveur."})
+}
+var options=h("div",{class:"serverstats-options"},[
+h("label",{class:"ticket-field"},[h("span",{text:"Catégorie des compteurs"}),category,h("small",{class:"h",text:"Les salons seront créés dans cette catégorie. Les compteurs vocaux sont verrouillés en écriture."})]),
+h("b",{text:"Compteurs à afficher"}),
+typesBox,
+save,status
+]);
+c.appendChild(h("div",{class:"serverstats-layout"},[options,preview]));
+load();
+}
+
 function autoresponsesView(c,G){
 c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"💬 Réponses automatiques"}));
@@ -1209,6 +1291,43 @@ h("span",{text:"Le nombre de questions disponibles peut aussi être limité par 
 c.appendChild(aiInfo);
 }
 var colL=c,live=null;
+if(mid==="captcha"){
+var captchaSplit=h("div",{class:"captcha-layout"}),captchaForm=h("div",{class:"pvmain"}),captchaPreview=h("div",{class:"captcha-preview"});
+c.classList.add("wide");
+c.appendChild(captchaSplit);
+captchaSplit.appendChild(captchaForm);
+captchaSplit.appendChild(captchaPreview);
+colL=captchaForm;
+var captchaCard=null;
+live=function(){
+var enabled=inputs.captcha_enabled&&inputs.captcha_enabled.get();
+var timeout=inputs.captcha_timeout_minutes&&inputs.captcha_timeout_minutes.get();
+var attempts=inputs.captcha_max_attempts&&inputs.captcha_max_attempts.get();
+var kick=inputs.captcha_kick_on_fail&&inputs.captcha_kick_on_fail.get();
+var channelId=inputs.captcha_channel_id&&inputs.captcha_channel_id.get();
+var pendingRoleId=inputs.captcha_role_id&&inputs.captcha_role_id.get();
+var verifiedRoleId=inputs.captcha_verified_role_id&&inputs.captcha_verified_role_id.get();
+var channel=(meta.channels||[]).filter(function(x){return x.id===channelId})[0];
+var pending=(meta.roles||[]).filter(function(x){return x.id===pendingRoleId})[0];
+var verified=(meta.roles||[]).filter(function(x){return x.id===verifiedRoleId})[0];
+captchaPreview.innerHTML="";
+captchaPreview.appendChild(h("span",{class:"h",text:"APERÇU DU CAPTCHA"}));
+captchaCard=h("div",{class:"captcha-card"+(enabled?"":" off")},[
+h("h3",{text:enabled?"🧩 Vérification requise":"🔒 Captcha désactivé"}),
+h("p",{text:"Bienvenue sur "+G.name+" ! Pour obtenir l’accès au serveur, recopie le code ci-dessous."}),
+h("div",{class:"captcha-code",text:"K7 M2 X"}),
+h("div",{class:"captcha-fields"},[
+h("span",{},["Salon : ",h("b",{text:channel?"# "+channel.name:"non défini"})]),
+h("span",{},["Rôle en attente : ",h("b",{text:pending?pending.name:"non défini"})]),
+h("span",{},["Rôle vérifié : ",h("b",{text:verified?verified.name:"non défini"})]),
+h("span",{},["Temps : ",h("b",{text:(timeout||5)+" minutes"})]),
+h("span",{},["Essais : ",h("b",{text:String(attempts||3)})]),
+h("span",{},["Échec : ",h("b",{text:kick?"expulsion":"aucune expulsion"})])
+])
+]);
+captchaPreview.appendChild(captchaCard);
+};
+}
 if(mid==="honeypot"){
 var hpInfo=h("div",{class:"hp-setup-info"}),hpAction=h("button",{class:"btn",type:"button"}),hpRefresh=h("button",{class:"btn ghost",type:"button",text:"Régénérer le message"}),hpOpen=h("a",{class:"btn ghost",target:"_blank",rel:"noopener noreferrer",text:"Ouvrir le salon"});
 var hpStatus=h("b",{text:"Vérification du salon HoneyPot…"}),hpHint=h("span",{text:"Le salon piège doit rester accessible en écriture aux membres pour fonctionner."});
@@ -1318,7 +1437,7 @@ var pm=(PEND[G.id]||{})[mid];if(pm)Object.keys(pm.body).forEach(function(k){d.va
 fields.forEach(function(f){
 if(f.section&&f.section!==last){form.appendChild(h("div",{class:"sec",text:f.section}));last=f.section}
 var b=buildField(f,d.values[f.key],meta,d.premium,dirty);inputs[f.key]=b;form.appendChild(b.wrap)});
-colL.appendChild(form);deps();if(pm&&live)live();
+colL.appendChild(form);deps();if(live)live();
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
 
 
