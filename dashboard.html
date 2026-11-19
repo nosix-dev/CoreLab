@@ -1069,10 +1069,16 @@ function serverstatsView(c,G){
 c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"📊 Statistiques du serveur"}));
 c.appendChild(h("p",{class:"lead",text:"Crée une catégorie et choisis les salons vocaux verrouillés qui affichent les statistiques du serveur."}));
-var base="/api/guilds/"+G.id+"/serverstats",busy=false,types=[],selected=new Set();
+var base="/api/guilds/"+G.id+"/serverstats",busy=false,types=[],selected=new Set(),enabled=false;
 var category=h("select"),typesBox=h("div",{class:"serverstats-types"}),preview=h("div",{class:"serverstats-preview"});
 var save=h("button",{class:"btn",type:"button",text:"Créer / appliquer les compteurs"});
 var status=h("span",{class:"h"});
+var toggle=h("button",{class:"btn ghost sm",type:"button",text:"Activer"});
+toggle.addEventListener("click",function(){
+enabled=!enabled;
+toggle.textContent=enabled?"Désactiver":"Activer";
+status.textContent=enabled?"Statistiques activées localement. Sélectionne les compteurs puis applique.":"Statistiques désactivées localement.";
+});
 category.appendChild(opt("__create","＋ Créer automatiquement « 📊 CoreLabStats »"));
 category.appendChild(opt("","— Désactiver tous les compteurs"));
 (META[G.id]&&META[G.id].categories||[]).forEach(function(x){category.appendChild(opt(x.id,x.name))});
@@ -1097,14 +1103,17 @@ category.addEventListener("change",drawPreview);
 save.addEventListener("click",function(){
 if(busy)return;
 if(selected.size&&!category.value){toast("Choisis une catégorie ou active la création automatique.",true);return}
+if(enabled&&!selected.size){toast("Sélectionne au moins un compteur avant d’activer.",true);return}
 busy=true;save.disabled=true;save.textContent="Application…";
 api(base,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({
 categoryId:category.value==="__create"?"":category.value,
 createCategory:category.value==="__create",
-types:[].slice.call(selected)
+types:[].slice.call(selected),
+enabled:enabled
 })}).then(function(data){
 busy=false;save.disabled=false;save.textContent="Créer / appliquer les compteurs";
 status.textContent=data.enabled?data.counters.length+" compteur(s) actif(s).":"Tous les compteurs ont été désactivés.";
+enabled=data.enabled!==false;toggle.textContent=enabled?"Désactiver":"Activer";
 toast(data.enabled?"Statistiques appliquées ✓":"Statistiques désactivées ✓");
 load();
 }).catch(function(e){busy=false;save.disabled=false;save.textContent="Créer / appliquer les compteurs";if(e&&e.message==="auth")return;toast(errText(e),true)})
@@ -1112,6 +1121,7 @@ load();
 function load(){
 api(base).then(function(data){
 types=data.types||[];selected=new Set((data.counters||[]).map(function(x){return x.type}));
+enabled=data.enabled!==false;toggle.textContent=enabled?"Désactiver":"Activer";
 if(data.categoryId){category.value=data.categoryId;if(!category.querySelector('option[value="'+data.categoryId+'"]'))category.appendChild(opt(data.categoryId,"Catégorie actuelle"))}
 else if(!category.value)category.value="__create";
 drawTypes();status.textContent=data.enabled?"Compteurs actuellement actifs.":"La fonctionnalité est désactivée.";
@@ -1119,6 +1129,7 @@ drawTypes();status.textContent=data.enabled?"Compteurs actuellement actifs.":"La
 }
 var options=h("div",{class:"serverstats-options"},[
 h("label",{class:"ticket-field"},[h("span",{text:"Catégorie des compteurs"}),category,h("small",{class:"h",text:"Les salons seront créés dans cette catégorie. Les compteurs vocaux sont verrouillés en écriture."})]),
+h("div",{style:"display:flex;align-items:center;justify-content:space-between;gap:12px"},[h("b",{text:"Activation"}),toggle]),
 h("b",{text:"Compteurs à afficher"}),
 typesBox,
 save,status
