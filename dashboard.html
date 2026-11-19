@@ -1039,8 +1039,18 @@ var form=h("div",{class:"rules-form"}),preview=h("div",{class:"rules-preview"}),
 var title=h("input",{type:"text",maxlength:"256",placeholder:"📜 Règlement du serveur"});
 var text=h("textarea",{maxlength:"3900",minlength:"30",required:true});
 var color=h("input",{type:"color"}),delay=h("input",{type:"number",min:"0",max:"3600",step:"1"});
+var channel=h("select"),role1=h("select"),role2=h("select");
+channel.appendChild(opt("","— Aucun —"));
+(META[G.id]&&META[G.id].channels||[]).forEach(function(x){channel.appendChild(opt(x.id,"# "+x.name))});
+[role1,role2].forEach(function(select,index){
+select.appendChild(opt("","— Aucun —"));
+(META[G.id]&&META[G.id].roles||[]).forEach(function(role){
+if(!role.ok)return;
+select.appendChild(opt(role.id,role.name));
+});
+});
 var dirty=false,busy=false;
-function current(){return{titre:title.value,contenu:text.value,couleur:color.value,delai:Number(delay.value)}}
+function current(){return{titre:title.value,contenu:text.value,couleur:color.value,delai:Number(delay.value),salonId:channel.value,roleIds:[role1.value,role2.value].filter(Boolean)}}
 function redraw(){
 var value=current();preview.innerHTML="";
 preview.appendChild(h("span",{class:"h",text:"APERÇU DISCORD"}));
@@ -1051,7 +1061,7 @@ h("span",{class:"rules-accept",text:"✅ Accepter le règlement"})
 ]));
 }
 function changed(){dirty=true;DIRTY=true;save.disabled=busy;status.textContent="Modifications non enregistrées.";redraw()}
-title.addEventListener("input",changed);text.addEventListener("input",changed);color.addEventListener("input",changed);delay.addEventListener("input",changed);
+title.addEventListener("input",changed);text.addEventListener("input",changed);color.addEventListener("input",changed);delay.addEventListener("input",changed);channel.addEventListener("change",changed);role1.addEventListener("change",changed);role2.addEventListener("change",changed);
 save.addEventListener("click",function(){
 var value=current();
 if(value.contenu.trim().length<30){toast("Le texte du règlement doit contenir au moins 30 caractères.",true);text.focus();return}
@@ -1070,10 +1080,16 @@ form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Titre du règ
 form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Texte du règlement"}),text,h("small",{class:"h",text:"30 à 3 900 caractères. Le texte est celui affiché dans le message Discord."})]));
 form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Couleur du règlement"}),color]));
 form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Délai avant de pouvoir accepter (secondes)"}),delay,h("small",{class:"h",text:"0 = acceptation immédiate."})]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Salon du règlement"}),channel,h("small",{class:"h",text:"Salon utilisé pour localiser et mettre à jour le message publié."})]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Rôle obtenu après acceptation"}),role1,h("small",{class:"h",text:"Premier rôle attribué au membre."})]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Rôle supplémentaire (optionnel)"}),role2,h("small",{class:"h",text:"Maximum deux rôles peuvent être attribués."})]));
 form.appendChild(save);form.appendChild(status);
 c.appendChild(h("div",{class:"rules-editor"},[form,preview]));
 api("/api/guilds/"+G.id+"/rules").then(function(data){
 title.value=data.titre||"";text.value=data.contenu||"";color.value=data.couleur||"#e8510d";delay.value=String(data.delai||0);
+channel.value=data.salonId||"";
+role1.value=(data.roleIds&&data.roleIds[0])||"";
+role2.value=(data.roleIds&&data.roleIds[1])||"";
 status.textContent=data.published?"Le règlement publié sera mis à jour à l’enregistrement.":"Aucun règlement n’est publié pour le moment.";
 redraw()
 }).catch(function(e){if(e&&e.message==="auth")return;status.className="err rules-status";status.textContent=e&&e.reason?e.reason:"Impossible de charger le règlement."})
