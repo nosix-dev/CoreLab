@@ -24,18 +24,33 @@
     .lead{max-width:520px;margin:10px 0 0;color:var(--mu)}
     .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid var(--ac);border-radius:999px;background:var(--ac);color:#fff;font-weight:800}
     .btn.ghost{background:transparent;border-color:var(--ln)}
-    .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
-    .board,.mine{border:1px solid var(--ln);border-radius:18px;background:rgba(22,21,28,.96)}
-    .board h2,.mine h2{margin:0;padding:18px 20px;border-bottom:1px solid var(--ln);font-size:18px}
-    .rows{display:grid}.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:13px 20px;border-bottom:1px solid var(--ln)}
+    .podium{min-height:280px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:18px}
+    .podium-card{position:relative;min-height:220px;padding:24px 16px 18px;border:1px solid var(--ln);border-radius:18px;background:linear-gradient(145deg,#1a1a23,#121218);text-align:center}
+    .podium-card.first{min-height:270px;border-color:#f2bd45;box-shadow:0 14px 50px rgba(242,189,69,.08)}
+    .podium-card.second{min-height:225px}.podium-card.third{min-height:225px}
+    .medal{position:absolute;top:-12px;left:-12px;width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#5865f2;color:#fff;font-weight:800;border:3px solid var(--bg)}
+    .podium-card.first .medal{background:#f2bd45;color:#111}.podium-card.third .medal{background:#cd7f32}
+    .avatar-ring{width:96px;height:96px;margin:0 auto 12px;padding:4px;border-radius:50%;border:3px solid #5865f2;background:var(--bg)}
+    .podium-card.first .avatar-ring{border-color:#f2bd45}.podium-card.third .avatar-ring{border-color:#cd7f32}
+    .avatar-ring img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+    .podium-name{font-size:18px;font-weight:800}.podium-diamond{color:var(--mu);font-size:12.5px}
+    .podium-level{margin:12px 0 4px;color:#f2bd45;font-size:24px;font-weight:800}.podium-xp{color:var(--mu);font-size:12.5px}
+    .progress{height:7px;margin-top:12px;border-radius:999px;background:#262735;overflow:hidden}.progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#5865f2,#79a8ff)}
+    .board{border:1px solid var(--ln);border-radius:18px;background:rgba(22,21,28,.96)}
+    .board h2{margin:0;padding:18px 20px;border-bottom:1px solid var(--ln);font-size:18px}
+    .table-head,.row{display:grid;grid-template-columns:62px minmax(220px,1fr) 140px 100px 150px;gap:12px;align-items:center}
+    .table-head{padding:10px 20px;color:var(--mu);font-size:11px;font-weight:800;text-transform:uppercase;border-bottom:1px solid var(--ln)}
+    .rows{display:grid}.row{padding:13px 20px;border-bottom:1px solid var(--ln)}
     .row:last-child{border-bottom:0}.rank{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--s1);color:var(--mu);font-weight:800}
-    .row.top .rank{background:var(--ac);color:#fff}.name{font-weight:800}.meta{margin-top:2px;color:var(--mu);font-size:12.5px}
-    .score{text-align:right}.score b{display:block}.score span{color:var(--mu);font-size:12.5px}
+    .person{display:flex;align-items:center;gap:10px;min-width:0}.person img{width:40px;height:40px;border-radius:50%;flex:none}.person-main{min-width:0}.person-name{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.person-meta{color:var(--mu);font-size:12.5px}
+    .level{color:#79a8ff;font-weight:800}.gemmes{font-weight:800}.mini-progress{height:6px;border-radius:999px;background:#262735;overflow:hidden}.mini-progress i{display:block;height:100%;border-radius:999px;background:#5865f2}
     .mine{position:sticky;top:82px;padding:18px}.gem{width:100%;aspect-ratio:1;border-radius:18px;background:#313338;display:grid;place-items:center;border:1px solid var(--ln)}
-    .gem svg{width:72%;height:72%;filter:drop-shadow(0 12px 24px rgba(113,185,255,.24))}
     .mine p{color:var(--mu);font-size:13.5px}.mine .btn{width:100%;margin-top:10px}
     .status{padding:20px;color:var(--mu)}.error{color:#ff8a80}
-    @media(max-width:850px){.layout{grid-template-columns:1fr}.mine{position:static}.head{align-items:flex-start;flex-direction:column}}
+    .login{max-width:520px;margin:40px auto;text-align:center;padding:34px;border:1px solid var(--ln);border-radius:18px;background:rgba(22,21,28,.96)}
+    .login p{color:var(--mu)}
+    .login .btn{margin-top:10px}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.mine{position:static}.head{align-items:flex-start;flex-direction:column}.podium{grid-template-columns:1fr}.podium-card,.podium-card.first{min-height:220px}.table-head{display:none}.row{grid-template-columns:44px 1fr auto}.row .level-col,.row .progress-col{display:none}}
   </style>
 </head>
 <body>
@@ -54,31 +69,66 @@
     <div class="layout">
       <section class="board">
         <h2>🏆 Classement</h2>
-        <div id="rows" class="rows"><div class="status">Chargement du classement…</div></div>
+        <div id="content"><div class="status">Chargement du classement…</div></div>
       </section>
       <aside class="mine">
         <h2 style="padding:0 0 12px;border:0">Ma mascotte</h2>
         <div class="gem" id="gemPreview">
           <svg viewBox="0 0 220 220" aria-hidden="true"><rect width="220" height="220" rx="36" fill="#16151c"/><path d="m110 24 64 67-64 105-64-105z" fill="#71b9ff" stroke="#dff7ff" stroke-width="7"/><path d="m46 91 64 105 64-105M110 24v172" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4"/></svg>
         </div>
-        <p>Créée avec <strong>/diamant mascotte creer</strong> sur Discord. La mascotte suit ton compte sur tous les serveurs.</p>
+        <p id="mineInfo">Connecte-toi pour voir ta mascotte.</p>
         <a class="btn" href="dashboard.html">Voir dans mon dashboard</a>
       </aside>
     </div>
   </main>
   <script>
-    var API="https://corelab-bot.onrender.com/diamants";
+    var API="https://corelab-bot.onrender.com/panel";
+    var token=null;
+    try{token=localStorage.getItem("cl_dash")}catch(e){}
+    var hashToken=(location.hash.match(/token=([\w.-]+)/)||[])[1];
+    if(hashToken){token=hashToken;try{localStorage.setItem("cl_dash",token)}catch(e){}history.replaceState(null,"",location.pathname+location.search)}
     function esc(v){var d=document.createElement("div");d.textContent=String(v||"");return d.innerHTML}
-    fetch(API,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(data){
-      var rows=document.getElementById("rows"),list=data.ranking||[];
-      rows.innerHTML="";
-      if(!list.length){rows.innerHTML='<div class="status">Aucune mascotte créée pour le moment.</div>';return}
-      list.forEach(function(item){
-        var row=document.createElement("div");row.className="row"+(item.rank<=3?" top":"");
-        row.innerHTML='<div class="rank">'+item.rank+'</div><div><div class="name">'+esc(item.diamant)+' <span style="color:var(--mu)">• '+esc(item.name)+'</span></div><div class="meta">'+esc(item.stage)+' · Niveau '+item.level+' · '+esc(item.temperament)+' · Humeur '+item.mood+'%</div></div><div class="score"><b>'+item.gems.toLocaleString("fr-FR")+' gemmes</b><span>'+item.xp.toLocaleString("fr-FR")+" XP"+'</span></div>';
+    if(!document.getElement)document.getElement=document.getElementById.bind(document);
+    function login(){
+      location.href="https://corelab-bot.onrender.com/panel/auth/login?return=diamant";
+    }
+    function pod(item,place){
+      var cls=place===1?"first":place===2?"second":"third";
+      var medal=place===1?"#1":place===2?"#2":"#3";
+      return '<div class="podium-card '+cls+'"><div class="medal">'+medal+'</div><div class="avatar-ring"><img src="'+esc(item.avatar)+'" alt=""></div><div class="podium-name">'+esc(item.name)+'</div><div class="podium-diamond">'+esc(item.diamant)+' · '+esc(item.temperament||item.stage)+'</div><div class="podium-level">Niv. '+item.level+'</div><div class="podium-xp">'+item.xp.toLocaleString("fr-FR")+' XP · '+item.gems.toLocaleString("fr-FR")+' gemmes</div><div class="progress"><i style="width:'+Math.min(100,Math.max(8,item.mood))+'%"></i></div></div>';
+    }
+    function draw(data){
+      var content=document.getElementById("content"),list=data.ranking||[],top=list.slice(0,3);
+      content.innerHTML="";
+      if(!list.length){content.innerHTML='<div class="status">Aucune mascotte créée pour le moment.</div>';return}
+      var podium=document.createElement("div");podium.className="podium";
+      if(top[1])podium.innerHTML+=pod(top[1],2);
+      if(top[0])podium.innerHTML+=pod(top[0],1);
+      if(top[2])podium.innerHTML+=pod(top[2],3);
+      content.appendChild(podium);
+      var table=document.createElement("div");
+      table.innerHTML='<div class="table-head"><span>Rang</span><span>Joueur / Diamant</span><span>Voie</span><span>Niveau</span><span>Progression</span></div><div class="rows"></div>';
+      var rows=table.querySelector(".rows");
+      list.slice(0,50).forEach(function(item){
+        var progress=Math.min(100,Math.max(4,Math.round(item.mood)));
+        var row=document.createElement("div");row.className="row";
+        row.innerHTML='<div class="rank">'+item.rank+'</div><div class="person"><img src="'+esc(item.avatar)+'" alt=""><div class="person-main"><div class="person-name">'+esc(item.name)+'</div><div class="person-meta">'+esc(item.diamant)+' · '+esc(item.stage)+'</div></div></div><div>'+esc(item.temperament||"Diamant")+'</div><div class="level-col level">Niv. '+item.level+'</div><div class="progress-col"><div class="mini-progress"><i style="width:'+progress+'%"></i></div><div class="person-meta">'+item.xp.toLocaleString("fr-FR")+' XP · '+item.gems.toLocaleString("fr-FR")+' gemmes</div></div>';
         rows.appendChild(row);
       });
-    }).catch(function(){document.getElementById("rows").innerHTML='<div class="status error">Impossible de charger le classement.</div>'});
+      content.appendChild(table);
+      if(data.me){
+        document.getElementById("mineInfo").innerHTML='<strong>'+esc(data.me.diamant)+'</strong> · '+esc(data.me.stage)+'<br>Niveau '+data.me.level+' · '+data.me.gems.toLocaleString("fr-FR")+' gemmes';
+      }else{
+        document.getElementBy("mineInfo").textContent="Tu n’as pas encore de mascotte Diamant.";
+      }
+    }
+    if(!token){
+      document.getElementById("content").innerHTML='<div class="login"><h2>Connexion Discord requise</h2><p>Connecte-toi pour voir les noms, avatars et positions du classement Diamant.</p><button class="btn" type="button" onclick="login()">Se connecter avec Discord</button></div>';
+    }else{
+      fetch(API+"/api/diamants",{headers:{Authorization:"Bearer "+token},cache:"no-store"}).then(function(r){if(r.status===401){try{localStorage.removeItem("cl_dash")}catch(e){}throw 0}if(!r.ok)throw 0;return r.json()}).then(draw).catch(function(){
+        document.getElementById("content").innerHTML='<div class="login"><h2>Session Discord expirée</h2><p>Reconnecte-toi pour accéder au classement.</p><button class="btn" type="button" onclick="login()">Se reconnecter</button></div>';
+      });
+    }
   </script>
 </body>
 </html>
