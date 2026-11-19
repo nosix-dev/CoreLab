@@ -312,6 +312,9 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .hp-setup{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px;margin:16px 0;border:1px solid var(--ln);border-radius:14px;background:var(--s1)}
 .hp-setup-info{min-width:220px;flex:1}.hp-setup-info b{display:block;margin-bottom:4px}.hp-setup-info span{font-size:13px;color:var(--mu)}
 .hp-setup-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ai-limit-info{display:grid;gap:7px;padding:16px;margin:0 0 18px;border:1px solid rgba(232,81,13,.42);border-radius:14px;background:rgba(232,81,13,.08)}
+.ai-limit-info b{color:var(--tx);font-size:15px}
+.ai-limit-info span{color:var(--mu);font-size:13.5px}
 @media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
 @media(max-width:900px){.rules-editor{grid-template-columns:1fr}.rules-preview{position:static}}
 @media(max-width:720px){.ticket-editor{grid-template-columns:1fr}.ticket-steps{position:static;display:flex;overflow:auto}.ticket-steps button{white-space:nowrap}.ticket-preview{grid-column:auto}.ticket-reason,.ticket-question{grid-template-columns:1fr}.ticket-panels{flex-wrap:nowrap;overflow:auto}}
@@ -1196,6 +1199,15 @@ var meta=META[G.id],form=h("div",{class:"form"}),inputs={},last=null;
 var isCard=!!d.module.preview,fields=d.module.fields.filter(function(f){return !(isCard&&CARD_LOOK.test(f.key))});
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:d.module.name}));
 c.appendChild(h("p",{class:"lead",text:d.module.desc}));
+if(mid==="ai"){
+var aiInfo=h("div",{class:"ai-limit-info"},[
+h("b",{text:"Assistant IA limité par CoreLab"}),
+h("span",{text:"Le bot peut répondre à une personne simplement lorsqu’elle écrit le mot « corelab » dans son message. Il peut aussi poursuivre la conversation en répondant directement à une réponse précédente du bot."}),
+h("span",{text:"Protection anti-spam : maximum 15 réponses IA par serveur et par minute, avec un délai minimum de 5 secondes entre deux questions du même membre."}),
+h("span",{text:"Le nombre de questions disponibles peut aussi être limité par les quotas, la clé API et les ressources du bot. Le salon IA dédié reste facultatif : le déclencheur « corelab » fonctionne dans les autres salons si l’option est activée."})
+]);
+c.appendChild(aiInfo);
+}
 var colL=c,live=null;
 if(mid==="honeypot"){
 var hpInfo=h("div",{class:"hp-setup-info"}),hpAction=h("button",{class:"btn",type:"button"}),hpRefresh=h("button",{class:"btn ghost",type:"button",text:"Régénérer le message"}),hpOpen=h("a",{class:"btn ghost",target:"_blank",rel:"noopener noreferrer",text:"Ouvrir le salon"});
