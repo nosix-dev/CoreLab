@@ -332,7 +332,17 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .captcha-code{display:inline-block;padding:10px 16px;border-radius:8px;background:#202225;color:#fff;font:700 18px var(--mono);letter-spacing:5px}
 .captcha-fields{display:grid;gap:7px;margin-top:12px;font-size:12.5px;color:#b5bac1}
 .captcha-fields b{color:#fff}
+.module-preview-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:18px;align-items:start}
+.module-preview{position:sticky;top:calc(var(--nav) + 18px);padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
+.module-preview-card{margin-top:12px;padding:14px;border:1px solid var(--ln);border-left:4px solid var(--ac);border-radius:10px;background:var(--bg)}
+.module-preview-card h3{margin:0 0 8px;font-size:16px}
+.module-preview-card p{margin:0;color:var(--mu);font-size:13px}
+.module-preview-list{display:grid;gap:7px;margin-top:12px}
+.module-preview-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:12.5px}
+.module-preview-row:last-child{border-bottom:0}
+.module-preview-row span{color:var(--mu)}.module-preview-row b{max-width:55%;text-align:right;overflow-wrap:anywhere}
 @media(max-width:900px){.captcha-layout{grid-template-columns:1fr}.captcha-preview{position:static}}
+@media(max-width:900px){.module-preview-layout{grid-template-columns:1fr}.module-preview{position:static}}
 @media(max-width:900px){.serverstats-layout{grid-template-columns:1fr}.serverstats-preview{position:static}}
 @media(max-width:600px){.serverstats-types{grid-template-columns:1fr}}
 @media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
@@ -1307,6 +1317,48 @@ h("span",{text:"Le nombre de questions disponibles peut aussi être limité par 
 c.appendChild(aiInfo);
 }
 var colL=c,live=null;
+if(!isCard && mid!=="captcha"){
+var modulePreviewLayout=h("div",{class:"module-preview-layout"});
+var modulePreviewMain=h("div",{class:"pvmain"});
+var modulePreview=h("div",{class:"module-preview"});
+c.appendChild(modulePreviewLayout);
+modulePreviewLayout.appendChild(modulePreviewMain);
+modulePreviewLayout.appendChild(modulePreview);
+colL=modulePreviewMain;
+live=function(){
+modulePreview.innerHTML="";
+modulePreview.appendChild(h("span",{class:"h",text:"APERÇU DES RÉGLAGES"}));
+var card=h("div",{class:"module-preview-card"});
+card.appendChild(h("h3",{text:d.module.name}));
+card.appendChild(h("p",{text:d.module.desc}));
+var rows=h("div",{class:"module-preview-list"});
+var shown=0;
+fields.forEach(function(f){
+var input=inputs[f.key];if(!input||input.locked)return;
+var value=input.get();
+if(f.type==="bool"){
+rows.appendChild(h("div",{class:"module-preview-row"},[h("span",{text:f.label}),h("b",{text:value?"Activé":"Désactivé"})]));
+shown++;
+}else if(value!==""&&value!==null&&value!==undefined){
+var text=String(value);
+if(f.type==="channel"){
+var chan=(meta.channels||[]).filter(function(x){return x.id===text})[0];text=chan?"# "+chan.name:text;
+}else if(f.type==="category"){
+var cat=(meta.categories||[]).filter(function(x){return x.id===text})[0];text=cat?cat.name:text;
+}else if(f.type==="role"){
+var role=(meta.roles||[]).filter(function(x){return x.id===text})[0];text=role?role.name:text;
+}else if(f.type==="roles"){
+text=(value||[]).map(function(id){var r=(meta.roles||[]).filter(function(x){return x.id===id})[0];return r?r.name:id}).join(", ");
+}else if(f.type==="channels"){
+text=(value||[]).map(function(id){var ch=(meta.channels||[]).filter(function(x){return x.id===id})[0];return ch?"# "+ch.name:id}).join(", ");
+}else if(f.type==="color"){text=String(text).toUpperCase()}
+if(text){rows.appendChild(h("div",{class:"module-preview-row"},[h("span",{text:f.label}),h("b",{text:text})]));shown++}
+}
+});
+if(!shown)rows.appendChild(h("div",{class:"module-preview-row"},[h("span",{text:"Aucun réglage visible"}),h("b",{text:"—"})]));
+card.appendChild(rows);modulePreview.appendChild(card);
+};
+}
 if(mid==="captcha"){
 var captchaSplit=h("div",{class:"captcha-layout"}),captchaForm=h("div",{class:"pvmain"}),captchaPreview=h("div",{class:"captcha-preview"});
 c.classList.add("wide");
