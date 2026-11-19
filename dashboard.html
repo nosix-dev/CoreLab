@@ -283,6 +283,16 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .ticket-preview-actions span{padding:7px 10px;border-radius:6px;background:#5865f2;color:#fff;font-size:12px}
 .ticket-check{display:flex;align-items:center;gap:9px;color:var(--mu)}
 .ticket-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.rules-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:18px;align-items:start}
+.rules-form,.rules-preview{padding:20px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);min-width:0}
+.rules-form{display:grid;gap:16px}
+.rules-form input[type=color]{width:64px;height:42px;padding:3px}
+.rules-preview{position:sticky;top:calc(var(--nav) + 18px)}
+.rules-message{margin-top:12px;padding:14px;border:1px solid #3b3942;border-left:4px solid var(--ac);border-radius:8px;background:#313338;color:#dbdee1}
+.rules-message h3{margin:0 0 10px;color:#fff;font-size:16px}
+.rules-message p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.rules-accept{display:inline-flex;margin-top:12px;padding:7px 11px;border-radius:6px;background:#248046;color:#fff;font-size:12px;font-weight:600}
+.rules-status{display:block;margin-top:12px}
 .ticket-create-modal{width:min(1500px,100%);max-height:calc(100vh - 32px);overflow:auto;border:1px solid var(--ln);border-radius:18px;background:var(--bg);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .ticket-create-head{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--ln)}
 .ticket-create-head>div{flex:1;min-width:0}.ticket-create-head b{display:block;font-size:17px}.ticket-create-head span{font-size:13px;color:var(--mu)}
@@ -292,6 +302,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .hp-setup-info{min-width:220px;flex:1}.hp-setup-info b{display:block;margin-bottom:4px}.hp-setup-info span{font-size:13px;color:var(--mu)}
 .hp-setup-actions{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
+@media(max-width:900px){.rules-editor{grid-template-columns:1fr}.rules-preview{position:static}}
 @media(max-width:720px){.ticket-editor{grid-template-columns:1fr}.ticket-steps{position:static;display:flex;overflow:auto}.ticket-steps button{white-space:nowrap}.ticket-preview{grid-column:auto}.ticket-reason,.ticket-question{grid-template-columns:1fr}.ticket-panels{flex-wrap:nowrap;overflow:auto}}
 .live{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:12.5px;color:var(--mu)}
 .live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 3px rgba(59,165,93,.2)}
@@ -505,7 +516,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -1018,6 +1029,54 @@ busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=pan
 }
 api(base).then(function(data){panels=data.panels||[];selected=null;listStatus.textContent="";draw()})
 .catch(function(e){if(e&&e.message==="auth")return;listStatus.className="err";listStatus.textContent=ticketError(e)})
+}
+
+function rulesView(c,G){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"📜 Règlement"}));
+c.appendChild(h("p",{class:"lead",text:"Personnalise le message du règlement avec un aperçu en direct. L’enregistrement met à jour le message déjà publié."}));
+var form=h("div",{class:"rules-form"}),preview=h("div",{class:"rules-preview"}),status=h("span",{class:"h rules-status"}),save=h("button",{class:"btn",type:"button",text:"Enregistrer",disabled:true});
+var title=h("input",{type:"text",maxlength:"256",placeholder:"📜 Règlement du serveur"});
+var text=h("textarea",{maxlength:"3900",minlength:"30",required:true});
+var color=h("input",{type:"color"}),delay=h("input",{type:"number",min:"0",max:"3600",step:"1"});
+var dirty=false,busy=false;
+function current(){return{titre:title.value,contenu:text.value,couleur:color.value,delai:Number(delay.value)}}
+function redraw(){
+var value=current();preview.innerHTML="";
+preview.appendChild(h("span",{class:"h",text:"APERÇU DISCORD"}));
+preview.appendChild(h("div",{class:"rules-message",style:"border-left-color:"+value.couleur},[
+h("h3",{text:value.titre.trim()||"📜 Règlement du serveur"}),
+h("p",{text:value.contenu||"Le texte du règlement apparaîtra ici."}),
+h("span",{class:"rules-accept",text:"✅ Accepter le règlement"})
+]));
+}
+function changed(){dirty=true;DIRTY=true;save.disabled=busy;status.textContent="Modifications non enregistrées.";redraw()}
+title.addEventListener("input",changed);text.addEventListener("input",changed);color.addEventListener("input",changed);delay.addEventListener("input",changed);
+save.addEventListener("click",function(){
+var value=current();
+if(value.contenu.trim().length<30){toast("Le texte du règlement doit contenir au moins 30 caractères.",true);text.focus();return}
+if(!Number.isInteger(value.delai)||value.delai<0||value.delai>3600){toast("Le délai doit être compris entre 0 et 3 600 secondes.",true);delay.focus();return}
+busy=true;save.disabled=true;save.textContent="Enregistrement…";status.textContent="Enregistrement…";
+api("/api/guilds/"+G.id+"/rules",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(value)})
+.then(function(result){
+dirty=false;DIRTY=anyPend();save.disabled=true;
+status.textContent=result.published?"Règlement enregistré et mis à jour sur Discord.":"Réglages enregistrés. Ils seront utilisés à la prochaine publication du règlement.";
+toast(result.published?"Règlement mis à jour ✓":"Réglages du règlement enregistrés ✓")
+})
+.catch(function(e){if(e&&e.message==="auth")return;status.textContent=e&&e.reason?e.reason:"Impossible d’enregistrer le règlement.";toast(errText(e),true)})
+.then(function(){busy=false;save.textContent="Enregistrer";save.disabled=!dirty})
+});
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Titre du règlement"}),title]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Texte du règlement"}),text,h("small",{class:"h",text:"30 à 3 900 caractères. Le texte est celui affiché dans le message Discord."})]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Couleur du règlement"}),color]));
+form.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Délai avant de pouvoir accepter (secondes)"}),delay,h("small",{class:"h",text:"0 = acceptation immédiate."})]));
+form.appendChild(save);form.appendChild(status);
+c.appendChild(h("div",{class:"rules-editor"},[form,preview]));
+api("/api/guilds/"+G.id+"/rules").then(function(data){
+title.value=data.titre||"";text.value=data.contenu||"";color.value=data.couleur||"#e8510d";delay.value=String(data.delai||0);
+status.textContent=data.published?"Le règlement publié sera mis à jour à l’enregistrement.":"Aucun règlement n’est publié pour le moment.";
+redraw()
+}).catch(function(e){if(e&&e.message==="auth")return;status.className="err rules-status";status.textContent=e&&e.reason?e.reason:"Impossible de charger le règlement."})
 }
 
 var CARD_LOOK=/(^|[._])(style|look|theme|template|design|layout|preset|modele)/i;
