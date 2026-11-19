@@ -772,6 +772,11 @@ c.appendChild(h("div",{style:"display:flex;align-items:center;justify-content:sp
 c.appendChild(status);c.appendChild(editor);
 var stepNames=["Général","Message du panel","Bouton d’ouverture","Qui peut ouvrir","Questions","Message d’accueil","Équipe & prise en charge","Transcripts & logs"];
 function blankPanel(){return{name:"Nouveau panneau",channelId:"",categoryId:"",layout:"button",title:"Support",description:"Clique sur le bouton ci-dessous pour ouvrir un ticket.",color:"#e8510d",footerText:"",statusLine:"",buttonLabel:"Ouvrir un ticket",buttonEmoji:"🎫",openRoleIds:[],questions:[],openTitle:"",openDescription:"",staffRoleIds:[],claimEnabled:false,logChannelId:"",transcriptsEnabled:true,reasons:[{label:"Support",value:"support",description:"",emoji:"🎫",color:"blurple",categoryId:""}]}}
+function ticketError(e){
+if(e&&e.error==="not_found")return "L’API des panneaux n’est pas présente sur le bot déployé. Redéploie/redémarre CoreLab avec la dernière version, puis recharge le dashboard.";
+if(e&&e.error==="panel_not_found")return "Ce panneau n’existe plus côté bot. Recharge la page et réessaie.";
+return errText(e)
+}
 function mark(){changed=true;DIRTY=true;status.textContent="Modifications non enregistrées.";drawPreview()}
 function field(label,key,value,kind,options){
 var control;
@@ -938,7 +943,7 @@ busy=true;status.textContent="Enregistrement…";
 var method=selected.id?"PUT":"POST",url=selected.id?base+"/"+selected.id:base;
 return api(url,{method:method,headers:{"Content-Type":"application/json"},body:JSON.stringify({panel:selected,preserveQuestions:selected.legacy&&!selected.questionsEdited})})
 .then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent="Panneau enregistré.";toast("Panneau enregistré ✓");if(creationModal)closeNewPanelModal(true)})
-.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);status.textContent=errText(e)})
+.catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true);status.textContent=ticketError(e)})
 .then(function(){busy=false;draw()})
 }
 function publishPanel(){
@@ -946,17 +951,17 @@ var before=changed||!selected.id;
 (before?savePanel():Promise.resolve()).then(function(){if(!selected||!selected.id||changed)return;
 busy=true;status.textContent="Publication en cours…";
 api(base+"/"+selected.id+"/publish",{method:"POST"}).then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx>-1)panels[idx]=selected;status.textContent="Panneau publié dans Discord.";toast("Panneau publié ✓")})
-.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);status.textContent=errText(e)})
+.catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true);status.textContent=ticketError(e)})
 .then(function(){busy=false;draw()})})
 }
 function deletePanel(){
 if(!selected||!selected.id||!confirm("Supprimer ce panneau et retirer son message publié ?"))return;
 busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=panels.filter(function(p){return p.id!==selected.id});selected=null;changed=false;DIRTY=anyPend();status.textContent="Panneau supprimé.";toast("Panneau supprimé ✓")})
-.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})
+.catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true)})
 .then(function(){busy=false;draw()})
 }
 api(base).then(function(data){panels=data.panels||[];selected=panels[0]||null;draw()})
-.catch(function(e){if(e&&e.message==="auth")return;editor.appendChild(h("p",{class:"err",text:errText(e)}))})
+.catch(function(e){if(e&&e.message==="auth")return;editor.appendChild(h("p",{class:"err",text:ticketError(e)}))})
 }
 
 var CARD_LOOK=/(^|[._])(style|look|theme|template|design|layout|preset|modele)/i;
