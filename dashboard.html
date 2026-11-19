@@ -279,6 +279,14 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .ticket-preview-actions span{padding:7px 10px;border-radius:6px;background:#5865f2;color:#fff;font-size:12px}
 .ticket-check{display:flex;align-items:center;gap:9px;color:var(--mu)}
 .ticket-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.ticket-create-modal{width:min(1500px,100%);max-height:calc(100vh - 32px);overflow:auto;border:1px solid var(--ln);border-radius:18px;background:var(--bg);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.ticket-create-head{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--ln)}
+.ticket-create-head>div{flex:1;min-width:0}.ticket-create-head b{display:block;font-size:17px}.ticket-create-head span{font-size:13px;color:var(--mu)}
+.ticket-create-body{padding:16px 20px 20px}
+.ticket-create-modal .ticket-steps,.ticket-create-modal .ticket-preview{top:12px}
+.hp-setup{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px;margin:16px 0;border:1px solid var(--ln);border-radius:14px;background:var(--s1)}
+.hp-setup-info{min-width:220px;flex:1}.hp-setup-info b{display:block;margin-bottom:4px}.hp-setup-info span{font-size:13px;color:var(--mu)}
+.hp-setup-actions{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
 @media(max-width:720px){.ticket-editor{grid-template-columns:1fr}.ticket-steps{position:static;display:flex;overflow:auto}.ticket-steps button{white-space:nowrap}.ticket-preview{grid-column:auto}.ticket-reason,.ticket-question{grid-template-columns:1fr}.ticket-panels{flex-wrap:nowrap;overflow:auto}}
 .live{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:12.5px;color:var(--mu)}
@@ -758,7 +766,7 @@ c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"🎫 Tickets"}));
 c.appendChild(h("p",{class:"lead",text:"Crée plusieurs panneaux et configure leur publication, leurs questions, les rôles d’accès, l’équipe et les transcriptions."}));
 var base="/api/guilds/"+G.id+"/ticket-panels",panels=[],selected=null,step=0,changed=false,busy=false,previewMode="panel";
-var tabs=h("div",{class:"ticket-panels"}),editor=h("div"),status=h("span",{class:"h"});
+var tabs=h("div",{class:"ticket-panels"}),editor=h("div"),status=h("span",{class:"h"}),creationModal=null,previousSelection=null,creationKeyHandler=null;
 var add=h("button",{class:"btn sm",type:"button",text:"＋ Nouveau panneau",onclick:newPanel});
 c.appendChild(h("div",{style:"display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px"},[tabs,add]));
 c.appendChild(status);c.appendChild(editor);
@@ -894,6 +902,27 @@ h("button",{class:"btn ghost",type:"button",text:"Supprimer",disabled:busy||!sel
 ]);
 editor.appendChild(actions)
 }
+function closeNewPanelModal(saved){
+if(!creationModal)return;
+if(!saved&&(busy||!confirm("Abandonner la création de ce panneau ?")))return;
+document.removeEventListener("keydown",creationKeyHandler);
+c.insertBefore(status,creationModal);c.insertBefore(editor,creationModal);creationModal.remove();
+creationModal=null;creationKeyHandler=null;
+if(!saved){selected=previousSelection;changed=false;DIRTY=anyPend();step=0;status.textContent="";draw()}
+previousSelection=null
+}
+function openNewPanelModal(){
+creationModal=h("div",{class:"jov",role:"dialog","aria-modal":"true"});
+var close=h("button",{class:"jx",type:"button","aria-label":"Fermer","text":"✕",onclick:function(){closeNewPanelModal(false)}}),body=h("div",{class:"ticket-create-body"});
+creationModal.appendChild(h("div",{class:"ticket-create-modal"},[
+h("div",{class:"ticket-create-head"},[h("div",{},[h("b",{text:"Créer un panneau de tickets"}),h("span",{text:"Configure les étapes, puis enregistre le panneau avant de le publier."})]),close]),
+body
+]));
+body.appendChild(status);body.appendChild(editor);
+creationModal.addEventListener("click",function(event){if(event.target===creationModal)closeNewPanelModal(false)});
+creationKeyHandler=function(event){if(event.key==="Escape")closeNewPanelModal(false)};
+document.addEventListener("keydown",creationKeyHandler);c.appendChild(creationModal)
+}
 function renderTabs(){
 tabs.innerHTML="";
 panels.forEach(function(panel){tabs.appendChild(h("button",{class:"btn ghost sm"+(selected&&selected.id===panel.id?" on":""),type:"button",text:panel.name||"Panneau",onclick:function(){if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;selected=panel;changed=false;DIRTY=anyPend();step=0;status.textContent="";renderTabs();renderEditor()}}))})
@@ -901,14 +930,14 @@ panels.forEach(function(panel){tabs.appendChild(h("button",{class:"btn ghost sm"
 function draw(){renderTabs();renderEditor()}
 function newPanel(){
 if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;
-selected=blankPanel();changed=true;DIRTY=true;step=0;status.textContent="Nouveau panneau — enregistre-le pour créer le brouillon.";draw()
+previousSelection=selected;selected=blankPanel();changed=true;DIRTY=true;step=0;status.textContent="Nouveau panneau — complète les réglages puis enregistre.";openNewPanelModal();draw()
 }
 function savePanel(){
 if(!selected||busy)return Promise.resolve();
 busy=true;status.textContent="Enregistrement…";
 var method=selected.id?"PUT":"POST",url=selected.id?base+"/"+selected.id:base;
 return api(url,{method:method,headers:{"Content-Type":"application/json"},body:JSON.stringify({panel:selected,preserveQuestions:selected.legacy&&!selected.questionsEdited})})
-.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent="Panneau enregistré.";toast("Panneau enregistré ✓")})
+.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent="Panneau enregistré.";toast("Panneau enregistré ✓");if(creationModal)closeNewPanelModal(true)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);status.textContent=errText(e)})
 .then(function(){busy=false;draw()})
 }
@@ -938,6 +967,46 @@ var isCard=!!d.module.preview,fields=d.module.fields.filter(function(f){return !
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:d.module.name}));
 c.appendChild(h("p",{class:"lead",text:d.module.desc}));
 var colL=c,live=null;
+if(mid==="honeypot"){
+var hpInfo=h("div",{class:"hp-setup-info"}),hpAction=h("button",{class:"btn",type:"button"}),hpRefresh=h("button",{class:"btn ghost",type:"button",text:"Régénérer le message"}),hpOpen=h("a",{class:"btn ghost",target:"_blank",rel:"noopener noreferrer",text:"Ouvrir le salon"});
+var hpStatus=h("b",{text:"Vérification du salon HoneyPot…"}),hpHint=h("span",{text:"Le salon piège doit rester accessible en écriture aux membres pour fonctionner."});
+var hpBusy=false;
+hpInfo.appendChild(hpStatus);hpInfo.appendChild(hpHint);
+function updateHoneypotControls(){
+var channelId=d.values.honeypot_channel_id||"",channel=(meta.channels||[]).filter(function(x){return x.id===channelId})[0];
+hpStatus.textContent=channelId?"Salon configuré : "+(channel?"# "+channel.name:channelId):"Aucun salon HoneyPot n’est généré.";
+hpHint.textContent=channelId?(d.values.honeypot_enabled?"Chaque message envoyé dans ce salon déclenche la sanction choisie (sauf membres ignorés).":"Le salon est configuré, mais le HoneyPot est désactivé. Active-le dans les réglages ci-dessous."):"Génère le salon pour créer aussi son message d’avertissement et activer le HoneyPot.";
+hpAction.textContent=channelId?"Régénérer le salon":"Générer le salon";
+hpAction.dataset.action=channelId?"regenerate":"generate";
+hpAction.disabled=hpBusy;
+hpRefresh.disabled=hpBusy||!channelId;
+hpOpen.style.display=channelId?"":"none";
+if(channelId)hpOpen.href="https://discord.com/channels/"+G.id+"/"+channelId;
+}
+function runHoneypotAction(action){
+if(hpBusy)return;hpBusy=true;updateHoneypotControls();hpStatus.textContent="Action en cours…";
+var pending=PEND[G.id]&&PEND[G.id][mid],saved=pending
+?api("/api/guilds/"+G.id+"/modules/"+mid,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(collect())}).then(function(data){d.values=data.values;delete PEND[G.id][mid];DIRTY=anyPend();updateGBar();updateHoneypotControls()})
+:Promise.resolve();
+saved.then(function(){return api("/api/guilds/"+G.id+"/honeypot/"+action,{method:"POST"})})
+.then(function(result){
+if(result.channelId&&META[G.id]){
+var channels=META[G.id].channels||[];
+if(result.oldChannelDeleted!==false)channels=channels.filter(function(x){return x.id!==result.oldChannelId});
+if(!channels.some(function(x){return x.id===result.channelId}))channels.push({id:result.channelId,name:"🚷・anti-scam"});
+META[G.id].channels=channels;
+}
+if(action==="regenerate"&&result.oldChannelDeleted===false)toast("Nouveau salon créé, mais l’ancien n’a pas pu être supprimé. Vérifie les permissions du bot.",true);
+else toast(action==="refresh"?(result.messageCreated?"Message d’avertissement généré ✓":"Message d’avertissement actualisé ✓"):"Salon HoneyPot prêt ✓");
+moduleView(c,G,mid)
+})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);hpBusy=false;updateHoneypotControls()})
+}
+hpAction.addEventListener("click",function(){runHoneypotAction(hpAction.dataset.action)});
+hpRefresh.addEventListener("click",function(){runHoneypotAction("refresh")});
+updateHoneypotControls();
+c.appendChild(h("div",{class:"hp-setup"},[hpInfo,h("div",{class:"hp-setup-actions"},[hpAction,hpRefresh,hpOpen])]))
+}
 if(isCard){c.classList.add("wide");
 var split=h("div",{class:"pvsplit"}),colR=h("div",{class:"pvcol"}),LIVE="Aperçu en direct · rien n’est appliqué avant « Enregistrer »";colL=h("div",{class:"pvmain"});split.appendChild(colL);split.appendChild(colR);c.appendChild(split);
 var pv=h("img",{class:"pv",alt:"Aperçu de la carte"}),pvm=h("p",{class:"live wait",text:"Chargement de l’aperçu…"}),liveT=0,liveBusy=false,liveAgain=false;pv.style.display="none";
