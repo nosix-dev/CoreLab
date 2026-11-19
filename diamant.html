@@ -19,11 +19,18 @@
     .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}.logo img{width:30px;height:30px;border-radius:8px}
     .back{color:var(--mu);font-size:14px}
     main{max-width:1120px;margin:auto;padding:72px 22px 100px}
-    .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:38px}
-    h1{margin:0;font-size:clamp(38px,7vw,66px);line-height:1;letter-spacing:-.04em}
-    .lead{max-width:520px;margin:10px 0 0;color:var(--mu)}
+    .head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:16px auto 32px}
+    .season-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(88,166,255,.25);border-radius:999px;background:rgba(88,166,255,.08);color:#79a8ff;font-size:12px}
+    h1{margin:4px 0 0;font-size:clamp(38px,6vw,58px);line-height:1;letter-spacing:-.04em}
+    .lead{max-width:620px;margin:10px auto 0;color:var(--mu)}
     .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid var(--ac);border-radius:999px;background:var(--ac);color:#fff;font-weight:800}
     .btn.ghost{background:transparent;border-color:var(--ln)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:820px;margin:0 auto 24px}
+    .stat{padding:16px;border:1px solid var(--ln);border-radius:14px;background:rgba(22,21,28,.96);text-align:left}
+    .stat span{display:block;color:var(--mu);font-size:11px;font-weight:800;text-transform:uppercase}.stat b{display:block;margin-top:4px;font-size:21px}
+    .filters{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 22px;flex-wrap:wrap}
+    .filter{padding:8px 14px;border:1px solid var(--ln);border-radius:999px;background:var(--s1);color:var(--mu);cursor:pointer;font-size:13px}
+    .filter.on{background:#5865f2;border-color:#5865f2;color:#fff}.search{min-width:260px;padding:10px 14px;border:1px solid var(--ln);border-radius:999px;background:var(--s1)}
     .podium{min-height:280px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:end;margin-bottom:18px}
     .podium-card{position:relative;min-height:220px;padding:24px 16px 18px;border:1px solid var(--ln);border-radius:18px;background:linear-gradient(145deg,#1a1a23,#121218);text-align:center}
     .podium-card.first{min-height:270px;border-color:#f2bd45;box-shadow:0 14px 50px rgba(242,189,69,.08)}
@@ -50,7 +57,7 @@
     .login{max-width:520px;margin:40px auto;text-align:center;padding:34px;border:1px solid var(--ln);border-radius:18px;background:rgba(22,21,28,.96)}
     .login p{color:var(--mu)}
     .login .btn{margin-top:10px}
-    @media(max-width:850px){.layout{grid-template-columns:1fr}.mine{position:static}.head{align-items:flex-start;flex-direction:column}.podium{grid-template-columns:1fr}.podium-card,.podium-card.first{min-height:220px}.table-head{display:none}.row{grid-template-columns:44px 1fr auto}.row .level-col,.row .progress-col{display:none}}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.mine{position:static}.head{align-items:center}.stats{grid-template-columns:1fr 1fr}.podium{grid-template-columns:1fr}.podium-card,.podium-card.first{min-height:220px}.table-head{display:none}.row{grid-template-columns:44px 1fr auto}.row .level-col,.row .progress-col{display:none}.search{width:100%;min-width:0}}
   </style>
 </head>
 <body>
@@ -60,11 +67,21 @@
   </header>
   <main>
     <div class="head">
-      <div>
-        <h1>💎 Diamant</h1>
-        <p class="lead">Le classement mondial des mascottes Diamant de CoreLab.</p>
-      </div>
-      <a class="btn ghost" href="dashboard.html">Ouvrir mon diamant</a>
+      <div class="season-pill">💎 Saison Diamant · Classement officiel</div>
+      <h1>Classement Diamant</h1>
+      <p class="lead">Les diamants les plus brillants, tous serveurs confondus. Plus ils grandissent, plus leur niveau augmente.</p>
+    </div>
+    <div id="stats" class="stats">
+      <div class="stat"><span>Diamants actifs</span><b id="statCount">—</b></div>
+      <div class="stat"><span>Niveau moyen</span><b id="statLevel">—</b></div>
+      <div class="stat"><span>Gemmes gagnées</span><b id="statGems">—</b></div>
+      <div class="stat"><span>Plus longue série</span><b id="statStreak">—</b></div>
+    </div>
+    <div class="filters">
+      <button class="filter on" type="button" data-filter="all">Diamants</button>
+      <button class="filter" type="button" data-filter="top">Top 50</button>
+      <button class="filter" type="button" data-filter="stage">Par stade</button>
+      <input class="search" id="search" type="search" placeholder="Rechercher un diamant…" aria-label="Rechercher un diamant">
     </div>
     <div class="layout">
       <section class="board">
@@ -97,8 +114,56 @@
       var medal=place===1?"#1":place===2?"#2":"#3";
       return '<div class="podium-card '+cls+'"><div class="medal">'+medal+'</div><div class="avatar-ring"><img src="'+esc(item.avatar)+'" alt=""></div><div class="podium-name">'+esc(item.name)+'</div><div class="podium-diamond">'+esc(item.diamant)+' · '+esc(item.temperament||item.stage)+'</div><div class="podium-level">Niv. '+item.level+'</div><div class="podium-xp">'+item.xp.toLocaleString("fr-FR")+' XP · '+item.gems.toLocaleString("fr-FR")+' gemmes</div><div class="progress"><i style="width:'+Math.min(100,Math.max(8,item.mood))+'%"></i></div></div>';
     }
+    function bindFilters(){
+      var buttons=document.querySelectorAll(".filter"),search=document.getElementById("search");
+      if(!buttons.length||!search||search.dataset.bound)return;
+      search.dataset.bound="1";
+      function apply(){
+        var active=document.querySelector(".filter.on"),mode=active?active.dataset.filter:"all",q=search.value.trim().toLowerCase();
+        var list=(window.diamondRows||[]).filter(function(item){
+          var text=(item.name+" "+item.diamant+" "+item.stage+" "+item.temperament).toLowerCase();
+          if(q&&!text.includes(q))return false;
+          if(mode==="top")return item.rank<=50;
+          if(mode==="stage")return item.stageNumber>=3;
+          return true;
+        });
+        var content=document.getElementById("content");
+        var oldMe=document.getElementById("mineInfo")?document.getElementById("mineInfo").innerHTML:"";
+        renderRows(content,list);
+        if(oldMe)document.getElementById("mineInfo").innerHTML=oldMe;
+      }
+      buttons.forEach(function(button){button.addEventListener("click",function(){buttons.forEach(function(b){b.classList.remove("on")});button.classList.add("on");apply()})});
+      search.addEventListener("input",apply);
+    }
+    function renderRows(content,list){
+      content.innerHTML="";
+      if(!list.length){content.innerHTML='<div class="status">Aucun résultat pour cette recherche.</div>';return}
+      var top=list.slice(0,3),podium=document.createElement("div");podium.className="podium";
+      if(top[1])podium.innerHTML+=pod(top[1],2);
+      if(top[0])podium.innerHTML+=pod(top[0],1);
+      if(top[2])podium.innerHTML+=pod(top[2],3);
+      content.appendChild(podium);
+      var table=document.createElement("div");
+      table.innerHTML='<div class="table-head"><span>Rang</span><span>Joueur / Diamant</span><span>Voie</span><span>Niveau</span><span>Progression</span></div><div class="rows"></div>';
+      var rows=table.querySelector(".rows");
+      list.slice(0,50).forEach(function(item){
+        var progress=Math.min(100,Math.max(4,Math.round(item.mood)));
+        var row=document.createElement("div");row.className="row";
+        row.innerHTML='<div class="rank">'+item.rank+'</div><div class="person"><img src="'+esc(item.avatar)+'" alt=""><div class="person-main"><div class="person-name">'+esc(item.name)+'</div><div class="person-meta">'+esc(item.diamant)+' · '+esc(item.stage)+'</div></div></div><div>'+esc(item.temperament||"Diamant")+'</div><div class="level-col level">Niv. '+item.level+'</div><div class="progress-col"><div class="mini-progress"><i style="width:'+progress+'%"></i></div><div class="person-meta">'+item.xp.toLocaleString("fr-FR")+' XP · '+item.gems.toLocaleString("fr-FR")+' gemmes</div></div>';
+        rows.appendChild(row);
+      });
+      content.appendChild(table);
+    }
     function draw(data){
       var content=document.getElementById("content"),list=data.ranking||[],top=list.slice(0,3);
+      document.getElementById("statCount").textContent=(list.length||0).toLocaleString("fr-FR");
+      var avg=list.length?Math.round(list.reduce(function(n,x){return n+Number(x.level||1)},0)/list.length):0;
+      var gems=list.reduce(function(n,x){return n+Number(x.gems||0)},0);
+      document.getElementById("statLevel").textContent=String(avg).replace(".",",");
+      document.getElementById("statGems").textContent=gems.toLocaleString("fr-FR");
+      document.getElementById("statStreak").textContent="Bientôt";
+      window.diamondRows=list.slice();
+      bindFilters();
       content.innerHTML="";
       if(!list.length){content.innerHTML='<div class="status">Aucune mascotte créée pour le moment.</div>';return}
       var podium=document.createElement("div");podium.className="podium";
