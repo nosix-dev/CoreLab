@@ -1069,12 +1069,13 @@ function serverstatsView(c,G){
 c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"📊 Statistiques du serveur"}));
 c.appendChild(h("p",{class:"lead",text:"Crée une catégorie et choisis les salons vocaux verrouillés qui affichent les statistiques du serveur."}));
-var base="/api/guilds/"+G.id+"/serverstats",busy=false,types=[],selected=new Set(),enabled=false;
+var base="/api/guilds/"+G.id+"/serverstats",busy=false,loaded=false,types=[],selected=new Set(),enabled=false;
 var category=h("select"),typesBox=h("div",{class:"serverstats-types"}),preview=h("div",{class:"serverstats-preview"});
-var save=h("button",{class:"btn",type:"button",text:"Créer / appliquer les compteurs"});
+var save=h("button",{class:"btn",type:"button",text:"Créer / appliquer les compteurs",disabled:true});
 var status=h("span",{class:"h"});
-var toggle=h("button",{class:"btn ghost sm",type:"button",text:"Activer"});
+var toggle=h("button",{class:"btn ghost sm",type:"button",text:"Activer",disabled:true});
 toggle.addEventListener("click",function(){
+if(!loaded)return;
 enabled=!enabled;
 toggle.textContent=enabled?"Désactiver":"Activer";
 status.textContent=enabled?"Statistiques activées localement. Sélectionne les compteurs puis applique.":"Statistiques désactivées localement.";
@@ -1101,7 +1102,7 @@ drawPreview();
 }
 category.addEventListener("change",drawPreview);
 save.addEventListener("click",function(){
-if(busy)return;
+if(busy||!loaded)return;
 if(selected.size&&!category.value){toast("Choisis une catégorie ou active la création automatique.",true);return}
 if(enabled&&!selected.size){toast("Sélectionne au moins un compteur avant d’activer.",true);return}
 busy=true;save.disabled=true;save.textContent="Application…";
@@ -1119,11 +1120,13 @@ load();
 }).catch(function(e){busy=false;save.disabled=false;save.textContent="Créer / appliquer les compteurs";if(e&&e.message==="auth")return;toast(errText(e),true)})
 });
 function load(){
+loaded=false;toggle.disabled=true;save.disabled=true;
 api(base).then(function(data){
 types=data.types||[];selected=new Set((data.counters||[]).map(function(x){return x.type}));
 enabled=data.enabled!==false;toggle.textContent=enabled?"Désactiver":"Activer";
 if(data.categoryId){category.value=data.categoryId;if(!category.querySelector('option[value="'+data.categoryId+'"]'))category.appendChild(opt(data.categoryId,"Catégorie actuelle"))}
 else if(!category.value)category.value="__create";
+loaded=true;toggle.disabled=false;save.disabled=false;
 drawTypes();status.textContent=data.enabled?"Compteurs actuellement actifs.":"La fonctionnalité est désactivée.";
 }).catch(function(e){if(e&&e.message==="auth")return;status.className="err";status.textContent="Impossible de charger les compteurs du serveur."})
 }
