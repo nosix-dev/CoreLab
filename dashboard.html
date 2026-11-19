@@ -901,7 +901,7 @@ stepNames.forEach(function(name,index){stepNav.appendChild(h("button",{type:"but
 editor.appendChild(h("div",{class:"ticket-editor"},[stepNav,stepContent,preview]));
 renderStep();drawPreview();
 var actions=h("div",{class:"ticket-actions"},[
-h("button",{class:"btn",type:"button",text:busy?"Enregistrement…":"Enregistrer",disabled:busy,onclick:savePanel}),
+h("button",{class:"btn",type:"button",text:busy?(selected.id?"Modification…":"Enregistrement…"):(selected.id?"Modifier":"Enregistrer"),title:selected.id?"Enregistrer les modifications du panneau":"Enregistrer le nouveau panneau",disabled:busy,onclick:savePanel}),
 h("button",{class:"btn ghost",type:"button",text:"Publier / mettre à jour le panneau",disabled:busy||!selected.id,onclick:publishPanel}),
 h("button",{class:"btn ghost",type:"button",text:"Supprimer",disabled:busy||!selected.id||(selected.legacy&&!selected.publishedMessageId),title:selected.legacy&&!selected.publishedMessageId?"Publie d’abord ce panneau pour pouvoir le supprimer.":"",onclick:deletePanel})
 ]);
@@ -939,10 +939,11 @@ previousSelection=selected;selected=blankPanel();changed=true;DIRTY=true;step=0;
 }
 function savePanel(){
 if(!selected||busy)return Promise.resolve();
-busy=true;status.textContent="Enregistrement…";
-var method=selected.id?"PUT":"POST",url=selected.id?base+"/"+selected.id:base;
+var updating=!!selected.id;
+busy=true;status.textContent=updating?"Modification…":"Enregistrement…";
+var method=updating?"PUT":"POST",url=updating?base+"/"+selected.id:base;
 return api(url,{method:method,headers:{"Content-Type":"application/json"},body:JSON.stringify({panel:selected,preserveQuestions:selected.legacy&&!selected.questionsEdited})})
-.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent="Panneau enregistré.";toast("Panneau enregistré ✓");if(creationModal)closeNewPanelModal(true)})
+.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent=updating?"Panneau modifié.":"Panneau enregistré.";toast(updating?"Panneau modifié ✓":"Panneau enregistré ✓");if(creationModal)closeNewPanelModal(true)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true);status.textContent=ticketError(e)})
 .then(function(){busy=false;draw()})
 }
