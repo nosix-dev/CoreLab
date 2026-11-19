@@ -255,7 +255,8 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .pvcol{position:sticky;top:calc(var(--nav) + 20px);padding:14px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
 .pvcol .pv{width:100%;margin:0 0 10px;background:var(--bg)}
 .pvcol .btn{width:100%}
-.ticket-panels{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.ticket-panels{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:0 0 18px}
+.ticket-panels .btn{width:100%;max-width:440px;justify-content:flex-start;text-align:left}
 .ticket-panels .btn.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .ticket-editor{display:grid;grid-template-columns:190px minmax(0,1fr) minmax(0,340px);gap:18px;align-items:start}
 .ticket-steps{display:grid;gap:6px;position:sticky;top:calc(var(--nav) + 18px)}
@@ -764,12 +765,14 @@ api("/api/guilds/"+G.id+"/commands").then(function(d){items=d.commands||[];DIRTY
 function ticketsView(c,G){
 c.classList.add("wide");
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"🎫 Tickets"}));
-c.appendChild(h("p",{class:"lead",text:"Crée plusieurs panneaux et configure leur publication, leurs questions, les rôles d’accès, l’équipe et les transcriptions."}));
+c.appendChild(h("p",{class:"lead",text:"Sélectionne un panneau dans la liste pour le modifier, ou crée un nouveau panneau."}));
 var base="/api/guilds/"+G.id+"/ticket-panels",panels=[],selected=null,step=0,changed=false,busy=false,previewMode="panel";
-var tabs=h("div",{class:"ticket-panels"}),editor=h("div"),status=h("span",{class:"h"}),creationModal=null,previousSelection=null,creationKeyHandler=null;
+var tabs=h("div",{class:"ticket-panels"}),editor=h("div"),status=h("span",{class:"h"}),listStatus=h("p",{class:"h"}),creationModal=null,previousSelection=null,creationKeyHandler=null,editingExisting=false;
 var add=h("button",{class:"btn sm",type:"button",text:"＋ Nouveau panneau",onclick:newPanel});
+var modify=h("button",{class:"btn",type:"button",text:"Modifier",disabled:true,onclick:openSelectedPanel});
 c.appendChild(h("div",{style:"display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px"},[tabs,add]));
-c.appendChild(status);c.appendChild(editor);
+c.appendChild(listStatus);
+c.appendChild(h("div",{class:"ticket-actions"},[modify]));
 var stepNames=["Général","Message du panel","Bouton d’ouverture","Qui peut ouvrir","Questions","Message d’accueil","Équipe & prise en charge","Transcripts & logs"];
 function blankPanel(){return{name:"Nouveau panneau",channelId:"",categoryId:"",layout:"button",title:"Support",description:"Clique sur le bouton ci-dessous pour ouvrir un ticket.",color:"#e8510d",footerText:"",statusLine:"",buttonLabel:"Ouvrir un ticket",buttonEmoji:"🎫",openRoleIds:[],questions:[],openTitle:"",openDescription:"",staffRoleIds:[],claimEnabled:false,logChannelId:"",transcriptsEnabled:true,reasons:[{label:"Support",value:"support",description:"",emoji:"🎫",color:"blurple",categoryId:""}]}}
 function ticketError(e){
@@ -901,41 +904,48 @@ stepNames.forEach(function(name,index){stepNav.appendChild(h("button",{type:"but
 editor.appendChild(h("div",{class:"ticket-editor"},[stepNav,stepContent,preview]));
 renderStep();drawPreview();
 var actions=h("div",{class:"ticket-actions"},[
-h("button",{class:"btn",type:"button",text:busy?(selected.id?"Modification…":"Enregistrement…"):(selected.id?"Modifier":"Enregistrer"),title:selected.id?"Enregistrer les modifications du panneau":"Enregistrer le nouveau panneau",disabled:busy,onclick:savePanel}),
+h("button",{class:"btn",type:"button",text:busy?"Enregistrement…":(selected.id?"Enregistrer les modifications":"Enregistrer"),title:selected.id?"Enregistrer les modifications du panneau":"Enregistrer le nouveau panneau",disabled:busy,onclick:savePanel}),
 h("button",{class:"btn ghost",type:"button",text:"Publier / mettre à jour le panneau",disabled:busy||!selected.id,onclick:publishPanel}),
 h("button",{class:"btn ghost",type:"button",text:"Supprimer",disabled:busy||!selected.id||(selected.legacy&&!selected.publishedMessageId),title:selected.legacy&&!selected.publishedMessageId?"Publie d’abord ce panneau pour pouvoir le supprimer.":"",onclick:deletePanel})
 ]);
 editor.appendChild(actions)
 }
-function closeNewPanelModal(saved){
+function closePanelModal(saved){
 if(!creationModal)return;
-if(!saved&&(busy||!confirm("Abandonner la création de ce panneau ?")))return;
+if(!saved&&(busy||!confirm(editingExisting?"Abandonner les modifications de ce panneau ?":"Abandonner la création de ce panneau ?")))return;
 document.removeEventListener("keydown",creationKeyHandler);
-c.insertBefore(status,creationModal);c.insertBefore(editor,creationModal);creationModal.remove();
+creationModal.remove();
 creationModal=null;creationKeyHandler=null;
-if(!saved){selected=previousSelection;changed=false;DIRTY=anyPend();step=0;status.textContent="";draw()}
-previousSelection=null
+if(!saved){selected=previousSelection;changed=false;DIRTY=anyPend();step=0;status.textContent=""}
+previousSelection=null;editingExisting=false;draw()
 }
-function openNewPanelModal(){
+function openPanelModal(){
 creationModal=h("div",{class:"jov",role:"dialog","aria-modal":"true"});
-var close=h("button",{class:"jx",type:"button","aria-label":"Fermer","text":"✕",onclick:function(){closeNewPanelModal(false)}}),body=h("div",{class:"ticket-create-body"});
+var close=h("button",{class:"jx",type:"button","aria-label":"Fermer","text":"✕",onclick:function(){closePanelModal(false)}}),body=h("div",{class:"ticket-create-body"});
 creationModal.appendChild(h("div",{class:"ticket-create-modal"},[
-h("div",{class:"ticket-create-head"},[h("div",{},[h("b",{text:"Créer un panneau de tickets"}),h("span",{text:"Configure les étapes, puis enregistre le panneau avant de le publier."})]),close]),
+h("div",{class:"ticket-create-head"},[h("div",{},[h("b",{text:editingExisting?"Modifier le panneau de tickets":"Créer un panneau de tickets"}),h("span",{text:editingExisting?"Modifie les réglages, puis clique sur « Enregistrer les modifications ».":"Configure les étapes, puis enregistre le panneau avant de le publier."})]),close]),
 body
 ]));
 body.appendChild(status);body.appendChild(editor);
-creationModal.addEventListener("click",function(event){if(event.target===creationModal)closeNewPanelModal(false)});
-creationKeyHandler=function(event){if(event.key==="Escape")closeNewPanelModal(false)};
+creationModal.addEventListener("click",function(event){if(event.target===creationModal)closePanelModal(false)});
+creationKeyHandler=function(event){if(event.key==="Escape")closePanelModal(false)};
 document.addEventListener("keydown",creationKeyHandler);c.appendChild(creationModal)
+}
+function openSelectedPanel(){
+if(!selected||busy)return;
+previousSelection=selected;selected=JSON.parse(JSON.stringify(selected));editingExisting=true;changed=false;step=0;status.textContent="";
+openPanelModal();renderEditor()
 }
 function renderTabs(){
 tabs.innerHTML="";
-panels.forEach(function(panel){tabs.appendChild(h("button",{class:"btn ghost sm"+(selected&&selected.id===panel.id?" on":""),type:"button",text:panel.name||"Panneau",onclick:function(){if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;selected=panel;changed=false;DIRTY=anyPend();step=0;status.textContent="";renderTabs();renderEditor()}}))})
+if(!panels.length)tabs.appendChild(h("p",{class:"muted",text:"Aucun panneau de tickets. Crée un panneau pour commencer."}));
+panels.forEach(function(panel){tabs.appendChild(h("button",{class:"btn ghost sm"+(selected&&selected.id===panel.id?" on":""),type:"button",text:panel.name||"Panneau",onclick:function(){if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;selected=panel;changed=false;DIRTY=anyPend();step=0;status.textContent="";draw()}}))})
+modify.disabled=!selected||busy
 }
-function draw(){renderTabs();renderEditor()}
+function draw(){renderTabs()}
 function newPanel(){
 if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;
-previousSelection=selected;selected=blankPanel();changed=true;DIRTY=true;step=0;status.textContent="Nouveau panneau — complète les réglages puis enregistre.";openNewPanelModal();draw()
+previousSelection=selected;selected=blankPanel();changed=true;DIRTY=true;step=0;editingExisting=false;status.textContent="Nouveau panneau — complète les réglages puis enregistre.";openPanelModal();renderEditor()
 }
 function savePanel(){
 if(!selected||busy)return Promise.resolve();
@@ -943,7 +953,7 @@ var updating=!!selected.id;
 busy=true;status.textContent=updating?"Modification…":"Enregistrement…";
 var method=updating?"PUT":"POST",url=updating?base+"/"+selected.id:base;
 return api(url,{method:method,headers:{"Content-Type":"application/json"},body:JSON.stringify({panel:selected,preserveQuestions:selected.legacy&&!selected.questionsEdited})})
-.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent=updating?"Panneau modifié.":"Panneau enregistré.";toast(updating?"Panneau modifié ✓":"Panneau enregistré ✓");if(creationModal)closeNewPanelModal(true)})
+.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent=updating?"Panneau modifié.":"Panneau enregistré.";toast(updating?"Panneau modifié ✓":"Panneau enregistré ✓");if(creationModal)closePanelModal(true)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true);status.textContent=ticketError(e)})
 .then(function(){busy=false;draw()})
 }
@@ -957,12 +967,12 @@ api(base+"/"+selected.id+"/publish",{method:"POST"}).then(function(data){selecte
 }
 function deletePanel(){
 if(!selected||!selected.id||!confirm("Supprimer ce panneau et retirer son message publié ?"))return;
-busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=panels.filter(function(p){return p.id!==selected.id});selected=null;changed=false;DIRTY=anyPend();status.textContent="Panneau supprimé.";toast("Panneau supprimé ✓")})
+busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=panels.filter(function(p){return p.id!==selected.id});selected=null;changed=false;DIRTY=anyPend();status.textContent="Panneau supprimé.";toast("Panneau supprimé ✓");if(creationModal)closePanelModal(true)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(ticketError(e),true)})
 .then(function(){busy=false;draw()})
 }
-api(base).then(function(data){panels=data.panels||[];selected=panels[0]||null;draw()})
-.catch(function(e){if(e&&e.message==="auth")return;editor.appendChild(h("p",{class:"err",text:ticketError(e)}))})
+api(base).then(function(data){panels=data.panels||[];selected=null;listStatus.textContent="";draw()})
+.catch(function(e){if(e&&e.message==="auth")return;listStatus.className="err";listStatus.textContent=ticketError(e)})
 }
 
 var CARD_LOOK=/(^|[._])(style|look|theme|template|design|layout|preset|modele)/i;
