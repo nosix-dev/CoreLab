@@ -255,6 +255,32 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .pvcol{position:sticky;top:calc(var(--nav) + 20px);padding:14px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
 .pvcol .pv{width:100%;margin:0 0 10px;background:var(--bg)}
 .pvcol .btn{width:100%}
+.ticket-panels{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.ticket-panels .btn.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.ticket-editor{display:grid;grid-template-columns:190px minmax(0,1fr) minmax(0,340px);gap:18px;align-items:start}
+.ticket-steps{display:grid;gap:6px;position:sticky;top:calc(var(--nav) + 18px)}
+.ticket-steps button{text-align:left;padding:10px 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--mu);cursor:pointer}
+.ticket-steps button.on{background:rgba(88,101,242,.16);border-color:rgba(88,101,242,.5);color:#8ab4ff}
+.ticket-step-content,.ticket-preview{padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);min-width:0}
+.ticket-step-content{display:grid;gap:14px}
+.ticket-field{display:grid;gap:6px;color:var(--mu);font-size:13px}
+.ticket-field input,.ticket-field textarea,.ticket-field select,.ticket-reason input,.ticket-reason textarea,.ticket-question input,.ticket-question select{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--bg);color:var(--tx)}
+.ticket-field textarea{min-height:84px;resize:vertical}
+.ticket-reason,.ticket-question{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;padding:12px;border:1px solid var(--ln);border-radius:12px}
+.ticket-question{grid-template-columns:1fr 1fr 120px auto}
+.ticket-preview{position:sticky;top:calc(var(--nav) + 18px)}
+.ticket-preview-tabs{display:flex;gap:6px;margin-top:10px;padding:4px;border:1px solid var(--ln);border-radius:8px}
+.ticket-preview-tabs button{flex:1;padding:7px;border:0;border-radius:6px;background:transparent;color:var(--mu);cursor:pointer}
+.ticket-preview-tabs button.on{background:#12243a;color:#8ab4ff}
+.ticket-preview-card{margin-top:12px;padding:14px;border-left:4px solid #e8510d;border-radius:8px;background:#313338;color:#dbdee1;min-height:130px}
+.ticket-preview-card h3{margin:0 0 8px;color:#fff;font-size:16px}
+.ticket-preview-card p{white-space:pre-wrap;overflow-wrap:anywhere;color:#dbdee1;font-size:13px}
+.ticket-preview-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ticket-preview-actions span{padding:7px 10px;border-radius:6px;background:#5865f2;color:#fff;font-size:12px}
+.ticket-check{display:flex;align-items:center;gap:9px;color:var(--mu)}
+.ticket-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:1100px){.ticket-editor{grid-template-columns:160px minmax(0,1fr)}.ticket-preview{grid-column:2;position:static}}
+@media(max-width:720px){.ticket-editor{grid-template-columns:1fr}.ticket-steps{position:static;display:flex;overflow:auto}.ticket-steps button{white-space:nowrap}.ticket-preview{grid-column:auto}.ticket-reason,.ticket-question{grid-template-columns:1fr}.ticket-panels{flex-wrap:nowrap;overflow:auto}}
 .live{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:12.5px;color:var(--mu)}
 .live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 3px rgba(59,165,93,.2)}
 .live.wait::before{background:var(--ac2);box-shadow:0 0 0 3px rgba(255,122,61,.2)}
@@ -467,7 +493,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -715,15 +741,193 @@ box.appendChild(row);
 if(!shown.length)box.appendChild(h("p",{class:"muted",text:"Aucune commande trouvée."}));
 }
 function collect(){var settings={};items.forEach(function(item){if(item.canToggle)settings[item.path]=item.enabled});return settings}
+function commandError(e){return e&&e.error==="not_found"?"L’API de gestion des commandes est absente du bot déployé. Redémarrez ou redéployez CoreLab avec la dernière version.":errText(e)}
 function save(){
 if(busy||!DIRTY)return;busy=true;saveButton.disabled=true;saveButton.textContent="Enregistrement…";
 api("/api/guilds/"+G.id+"/commands",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({settings:collect()})})
 .then(function(d){items=d.commands||items;DIRTY=false;toast("Réglages des commandes enregistrés ✓")})
-.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})
+.catch(function(e){if(e&&e.message==="auth")return;toast(commandError(e),true)})
 .then(function(){busy=false;saveButton.disabled=!DIRTY;saveButton.textContent="Enregistrer les changements";draw()});
 }
 search.addEventListener("input",draw);
-api("/api/guilds/"+G.id+"/commands").then(function(d){items=d.commands||[];DIRTY=false;draw()}).catch(function(e){box.innerHTML="";box.appendChild(h("p",{class:"err",text:errText(e)}))});
+api("/api/guilds/"+G.id+"/commands").then(function(d){items=d.commands||[];DIRTY=false;draw()}).catch(function(e){box.innerHTML="";box.appendChild(h("p",{class:"err",text:commandError(e)}))});
+}
+
+function ticketsView(c,G){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"🎫 Tickets"}));
+c.appendChild(h("p",{class:"lead",text:"Crée plusieurs panneaux et configure leur publication, leurs questions, les rôles d’accès, l’équipe et les transcriptions."}));
+var base="/api/guilds/"+G.id+"/ticket-panels",panels=[],selected=null,step=0,changed=false,busy=false,previewMode="panel";
+var tabs=h("div",{class:"ticket-panels"}),editor=h("div"),status=h("span",{class:"h"});
+var add=h("button",{class:"btn sm",type:"button",text:"＋ Nouveau panneau",onclick:newPanel});
+c.appendChild(h("div",{style:"display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px"},[tabs,add]));
+c.appendChild(status);c.appendChild(editor);
+var stepNames=["Général","Message du panel","Bouton d’ouverture","Qui peut ouvrir","Questions","Message d’accueil","Équipe & prise en charge","Transcripts & logs"];
+function blankPanel(){return{name:"Nouveau panneau",channelId:"",categoryId:"",layout:"button",title:"Support",description:"Clique sur le bouton ci-dessous pour ouvrir un ticket.",color:"#e8510d",footerText:"",statusLine:"",buttonLabel:"Ouvrir un ticket",buttonEmoji:"🎫",openRoleIds:[],questions:[],openTitle:"",openDescription:"",staffRoleIds:[],claimEnabled:false,logChannelId:"",transcriptsEnabled:true,reasons:[{label:"Support",value:"support",description:"",emoji:"🎫",color:"blurple",categoryId:""}]}}
+function mark(){changed=true;DIRTY=true;status.textContent="Modifications non enregistrées.";drawPreview()}
+function field(label,key,value,kind,options){
+var control;
+if(kind==="select"){control=h("select",{},(options||[]).map(function(o){return h("option",{value:o[0],text:o[1]})}));control.value=value||"";control.addEventListener("change",function(){selected[key]=control.value;mark();if(key==="layout")renderStep()})}
+else if(kind==="textarea"){control=h("textarea",{maxlength:key==="description"?3000:2000});control.value=value||"";control.addEventListener("input",function(){selected[key]=control.value;mark()})}
+else{control=h("input",{type:kind||"text",maxlength:key==="title"?256:300});control.value=value||"";control.addEventListener("input",function(){selected[key]=control.value;mark()})}
+return h("label",{class:"ticket-field"},[h("span",{text:label}),control])
+}
+function roleField(label,key){
+var roles=(META[G.id]&&META[G.id].roles)||[],sel=selected[key]||[],control=h("select",{multiple:true,size:Math.max(3,Math.min(6,roles.length))});
+roles.forEach(function(r){control.appendChild(h("option",{value:r.id,text:r.name,selected:sel.indexOf(r.id)>-1}))});
+control.addEventListener("change",function(){selected[key]=[].filter.call(control.options,function(o){return o.selected}).map(function(o){return o.value});mark()});
+return h("label",{class:"ticket-field"},[h("span",{text:label}),control,h("small",{class:"h",text:"Ctrl-clic (ou appui long sur mobile) pour choisir plusieurs rôles."})])
+}
+function checkbox(label,key){
+var cb=h("input",{type:"checkbox",checked:selected[key]===true});cb.addEventListener("change",function(){selected[key]=cb.checked;mark()});
+return h("label",{class:"ticket-check"},[cb,h("span",{text:label})])
+}
+function reasonsEditor(){
+var wrap=h("div",{},[h("h3",{text:"Motifs proposés"})]);
+selected.reasons.forEach(function(reason,index){
+var name=h("input",{type:"text",maxlength:80,placeholder:"Nom du motif"});name.value=reason.label||"";
+var desc=h("input",{type:"text",maxlength:100,placeholder:"Description"});desc.value=reason.description||"";
+var emoji=h("input",{type:"text",maxlength:50,placeholder:"Emoji"});emoji.value=reason.emoji||"";
+var color=h("select",{},[["blurple","Bleu"],["green","Vert"],["red","Rouge"],["grey","Gris"],["auto","Automatique"]].map(function(o){return h("option",{value:o[0],text:o[1]})}));color.value=reason.color||"blurple";
+var category=h("select",{},[["","Catégorie par défaut"]].concat(((META[G.id]&&META[G.id].categories)||[]).map(function(x){return[x.id,x.name]})).map(function(o){return h("option",{value:o[0],text:o[1]})}));category.value=reason.categoryId||"";
+name.addEventListener("input",function(){reason.label=name.value;mark()});desc.addEventListener("input",function(){reason.description=desc.value;mark()});emoji.addEventListener("input",function(){reason.emoji=emoji.value;mark()});color.addEventListener("change",function(){reason.color=color.value;mark()});category.addEventListener("change",function(){reason.categoryId=category.value;mark()});
+var remove=h("button",{class:"btn ghost sm",type:"button",text:"Retirer",disabled:selected.reasons.length<=1,onclick:function(){selected.reasons.splice(index,1);mark();renderStep()}});
+wrap.appendChild(h("div",{class:"ticket-reason"},[name,desc,emoji,color,category,remove]));
+});
+wrap.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"＋ Ajouter un motif",onclick:function(){if(selected.reasons.length>=25)return toast("25 motifs maximum.",true);selected.reasons.push({label:"Nouveau motif",value:"raison_"+(selected.reasons.length+1),description:"",emoji:"",color:"blurple",categoryId:""});if(selected.layout==="button")selected.layout="buttons";mark();renderStep()}}));
+return wrap
+}
+function questionsEditor(){
+var wrap=h("div",{},[h("h3",{text:"Questions posées avant l’ouverture"})]);
+if(selected.questionsVary&&!selected.questionsEdited)wrap.appendChild(h("p",{class:"h",text:"Ce panneau existant a des questions différentes selon le motif. Elles resteront intactes tant que tu ne modifies pas cette étape."}));
+(selected.questions||[]).forEach(function(question,index){
+var label=h("input",{type:"text",maxlength:45,placeholder:"Votre question"});label.value=question.label||"";
+var place=h("input",{type:"text",maxlength:100,placeholder:"Texte indicatif (optionnel)"});place.value=question.placeholder||"";
+var style=h("select",{},[["short","Réponse courte"],["paragraph","Réponse longue"]].map(function(o){return h("option",{value:o[0],text:o[1]})}));style.value=question.style||"short";
+var required=h("label",{class:"ticket-check"},[h("input",{type:"checkbox",checked:question.required!==false}),h("span",{text:"Obligatoire"})]);
+label.addEventListener("input",function(){question.label=label.value;selected.questionsEdited=true;mark()});place.addEventListener("input",function(){question.placeholder=place.value;selected.questionsEdited=true;mark()});style.addEventListener("change",function(){question.style=style.value;selected.questionsEdited=true;mark()});required.firstChild.addEventListener("change",function(){question.required=required.firstChild.checked;selected.questionsEdited=true;mark()});
+var remove=h("button",{class:"btn ghost sm",type:"button",text:"×",onclick:function(){selected.questions.splice(index,1);selected.questionsEdited=true;mark();renderStep()}});
+wrap.appendChild(h("div",{class:"ticket-question"},[label,place,style,required,remove]));
+});
+wrap.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"＋ Ajouter une question",onclick:function(){if(selected.questions.length>=50)return toast("50 questions maximum.",true);selected.questions.push({label:"Nouvelle question",placeholder:"",style:"short",required:true});selected.questionsEdited=true;mark();renderStep()}}));
+return wrap
+}
+var stepNav,stepContent,preview;
+function buildStep(){
+stepContent.innerHTML="";
+var addField=function(node){stepContent.appendChild(node)};
+if(step===0){
+addField(field("Nom du panneau","name",selected.name));
+addField(field("Salon de publication","channelId",selected.channelId,"select",[["","Sélectionner un salon"]].concat(((META[G.id]&&META[G.id].channels)||[]).map(function(x){return[x.id,"# "+x.name]}))));
+addField(field("Catégorie des tickets","categoryId",selected.categoryId,"select",[["","Sélectionner une catégorie"]].concat(((META[G.id]&&META[G.id].categories)||[]).map(function(x){return[x.id,x.name]}))));
+addField(field("Format du panneau","layout",selected.layout,"select",[["button","Bouton unique"],["buttons","Plusieurs boutons"],["select","Menu déroulant"]]));
+}else if(step===1){
+addField(field("Titre du panneau","title",selected.title));
+addField(field("Message visible par les membres","description",selected.description,"textarea"));
+addField(field("Couleur (hexadécimale)","color",selected.color,"color"));
+addField(field("Pied du panneau","footerText",selected.footerText));
+addField(field("Ligne de statut (optionnelle)","statusLine",selected.statusLine));
+}else if(step===2){
+if(selected.layout==="button"){addField(field("Texte du bouton","buttonLabel",selected.buttonLabel));addField(field("Emoji du bouton","buttonEmoji",selected.buttonEmoji))}
+addField(reasonsEditor());
+}else if(step===3){
+addField(h("p",{class:"h",text:"Sans rôle sélectionné, tout le monde peut ouvrir un ticket."}));
+addField(roleField("Rôles autorisés à ouvrir","openRoleIds"));
+}else if(step===4)addField(questionsEditor());
+else if(step===5){
+addField(field("Titre du message d’accueil","openTitle",selected.openTitle));
+addField(field("Message envoyé dans le ticket","openDescription",selected.openDescription,"textarea"));
+addField(h("p",{class:"h",text:"Variables disponibles : {membre} et {raison}. Laisse vide pour le message par défaut."}));
+}else if(step===6){
+addField(roleField("Équipe pouvant voir les tickets","staffRoleIds"));
+addField(checkbox("Ajouter le bouton « Prendre en charge »","claimEnabled"));
+}else{
+addField(field("Salon des logs de fermeture","logChannelId",selected.logChannelId,"select",[["","Aucun"]].concat(((META[G.id]&&META[G.id].channels)||[]).map(function(x){return[x.id,"# "+x.name]}))));
+addField(checkbox("Archiver la transcription et l’ajouter aux logs","transcriptsEnabled"));
+}
+}
+function renderStep(){
+[].forEach.call(stepNav.children,function(b,i){b.classList.toggle("on",i===step)});
+buildStep()
+}
+function drawPreview(){
+if(!preview||!selected)return;
+preview.innerHTML="";
+preview.appendChild(h("span",{class:"h",text:"APERÇU DISCORD"}));
+preview.appendChild(h("div",{class:"ticket-preview-tabs"},[
+h("button",{type:"button",class:previewMode==="panel"?"on":"",text:"Panel",onclick:function(){previewMode="panel";drawPreview()}}),
+h("button",{type:"button",class:previewMode==="home"?"on":"",text:"Accueil",onclick:function(){previewMode="home";drawPreview()}})
+]));
+if(previewMode==="home"){
+var homePreview=[
+h("div",{class:"h",text:"🔷 CoreLab · APP · Aujourd’hui"}),
+h("h3",{text:selected.openTitle||"🎫 Ticket – "+((selected.reasons[0]||{}).label||"Support")}),
+h("p",{text:selected.openDescription||"Merci ! Le membre verra ici le récapitulatif de ses réponses."})
+];
+(selected.questions||[]).slice(0,5).forEach(function(q){homePreview.push(h("small",{class:"h",text:"❓ "+q.label}))});
+preview.appendChild(h("div",{class:"ticket-preview-card",style:"border-left-color:"+selected.color},homePreview));
+}else{
+preview.appendChild(h("div",{class:"ticket-preview-card",style:"border-left-color:"+selected.color},[
+h("div",{class:"h",text:"🔷 CoreLab · APP · Aujourd’hui"}),
+h("h3",{text:selected.title||"Support"}),
+h("p",{text:[selected.description,selected.statusLine].filter(Boolean).join("\n\n")||" "}),
+selected.footerText?h("small",{class:"h",text:selected.footerText}):null,
+h("div",{class:"ticket-preview-actions"},selected.layout==="select"
+?[h("span",{text:"☷ "+(selected.reasons.length>1?"Choisir un motif":selected.reasons[0].label)})]
+:selected.layout==="button"
+?[h("span",{text:(selected.buttonEmoji||"🎫")+" "+(selected.buttonLabel||"Ouvrir un ticket")})]
+:(selected.reasons||[]).map(function(r){return h("span",{text:(r.emoji?r.emoji+" ":"")+r.label})}))
+]));
+}
+}
+function renderEditor(){
+editor.innerHTML="";
+if(!selected){editor.appendChild(h("div",{class:"empty",text:"Crée un panneau pour commencer."}));return}
+stepNav=h("div",{class:"ticket-steps"});stepContent=h("div",{class:"ticket-step-content"});preview=h("div",{class:"ticket-preview"});
+stepNames.forEach(function(name,index){stepNav.appendChild(h("button",{type:"button",class:index===step?"on":"",text:(index+1)+"  "+name,onclick:function(){step=index;renderStep()}}))});
+editor.appendChild(h("div",{class:"ticket-editor"},[stepNav,stepContent,preview]));
+renderStep();drawPreview();
+var actions=h("div",{class:"ticket-actions"},[
+h("button",{class:"btn",type:"button",text:busy?"Enregistrement…":"Enregistrer",disabled:busy,onclick:savePanel}),
+h("button",{class:"btn ghost",type:"button",text:"Publier / mettre à jour le panneau",disabled:busy||!selected.id,onclick:publishPanel}),
+h("button",{class:"btn ghost",type:"button",text:"Supprimer",disabled:busy||!selected.id||(selected.legacy&&!selected.publishedMessageId),title:selected.legacy&&!selected.publishedMessageId?"Publie d’abord ce panneau pour pouvoir le supprimer.":"",onclick:deletePanel})
+]);
+editor.appendChild(actions)
+}
+function renderTabs(){
+tabs.innerHTML="";
+panels.forEach(function(panel){tabs.appendChild(h("button",{class:"btn ghost sm"+(selected&&selected.id===panel.id?" on":""),type:"button",text:panel.name||"Panneau",onclick:function(){if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;selected=panel;changed=false;DIRTY=anyPend();step=0;status.textContent="";renderTabs();renderEditor()}}))})
+}
+function draw(){renderTabs();renderEditor()}
+function newPanel(){
+if(changed&&!confirm("Abandonner les changements non enregistrés ?"))return;
+selected=blankPanel();changed=true;DIRTY=true;step=0;status.textContent="Nouveau panneau — enregistre-le pour créer le brouillon.";draw()
+}
+function savePanel(){
+if(!selected||busy)return Promise.resolve();
+busy=true;status.textContent="Enregistrement…";
+var method=selected.id?"PUT":"POST",url=selected.id?base+"/"+selected.id:base;
+return api(url,{method:method,headers:{"Content-Type":"application/json"},body:JSON.stringify({panel:selected,preserveQuestions:selected.legacy&&!selected.questionsEdited})})
+.then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx<0)panels.push(selected);else panels[idx]=selected;changed=false;DIRTY=anyPend();status.textContent="Panneau enregistré.";toast("Panneau enregistré ✓")})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);status.textContent=errText(e)})
+.then(function(){busy=false;draw()})
+}
+function publishPanel(){
+var before=changed||!selected.id;
+(before?savePanel():Promise.resolve()).then(function(){if(!selected||!selected.id||changed)return;
+busy=true;status.textContent="Publication en cours…";
+api(base+"/"+selected.id+"/publish",{method:"POST"}).then(function(data){selected=data.panel;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx>-1)panels[idx]=selected;status.textContent="Panneau publié dans Discord.";toast("Panneau publié ✓")})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);status.textContent=errText(e)})
+.then(function(){busy=false;draw()})})
+}
+function deletePanel(){
+if(!selected||!selected.id||!confirm("Supprimer ce panneau et retirer son message publié ?"))return;
+busy=true;api(base+"/"+selected.id,{method:"DELETE"}).then(function(){panels=panels.filter(function(p){return p.id!==selected.id});selected=null;changed=false;DIRTY=anyPend();status.textContent="Panneau supprimé.";toast("Panneau supprimé ✓")})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)})
+.then(function(){busy=false;draw()})
+}
+api(base).then(function(data){panels=data.panels||[];selected=panels[0]||null;draw()})
+.catch(function(e){if(e&&e.message==="auth")return;editor.appendChild(h("p",{class:"err",text:errText(e)}))})
 }
 
 var CARD_LOOK=/(^|[._])(style|look|theme|template|design|layout|preset|modele)/i;
