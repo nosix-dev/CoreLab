@@ -787,6 +787,9 @@ fetch(API+base+"/"+panelId+"/image",{headers:{Authorization:"Bearer "+token}})
 function bannerEditor(){
 var wrap=h("div",{},[h("h3",{text:"Image de bannière"}),h("p",{class:"h",text:"Ajoute une image au panneau publié dans Discord (PNG, JPG, GIF ou WebP · 8 Mo maximum)."})]);
 if(!selected.id){wrap.appendChild(h("p",{class:"h",text:"Enregistre d’abord le panneau, puis rouvre-le pour ajouter une image."}));return wrap}
+var hasCustomization=!!(META[G.id]&&META[G.id].premium);
+if(!hasCustomization)wrap.appendChild(h("p",{class:"h",text:"🔒 Fonction réservée à l’abonnement Personnalisation ou Total. Abonne-toi avec /premium sur le serveur Discord."}));
+else{
 var input=h("input",{type:"file",accept:"image/png,image/jpeg,image/gif,image/webp",disabled:busy});
 input.addEventListener("change",function(){
 var file=input.files&&input.files[0];if(!file)return;
@@ -800,6 +803,7 @@ api(base+"/"+selected.id+"/image",{method:"POST",body:file})
 .then(function(){busy=false;draw();if(creationModal)renderStep()})
 });
 wrap.appendChild(h("label",{class:"ticket-field"},[h("span",{text:"Choisir ou remplacer l’image"}),input]));
+}
 if(selected.bannerImageFile)wrap.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"Retirer l’image",disabled:busy,onclick:function(){
 busy=true;status.textContent="Suppression de la bannière…";
 api(base+"/"+selected.id+"/image",{method:"DELETE"}).then(function(){selected.bannerImageFile=null;var idx=panels.findIndex(function(p){return p.id===selected.id});if(idx>-1)delete panels[idx].bannerImageFile;clearBannerPreview();status.textContent="Bannière retirée. Publie le panneau pour appliquer la modification dans Discord.";toast("Bannière retirée ✓");renderStep();drawPreview()})
@@ -811,6 +815,7 @@ return wrap
 function ticketError(e){
 if(e&&e.error==="not_found")return "L’API des panneaux n’est pas présente sur le bot déployé. Redéploie/redémarre CoreLab avec la dernière version, puis recharge le dashboard.";
 if(e&&e.error==="panel_not_found")return "Ce panneau n’existe plus côté bot. Recharge la page et réessaie.";
+if(e&&e.error==="premium")return "L’ajout d’une bannière est réservé à l’abonnement Personnalisation ou Total.";
 return errText(e)
 }
 function mark(){changed=true;DIRTY=true;status.textContent="Modifications non enregistrées.";drawPreview()}
@@ -1057,7 +1062,47 @@ moduleView(c,G,mid)
 hpAction.addEventListener("click",function(){runHoneypotAction(hpAction.dataset.action)});
 hpRefresh.addEventListener("click",function(){runHoneypotAction("refresh")});
 updateHoneypotControls();
-c.appendChild(h("div",{class:"hp-setup"},[hpInfo,h("div",{class:"hp-setup-actions"},[hpAction,hpRefresh,hpOpen])]))
+c.appendChild(h("div",{class:"hp-setup"},[hpInfo,h("div",{class:"hp-setup-actions"},[hpAction,hpRefresh,hpOpen])]));
+var hpMediaBox=h("div",{class:"hp-setup",style:"align-items:flex-start"});
+hpMediaBox.appendChild(h("div",{},[
+h("b",{text:"Images du message Components V2"}),
+h("p",{class:"h",text:"Bannière et miniature propres à ce serveur · PNG, JPG, GIF ou WebP · 8 Mo maximum."})
+]));
+function hpMediaControl(kind,label){
+var endpoint="/api/guilds/"+G.id+"/honeypot-media/"+kind,status=h("span",{class:"h",text:"Chargement…"});
+var remove=h("button",{class:"btn ghost sm",type:"button",text:"Retirer",disabled:true});
+var input=h("input",{type:"file",accept:"image/png,image/jpeg,image/gif,image/webp",style:"display:none"});
+var actions=h("div",{class:"hp-setup-actions"});
+function refresh(){
+api(endpoint).then(function(data){status.textContent=data.has?"Image personnalisée : "+data.ext.toUpperCase():"Aucune image personnalisée.";remove.disabled=!data.has})
+.catch(function(e){if(e&&e.message==="auth")return;status.textContent="Impossible de vérifier l’image.";remove.disabled=true})
+}
+if(d.premium){
+actions.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"Choisir une image",onclick:function(){input.click()}}));
+actions.appendChild(input);
+input.addEventListener("change",function(){
+var file=input.files&&input.files[0];input.value="";if(!file)return;
+if(file.size>8*1024*1024){toast("Image trop lourde (8 Mo maximum).",true);return}
+if(!/^image\/(png|jpeg|gif|webp)$/i.test(file.type)){toast("Choisis une image PNG, JPG, GIF ou WebP.",true);return}
+status.textContent="Envoi et actualisation du message…";remove.disabled=true;
+api(endpoint,{method:"POST",body:file}).then(function(){toast(label+" enregistrée et appliquée ✓");refresh()})
+.catch(function(e){if(e&&e.message==="auth")return;toast(e&&e.error==="premium"?"L’ajout d’images est réservé à l’abonnement Personnalisation ou Total.":errText(e),true);refresh()})
+});
+}else{
+actions.appendChild(h("span",{class:"h",text:"🔒 Réservé à l’abonnement Personnalisation ou Total."}));
+}
+remove.addEventListener("click",function(){
+remove.disabled=true;status.textContent="Retrait et actualisation du message…";
+api(endpoint,{method:"DELETE"}).then(function(){toast(label+" retirée ✓");refresh()})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true);refresh()})
+});
+actions.appendChild(remove);
+var item=h("div",{style:"min-width:220px;flex:1"},[h("b",{text:label}),status,actions]);
+refresh();return item
+}
+hpMediaBox.appendChild(hpMediaControl("banner","Bannière"));
+hpMediaBox.appendChild(hpMediaControl("thumbnail","Miniature"));
+c.appendChild(hpMediaBox)
 }
 if(isCard){c.classList.add("wide");
 var split=h("div",{class:"pvsplit"}),colR=h("div",{class:"pvcol"}),LIVE="Aperçu en direct · rien n’est appliqué avant « Enregistrer »";colL=h("div",{class:"pvmain"});split.appendChild(colL);split.appendChild(colR);c.appendChild(split);
