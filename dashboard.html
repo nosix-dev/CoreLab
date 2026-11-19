@@ -124,6 +124,9 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .gtx{min-width:0;display:flex;flex-direction:column}.gtx b{font-size:14px}.gtx em{font-style:normal;font-size:12.5px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gbt{display:flex;gap:8px;flex:none}
 @media(max-width:600px){.gsave{border-radius:18px;flex-direction:column;align-items:stretch;padding:12px 14px}.gbt{justify-content:flex-end}}
+.cmd-save-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:39;display:none;justify-content:center;pointer-events:none}
+.cmd-save-dock.show{display:flex}.cmd-save-dock .btn{pointer-events:auto;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+@media(max-width:600px){.cmd-save-dock{bottom:12px;width:calc(100% - 24px)}.cmd-save-dock .btn{width:100%}}
 
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;background:var(--s2);border:1px solid var(--ln);padding:12px 20px;border-radius:999px;font-size:14px;transition:.3s;z-index:40;pointer-events:none;max-width:92vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}.toast.bad{border-color:#ff6b5e}
@@ -725,13 +728,14 @@ c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Personnalisation des 
 c.appendChild(h("p",{class:"lead",text:"Activez ou désactivez les commandes slash et les commandes à préfixe sur ce serveur."}));
 var search=h("input",{class:"find",type:"search",placeholder:"Rechercher une commande…","aria-label":"Rechercher une commande",style:"display:block;max-width:420px;margin:0 0 14px"});
 var summary=h("p",{class:"muted",style:"margin:0 0 12px"}),box=h("div",{class:"cmd-list"}),busy=false,items=[];
-var saveButton=h("button",{class:"btn",type:"button",text:"Enregistrer les changements",disabled:true,onclick:save});
-c.appendChild(summary);c.appendChild(search);c.appendChild(box);c.appendChild(h("div",{style:"margin-top:16px"},saveButton));
-function visibleItems(){var q=search.value.trim().toLowerCase();return items.filter(function(item){return (item.path+" "+item.name+" "+item.description).toLowerCase().indexOf(q)>-1})}
-function setDirty(){DIRTY=true;saveButton.disabled=busy;saveButton.textContent=busy?"Enregistrement…":"Enregistrer les changements"}
+var saveButton=h("button",{class:"btn",type:"button",text:"Enregistrer les changements",disabled:true,onclick:save}),saveDock=h("div",{class:"cmd-save-dock"},saveButton);
+c.appendChild(summary);c.appendChild(search);c.appendChild(box);c.appendChild(saveDock);
+function dashboardItems(){return items.filter(function(item){return item.type!=="prefix"||item.path==="prefix:aide"})}
+function visibleItems(){var q=search.value.trim().toLowerCase();return dashboardItems().filter(function(item){return (item.path+" "+item.name+" "+item.description).toLowerCase().indexOf(q)>-1})}
+function setDirty(){DIRTY=true;saveDock.classList.add("show");saveButton.disabled=busy;saveButton.textContent=busy?"Enregistrement…":"Enregistrer les changements"}
 function draw(){
 box.innerHTML="";
-var shown=visibleItems(),enabledCount=items.filter(function(item){return item.canToggle&&item.enabled}).length,total=items.filter(function(item){return item.canToggle}).length;
+var shown=visibleItems(),visible=dashboardItems(),enabledCount=visible.filter(function(item){return item.canToggle&&item.enabled}).length,total=visible.filter(function(item){return item.canToggle}).length;
 summary.textContent=enabledCount+" commande"+(enabledCount>1?"s":"")+" active"+(enabledCount>1?"s":"")+" sur "+total;
 shown.forEach(function(item){
 var parts=item.path.split("/"),row=h("div",{class:"cmd-item"+(parts.length>1?" child":"")});
@@ -756,7 +760,7 @@ if(busy||!DIRTY)return;busy=true;saveButton.disabled=true;saveButton.textContent
 api("/api/guilds/"+G.id+"/commands",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({settings:collect()})})
 .then(function(d){items=d.commands||items;DIRTY=false;toast("Réglages des commandes enregistrés ✓")})
 .catch(function(e){if(e&&e.message==="auth")return;toast(commandError(e),true)})
-.then(function(){busy=false;saveButton.disabled=!DIRTY;saveButton.textContent="Enregistrer les changements";draw()});
+.then(function(){busy=false;saveButton.disabled=!DIRTY;saveButton.textContent="Enregistrer les changements";if(!DIRTY)saveDock.classList.remove("show");draw()});
 }
 search.addEventListener("input",draw);
 api("/api/guilds/"+G.id+"/commands").then(function(d){items=d.commands||[];DIRTY=false;draw()}).catch(function(e){box.innerHTML="";box.appendChild(h("p",{class:"err",text:commandError(e)}))});
