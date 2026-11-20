@@ -459,6 +459,34 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .rad-c{display:flex;justify-content:space-between;width:100%;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:var(--tx);cursor:pointer;font:inherit;font-size:14px}
 .rad-c:hover{background:var(--s2)}.rad-c.on{background:rgba(232,81,13,.16)}.rad-c b{font-variant-numeric:tabular-nums}
 @media(max-width:900px){.rad-g{grid-template-columns:1fr}}
+/* ---- Look « panneau latéral » ---- */
+.gh{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--ln);border-radius:16px;background:var(--s1);margin:0 0 14px;transition:border-color .15s}
+.gh:hover{border-color:var(--mu)}
+.ghx{min-width:0}.ghx b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}.ghx span{font-size:12.5px;color:var(--mu)}
+.gha{margin-left:auto;color:var(--mu);font-size:12px}
+.gl{font-size:14px;font-weight:600;letter-spacing:0;color:var(--tx);margin:12px 0 2px}
+.glc{display:none}
+.ng .nl{margin:2px 0 0 18px;padding-left:8px;border-left:1px solid var(--ln);gap:2px}
+.side nav a{position:relative;padding:9px 12px;border-radius:10px;font-size:14px}
+.side nav a.on,.side nav a.sv.on{background:var(--s2);color:var(--tx);font-weight:600;box-shadow:none}
+.side nav a.on::before{content:"";position:absolute;left:-9px;top:7px;bottom:7px;width:2px;border-radius:2px;background:var(--ac2)}
+.sfoot{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:12px;border-top:1px solid var(--ln)}
+.sfoot img{width:36px;height:36px;border-radius:50%}
+.sfx{min-width:0;flex:1}.sfx b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sfx span{font-size:12px;color:var(--mu)}
+.sfb{border:0;background:transparent;color:var(--mu);font-size:16px;cursor:pointer;padding:6px 8px;border-radius:8px}.sfb:hover{background:var(--s2);color:var(--tx)}
+.ph-ic{width:48px;height:48px;border:1px solid var(--ln);border-radius:14px;display:grid;place-items:center;margin:0 0 18px;background:var(--s1);color:var(--tx)}
+.ph-ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+h2.t{font-size:clamp(30px,3.4vw,40px)}
+.lead{font-size:16px}
+@media(min-width:901px){
+body.hs .bar{max-width:none}
+body.hs main{max-width:none;padding:0}
+body.hs .dash{display:block;padding:0}
+body.hs .side{position:fixed;top:calc(var(--nav) + env(safe-area-inset-top,0px));left:0;bottom:0;width:280px;max-height:none;padding:16px 14px 12px;border-right:1px solid var(--ln);background:var(--bg);display:flex;flex-direction:column;overflow:hidden;z-index:10}
+body.hs .side nav{flex:1;min-height:0;overflow-y:auto}
+body.hs .content,body.hs .content.wide{max-width:none;margin-left:280px;padding:34px max(40px,calc((100vw - 280px - 1080px)/2)) 100px}
+}
+@media(max-width:900px){.sfoot{display:none}.side nav a.on::before{display:none}}
 </style>
 <link rel="stylesheet" href="fx.css">
 </head>
@@ -507,14 +535,14 @@ if(ME){hr.appendChild(h("div",{class:"user"},[ME.user.avatar?h("img",{src:"https
 hr.appendChild(h("button",{class:"btn ghost sm",onclick:function(){logout()},text:"Déconnexion"}))}}
 
 var LOGIN_MSG={state:"La session de connexion a expiré (le bot était peut-être endormi). Réessayez.",denied:"La connexion a été annulée ou refusée sur Discord.",login:"Discord a refusé la connexion. Réessayez, ou prévenez le support si ça continue."};
-function viewLogin(){app.innerHTML="";
+function viewLogin(){document.body.classList.remove("hs");app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[
 h("h1",{text:"Gérez CoreLab depuis votre navigateur."}),
 h("p",{text:"Connectez-vous avec Discord pour configurer le bot sur les serveurs que vous administrez."}),
 h("a",{class:"btn",href:API+"/auth/login",text:"Se connecter avec Discord"}),
 LOGIN_ERR?h("p",{class:"err",text:LOGIN_MSG[LOGIN_ERR]||LOGIN_MSG.login}):null])))}
 
-function viewServers(){app.innerHTML="";
+function viewServers(){document.body.classList.remove("hs");app.innerHTML="";
 app.appendChild(h("h2",{class:"t",text:"Vos serveurs"}));
 app.appendChild(h("p",{class:"lead",text:"Choisissez le serveur à configurer."}));
 if(!ME.guilds.length){app.appendChild(h("p",{class:"muted",text:"Aucun serveur où vous avez la permission « Gérer le serveur »."}));return}
@@ -525,15 +553,15 @@ var card=s.botIn?h("a",{class:"sc",href:"#/g/"+s.id},[icon(s.id,s.icon,s.name),h
 :h("div",{class:"sc"},[icon(s.id,s.icon,s.name),h("div",{},[h("b",{text:s.name}),h("span",{text:"Bot absent"})]),h("a",{class:"btn sm ghost",href:inv,target:"_blank",rel:"noopener",text:"Inviter"})]);
 g.appendChild(card)});app.appendChild(g)}
 
-function viewGuild(r){app.innerHTML="";app.appendChild(h("p",{class:"muted",text:"Chargement…"}));
+function viewGuild(r){document.body.classList.add("hs");app.innerHTML="";app.appendChild(h("p",{class:"muted",text:"Chargement…"}));
 Promise.all([api("/api/guilds/"+r.g),META[r.g]?Promise.resolve(META[r.g]):api("/api/guilds/"+r.g+"/meta")]).then(function(res){
 var G=res[0];META[r.g]=res[1];app.innerHTML="";
 var side=h("aside",{class:"side"});
-side.appendChild(h("div",{class:"gh"},[icon(G.id,G.icon,G.name,42),h("div",{},[h("b",{text:G.name}),h("a",{href:"#/",text:"‹ Changer de serveur"})])]));
+side.appendChild(h("a",{class:"gh",href:"#/"},[icon(G.id,G.icon,G.name,40),h("div",{class:"ghx"},[h("b",{text:G.name}),h("span",{text:"Changer de serveur"})]),h("span",{class:"gha","aria-hidden":"true",text:"▾"})]));
 var find=h("input",{class:"find",type:"search",placeholder:"Rechercher une fonction…","aria-label":"Rechercher une fonction"});
 side.appendChild(find);
 var nav=h("nav");
-function catBox(label,open){
+function catBox(label,open){label=label.charAt(0)+label.slice(1).toLowerCase();
 var box=h("div",{class:"ng"+(open?" open":""),"data-open":open?"1":"0"});
 var head=h("button",{class:"gl",type:"button","aria-expanded":open?"true":"false"});
 head.appendChild(h("span",{class:"glt",text:label}));
@@ -544,9 +572,9 @@ head.addEventListener("click",function(){var o=box.classList.toggle("open");head
 box.appendChild(head);box.appendChild(list);nav.appendChild(box);
 return{list:list,count:function(n){cnt.textContent=String(n)}}}
 var gen=catBox("GÉNÉRAL",true);
-gen.list.appendChild(h("a",{href:"#/g/"+G.id,class:!r.m?"on":"","data-n":"vue d’ensemble"},"Vue d’ensemble"));
-gen.list.appendChild(h("a",{href:"#/g/"+G.id+"/antiscam_test",class:r.m==="antiscam_test"?"on":"","data-n":"test anti-scam"},"Test anti-scam"));
-gen.list.appendChild(h("a",{href:"#/g/"+G.id+"/commands",class:r.m==="commands"?"on":"","data-n":"commandes personnalisation noms descriptions slash"},"✏️ Commandes"));
+gen.list.appendChild(navA("#/g/"+G.id,!r.m,"vue d’ensemble",ICO_HOME,"Vue d’ensemble"));
+gen.list.appendChild(navA("#/g/"+G.id+"/antiscam_test",r.m==="antiscam_test","test anti-scam",ICO_TEST,"Test anti-scam"));
+gen.list.appendChild(navA("#/g/"+G.id+"/commands",r.m==="commands","commandes personnalisation noms descriptions slash",ICO_CMD,"Commandes"));
 gen.count(3);
 var sui=catBox("SUIVI",SUIVI.some(function(m){return m.id===r.m}));
 SUIVI.forEach(function(m){var ic=h("span",{class:"ic"});ic.innerHTML=m.svg;ic.appendChild(h("span",{text:m.name}));
@@ -562,14 +590,14 @@ var box=catBox(sg.group.toUpperCase(),mine.some(function(x){return x.route===r.m
 mine.forEach(function(x){var ic=h("span",{class:"ic"});ic.innerHTML=x.it.svg;ic.appendChild(h("span",{text:x.it.name}));
 var kids=[ic];if(x.mod&&x.mod.enabled!==null&&x.mod.enabled!==undefined)kids.push(h("i",{class:"dotk"+(x.mod.enabled?" on":"")}));
 box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+x.route,class:"sv"+(r.m===x.route?" on":""),"data-n":x.it.name.toLowerCase()+" "+(x.it.kw||"")},kids))});
-extra.forEach(function(m){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
+extra.forEach(function(m){box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m.id,m.name.toLowerCase(),ICO_MOD,cleanName(m.name),h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})))});
 box.count(mine.length+extra.length)});
 order.forEach(function(k){
 if(SEC.some(function(sg){return nz(sg.group)===nz(k)}))return;
 var open=!!(r.m&&(by[k].some(function(m){return m.id===r.m})||(k.toLowerCase()==="serveur"&&r.m==="notifs")));
 var box=catBox(k.toUpperCase(),open),n=by[k].length;
-by[k].forEach(function(m){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
-if(k.toLowerCase()==="serveur"){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/notifs",class:r.m==="notifs"?"on":"","data-n":"notifications youtube twitch tiktok instagram medal"},"🔔 Notifications"));n++}
+by[k].forEach(function(m){box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m.id,m.name.toLowerCase(),ICO_MOD,cleanName(m.name),h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})))});
+if(k.toLowerCase()==="serveur"){box.list.appendChild(navA("#/g/"+G.id+"/notifs",r.m==="notifs","notifications youtube twitch tiktok instagram medal",ICO_BELL,"Notifications"));n++}
 box.count(n)});
 find.addEventListener("input",function(){var q=find.value.trim().toLowerCase();
 [].forEach.call(nav.querySelectorAll(".ng"),function(box){var any=false;
@@ -577,10 +605,12 @@ find.addEventListener("input",function(){var q=find.value.trim().toLowerCase();
 box.style.display=any?"":"none";
 box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
+if(ME&&ME.user){var U=ME.user;side.appendChild(h("div",{class:"sfoot"},[U.avatar?h("img",{src:"https://cdn.discordapp.com/avatars/"+U.id+"/"+U.avatar+".png?size=64",alt:""}):h("span",{class:"av",style:"width:36px;height:36px",text:String(U.username||"?").charAt(0).toUpperCase()}),h("div",{class:"sfx"},[h("b",{text:U.username}),h("span",{text:"Connecté avec Discord"})]),h("button",{class:"sfb",type:"button",title:"Déconnexion","aria-label":"Déconnexion",text:"⏻",onclick:function(){logout()}})]))}
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
+phDecor(content,phIconFor(r.m,SECIT));
 if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="serverstats")serverstatsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else secDispatch(content,G,r.m,SECIT)
-}).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
+}).catch(function(e){if(e&&e.message==="auth")return;document.body.classList.remove("hs");app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
 
@@ -2024,6 +2054,22 @@ if(e.description)det.push(e.description);var mt=[];if(e.member)mt.push(secName(e
 jr.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[e.title||"Évènement",cl?h("span",{class:"pill",style:"margin-left:8px",text:cl.toUpperCase()}):null,e.status==="review"?h("span",{class:"pill pr",text:"À VÉRIFIER"}):null])].concat(det.map(function(x){return h("span",{class:"ad",text:x})})))]))});
 body.appendChild(jr)}
 load();arm()}
+
+/* ---- Look « panneau latéral » : icônes, en-têtes de page ---- */
+var ICO_MOD=svg24('<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>');
+var ICO_HOME=svg24('<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>');
+var ICO_TEST=svg24('<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>');
+var ICO_CMD=svg24('<polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/>');
+var ICO_BELL=svg24('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>');
+function cleanName(n){return String(n).replace(/^[\p{Extended_Pictographic}️‍\s]+/u,"")||String(n)}
+function navA(href,on,dn,svg,label,dot){var ic=h("span",{class:"ic"});ic.innerHTML=svg;ic.appendChild(h("span",{text:label}));
+var kids=[ic];if(dot)kids.push(dot);return h("a",{href:href,class:on?"on":"","data-n":dn},kids)}
+function phIconFor(m,list){if(!m)return ICO_HOME;if(m==="antiscam_test")return ICO_TEST;if(m==="commands")return ICO_CMD;if(m==="notifs")return ICO_BELL;
+var x=(list||[]).filter(function(y){return y.route===m})[0];if(x)return x.it.svg;
+var s=SUIVI.filter(function(y){return y.id===m})[0];return s?s.svg:ICO_MOD}
+function phDecor(content,svg){var box=h("div",{class:"ph-ic"});box.innerHTML=svg;
+function put(){var t=content.querySelector("h2.t");if(t&&!content.querySelector(".ph-ic"))t.parentNode.insertBefore(box,t)}
+new MutationObserver(put).observe(content,{childList:true,subtree:true});put()}
 
 /* ---- Barre « Enregistrer » globale : garde les modifications de tous les modules et les enregistre d’un coup ---- */
 function anyPend(){return Object.keys(PEND).some(function(g){return Object.keys(PEND[g]).length>0})}
