@@ -452,6 +452,13 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .nffoot{margin-top:10px;font-size:12px;color:#b5bac1}
 .nfbtn{display:inline-block;margin-top:10px;padding:7px 16px;border-radius:6px;background:#4e5058;color:#fff;font-size:13.5px;font-weight:600}
 @media(max-width:900px){.nfaddrow{grid-template-columns:1fr}.nfed{grid-template-columns:1fr}.nfside{position:static;order:-1}}
+.rad-ban{display:flex;gap:14px;align-items:center;padding:16px 18px;border:1px solid rgba(59,165,93,.4);border-radius:var(--r);background:rgba(59,165,93,.08);margin:14px 0}
+.rad-ban.warn{border-color:rgba(232,81,13,.5);background:rgba(232,81,13,.08)}
+.rad-ban b{display:block}.rad-ban span{color:var(--mu);font-size:13.5px}
+.rad-g{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin:0 0 14px}
+.rad-c{display:flex;justify-content:space-between;width:100%;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:var(--tx);cursor:pointer;font:inherit;font-size:14px}
+.rad-c:hover{background:var(--s2)}.rad-c.on{background:rgba(232,81,13,.16)}.rad-c b{font-variant-numeric:tabular-nums}
+@media(max-width:900px){.rad-g{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="fx.css">
 </head>
@@ -1879,7 +1886,7 @@ svg:svg24('<path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-
 title:"Logs de modération",lead:"Toutes les actions de modération du serveur : sanctions, messages supprimés, avertissements."}
 ]},
 {group:"Protection",items:[
-{id:"radar",name:"Radar",kind:"module",alias:["radar"],kw:"détection menaces scam",
+{id:"radar",name:"Radar",kind:"radar",kw:"détection menaces scam",
 svg:svg24('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'),
 desc:"Détection des comportements suspects sur le serveur."},
 {id:"antiraid",name:"Anti-raid",kind:"module",alias:["antiraid","anti_raid"],kw:"raid arrivées massives lockdown",
@@ -1913,6 +1920,7 @@ return out}
 function secDispatch(c,G,mid,list){
 var x=list.filter(function(y){return y.route===mid})[0];
 if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&Object.assign({},x.it,{missing:!x.mod}));
+if(x.it.kind==="radar")return radarView(c,G);
 if(x.it.kind==="audit")return auditView(c,G,{cat:x.it.cat,title:x.it.title,lead:x.it.lead});
 return secList(c,G,x.it)}
 
@@ -1973,6 +1981,49 @@ more.addEventListener("click",function(){load(false)});
 var qt=0;search.addEventListener("input",function(){clearTimeout(qt);qt=setTimeout(function(){F.q=search.value.trim();load(true)},350)});
 auto.addEventListener("change",function(){clearInterval(timer);timer=0;if(auto.checked)timer=setInterval(function(){if(!box.isConnected){stop();return}load(true)},15000)});
 load(true)}
+
+/* ---- Radar : ce qui vise le serveur et ce que CoreLab a fait ---- */
+var RAD_CATS=[["scam","Arnaques"],["spam","Spam"],["raid","Raids"],["threads","Fils et forums"],["moderation","Modération"],["urgent","Urgence"],["backup","Sauvegardes"],["diag","Diagnostic"]];
+function radarView(c,G){
+c.classList.add("wide");
+var R="24h",live=true,cat="",timer=0,data=null,busy=false;
+var body=h("div"),liveBtn=h("button",{class:"btn ghost sm",type:"button",onclick:function(){live=!live;sync();arm()}}),seg=h("div",{class:"seg",role:"group","aria-label":"Période"});
+[["24h","24 heures"],["7d","7 jours"]].forEach(function(p){seg.appendChild(h("button",{type:"button","data-r":p[0],class:p[0]===R?"on":"",text:p[1],onclick:function(){R=p[0];cat="";[].forEach.call(seg.children,function(b){b.className=b.getAttribute("data-r")===R?"on":""});load()}}))});
+function sync(){liveBtn.textContent=(live?"● ":"○ ")+"En direct"}
+sync();
+c.appendChild(h("div",{class:"ah"},[h("div",{},[h("h2",{class:"t",style:"margin:0 0 6px",text:"Radar"}),h("p",{class:"lead",style:"margin:0",text:"Comprenez ce qui vise votre serveur et ce que CoreLab a réellement fait."})]),
+h("div",{style:"display:flex;gap:8px;align-items:center;flex-wrap:wrap"},[liveBtn,seg,h("button",{class:"btn ghost sm",type:"button","aria-label":"Actualiser",text:"↻",onclick:function(){load()}})])]));
+c.appendChild(body);
+function arm(){clearInterval(timer);timer=0;if(live)timer=setInterval(function(){if(!body.isConnected){clearInterval(timer);return}load(true)},15000)}
+function load(quiet){if(busy)return;busy=true;if(!quiet&&!data){body.innerHTML="";body.appendChild(h("p",{class:"muted",text:"Chargement…"}))}
+api("/api/guilds/"+G.id+"/radar?range="+R).then(function(d){data=d;draw()})
+.catch(function(e){if(e&&e.message==="auth")return;if(quiet)return;body.innerHTML="";
+if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(body,"Le Radar");else body.appendChild(h("p",{class:"err",text:"Impossible de charger le Radar."}))})
+.then(function(){busy=false})}
+function draw(){var d=data||{},t=d.totals||{},ev=d.events||[],cats=d.categories||{},ser=d.series||{},vals=ser.values||[];body.innerHTML="";
+var sig=t.signals||0,act=t.actions||0,rev=t.review||0,scam=t.scams||0,span=R==="24h"?"24 dernières heures":"7 derniers jours";
+var ban=h("div",{class:"rad-ban"+(rev?" warn":"")},[h("span",{style:"font-size:22px",text:rev?"⚠️":"🛡️"}),h("div",{},[
+h("b",{text:rev?rev+" action"+(rev>1?"s":"")+" à vérifier":sig?"Tout est géré":"Tout est sous contrôle"}),
+h("span",{text:rev?"CoreLab a besoin d’un avis de votre équipe sur ces décisions.":sig?sig+" signal"+(sig>1?"ux":"")+" détecté"+(sig>1?"s":"")+" sur les "+span+", traité"+(sig>1?"s":"")+" automatiquement.":"Aucun signal sur les "+span+"."})])]);
+body.appendChild(ban);
+body.appendChild(h("div",{class:"kpis"},[["Signaux détectés",sig],["Actions appliquées",act],["Actions à vérifier",rev],["Arnaques",scam]].map(function(k){return h("div",{class:"kpi"},[h("span",{text:k[0]}),h("b",{text:fmtN(k[1])})])})));
+var n=vals.length||(R==="24h"?24:7),labels=ser.labels||[],i;
+if(!labels.length)for(i=0;i<n;i++)labels.push(R==="24h"?(i+1)+"h":"J"+(i+1));
+if(!vals.length)for(i=0;i<n;i++)vals.push(0);
+var mx=vals.reduce(function(a,b){return Math.max(a,b)},0);
+var chart=barChart({title:"Signaux",labels:labels,tips:labels,every:R==="24h"?4:1,series:[{name:"Signaux",color:"#e8510d",values:vals}]});
+var left=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Le rythme de votre communauté"}),h("small",{text:"Max "+fmtN(mx)})]),h("small",{class:"muted",style:"display:block;margin:-6px 0 8px",text:"Signaux par "+(R==="24h"?"heure sur les 24 dernières heures.":"jour sur les 7 derniers jours.")}),chart]);
+var right=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Répartition"})]),h("small",{class:"muted",style:"display:block;margin:-6px 0 8px",text:"Cliquez sur une catégorie pour filtrer le journal."})]);
+RAD_CATS.forEach(function(k){right.appendChild(h("button",{type:"button",class:"rad-c"+(cat===k[0]?" on":""),onclick:function(){cat=cat===k[0]?"":k[0];draw()}},[h("span",{text:k[1]}),h("b",{text:fmtN(cats[k[0]]||0)})]))});
+body.appendChild(h("div",{class:"rad-g"},[left,right]));
+var shown=ev.filter(function(e){return !cat||e.category===cat}),jr=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Journal de décision"}),cat?h("button",{class:"btn ghost sm",type:"button",text:"Retirer le filtre",onclick:function(){cat="";draw()}}):null]),
+h("small",{class:"muted",style:"display:block;margin:-6px 0 12px",text:"Les décisions récentes de CoreLab : ce qui a été détecté et ce qui a été fait."})]);
+if(!shown.length)jr.appendChild(h("div",{class:"empty",text:cat?"Aucun évènement dans cette catégorie.":"Aucun évènement sur cette période."}));
+shown.forEach(function(e){var cl=(RAD_CATS.filter(function(k){return k[0]===e.category})[0]||[0,e.category||""])[1],det=[];
+if(e.description)det.push(e.description);var mt=[];if(e.member)mt.push(secName(e.member));if(e.action)mt.push("Action : "+e.action);if(e.ts)mt.push(secDT(e.ts));if(mt.length)det.push(mt.join(" · "));
+jr.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[e.title||"Évènement",cl?h("span",{class:"pill",style:"margin-left:8px",text:cl.toUpperCase()}):null,e.status==="review"?h("span",{class:"pill pr",text:"À VÉRIFIER"}):null])].concat(det.map(function(x){return h("span",{class:"ad",text:x})})))]))});
+body.appendChild(jr)}
+load();arm()}
 
 /* ---- Barre « Enregistrer » globale : garde les modifications de tous les modules et les enregistre d’un coup ---- */
 function anyPend(){return Object.keys(PEND).some(function(g){return Object.keys(PEND[g]).length>0})}
