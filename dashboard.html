@@ -1519,7 +1519,7 @@ if(f.section&&f.section!==last){form.appendChild(h("div",{class:"sec",text:f.sec
 var b=buildField(f,d.values[f.key],meta,d.premium,dirty);inputs[f.key]=b;form.appendChild(b.wrap)});
 colL.appendChild(form);deps();if(live)live();
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";
-if(it&&e&&(e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
+if(it&&e&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
 var bx=h("div");c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:it.name}));c.appendChild(h("p",{class:"lead",text:it.desc||""}));c.appendChild(bx);noEndpoint(bx,it.name)}
 else c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
 
@@ -1912,7 +1912,7 @@ return out}
 
 function secDispatch(c,G,mid,list){
 var x=list.filter(function(y){return y.route===mid})[0];
-if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&x.it);
+if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&Object.assign({},x.it,{missing:!x.mod}));
 if(x.it.kind==="audit")return auditView(c,G,{cat:x.it.cat,title:x.it.title,lead:x.it.lead});
 return secList(c,G,x.it)}
 
