@@ -487,6 +487,45 @@ body.hs .side nav{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior
 body.hs .content,body.hs .content.wide{max-width:none;margin-left:280px;padding:34px max(40px,calc((100vw - 280px - 1080px)/2)) 100px}
 }
 @media(max-width:900px){.sfoot{display:none}.side nav a.on::before{display:none}}
+/* ---- Radar (look épuré) ---- */
+.rad-top{align-items:flex-end;margin:0 0 22px}
+.rad-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rad-live,.rad-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:1px solid var(--ln);border-radius:12px;background:transparent;color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.rad-btn{width:42px;justify-content:center;padding:0}
+.rad-live:hover,.rad-btn:hover{background:var(--s1)}
+.rad-dot{width:8px;height:8px;border-radius:50%;background:var(--mu)}.rad-dot.on{background:var(--ok);box-shadow:0 0 0 3px rgba(59,165,93,.2)}
+.rad-seg{padding:4px;border-radius:12px;height:42px;align-items:center}
+.rad-seg button{border-radius:8px;padding:7px 14px}
+.rad-seg button.on{background:var(--s2);color:var(--tx);box-shadow:inset 0 0 0 1px var(--ln)}
+.rad-rf svg,.rad-i svg,.rad-bi svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rad-rf{display:inline-flex}.rad-i{display:inline-flex;color:var(--mu)}
+.rad-note{margin:0 0 12px;color:var(--mu);font-size:13px}
+.rad-ban{display:flex;gap:14px;align-items:center;padding:18px 20px;border:1px solid rgba(59,165,93,.45);border-radius:14px;background:rgba(59,165,93,.06);margin:0 0 22px}
+.rad-ban.warn{border-color:rgba(232,81,13,.55);background:rgba(232,81,13,.07)}
+.rad-bi{display:inline-flex;color:#6fd391}.rad-ban.warn .rad-bi{color:var(--ac2)}.rad-bi svg{width:22px;height:22px}
+.rad-ban b{display:block;font-size:15px}.rad-ban span{color:var(--mu);font-size:13.5px}
+.rad-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 14px}
+.rad-kc{padding:16px 18px;border:1px solid var(--ln);border-radius:14px;background:transparent}
+.rad-kl{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:13.5px}
+.rad-kc b{display:block;font-size:30px;letter-spacing:-.02em;margin-top:6px}
+.rad-g{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;margin:0 0 14px}
+.rad-card{padding:20px;border:1px solid var(--ln);border-radius:14px;background:transparent;min-width:0}
+.rad-ch{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 0 16px}
+.rad-ch b{display:block;font-size:17px}.rad-ch small{display:block;color:var(--mu);font-size:13.5px;margin-top:4px}
+.rad-max{flex:none;padding:4px 10px;border-radius:8px;background:var(--s2);color:var(--mu);font-size:12px}
+.rad-plot{height:280px;display:flex;flex-direction:column}
+.rad-bars{position:relative;flex:1;display:flex;align-items:flex-end;gap:6px}
+.rad-bars::before,.rad-bars::after{content:"";position:absolute;left:0;right:0;border-top:1px dashed var(--ln);pointer-events:none}
+.rad-bars::before{top:32%}.rad-bars::after{top:62%}
+.rad-col{position:relative;z-index:1;flex:1;height:100%;display:flex;align-items:flex-end;min-width:0}
+.rad-col i{display:block;width:100%;border-radius:4px;background:var(--ac2)}
+.rad-col i.z{height:5px;background:rgba(255,122,61,.35)}
+.rad-axis{display:flex;gap:6px;margin-top:10px}
+.rad-axis span{flex:1;min-width:0;white-space:nowrap;font-size:11.5px;color:var(--mu)}
+.rad-c{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 10px;border:0;border-radius:10px;background:transparent;color:var(--tx);cursor:pointer;font:inherit;font-size:14px}
+.rad-c:hover{background:var(--s1)}.rad-c.on{background:rgba(232,81,13,.14)}
+.rad-cl{display:inline-flex;align-items:center;gap:12px}.rad-c b{font-variant-numeric:tabular-nums}
+@media(max-width:900px){.rad-g{grid-template-columns:1fr}.rad-k{grid-template-columns:1fr 1fr}}
 </style>
 <link rel="stylesheet" href="fx.css">
 </head>
@@ -2016,44 +2055,58 @@ auto.addEventListener("change",function(){clearInterval(timer);timer=0;if(auto.c
 load(true)}
 
 /* ---- Radar : ce qui vise le serveur et ce que CoreLab a fait ---- */
+var RI={
+act:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+ok:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+warn:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+scam:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+spam:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/>',
+raid:'<circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/>',
+threads:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+moderation:'<path d="m14 13-8.5 8.5a2.12 2.12 0 0 1-3-3L11 10"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/>',
+urgent:'<path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M12 2v1"/><path d="M2 12h1"/><path d="M21 12h1"/>',
+backup:'<rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+diag:'<path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>'};
 var RAD_CATS=[["scam","Arnaques"],["spam","Spam"],["raid","Raids"],["threads","Fils et forums"],["moderation","Modération"],["urgent","Urgence"],["backup","Sauvegardes"],["diag","Diagnostic"]];
+function rIc(k,cls){var s=h("span",{class:cls||"rad-i"});s.innerHTML=svg24(RI[k]);return s}
 function radarView(c,G){
 c.classList.add("wide");
-var R="24h",live=true,cat="",timer=0,data=null,busy=false;
-var body=h("div"),liveBtn=h("button",{class:"btn ghost sm",type:"button",onclick:function(){live=!live;sync();arm()}}),seg=h("div",{class:"seg",role:"group","aria-label":"Période"});
+var R="24h",live=true,cat="",timer=0,data=null,busy=false,missing=false;
+var body=h("div"),liveBtn=h("button",{class:"rad-live",type:"button",onclick:function(){live=!live;sync();arm()}}),seg=h("div",{class:"seg rad-seg",role:"group","aria-label":"Période"});
 [["24h","24 heures"],["7d","7 jours"]].forEach(function(p){seg.appendChild(h("button",{type:"button","data-r":p[0],class:p[0]===R?"on":"",text:p[1],onclick:function(){R=p[0];cat="";[].forEach.call(seg.children,function(b){b.className=b.getAttribute("data-r")===R?"on":""});load()}}))});
-function sync(){liveBtn.textContent=(live?"● ":"○ ")+"En direct"}
+function sync(){liveBtn.innerHTML="";liveBtn.appendChild(h("i",{class:"rad-dot"+(live?" on":"")}));liveBtn.appendChild(document.createTextNode("En direct"))}
 sync();
-c.appendChild(h("div",{class:"ah"},[h("div",{},[h("h2",{class:"t",style:"margin:0 0 6px",text:"Radar"}),h("p",{class:"lead",style:"margin:0",text:"Comprenez ce qui vise votre serveur et ce que CoreLab a réellement fait."})]),
-h("div",{style:"display:flex;gap:8px;align-items:center;flex-wrap:wrap"},[liveBtn,seg,h("button",{class:"btn ghost sm",type:"button","aria-label":"Actualiser",text:"↻",onclick:function(){load()}})])]));
+var rf=rIc("refresh","rad-rf");
+c.appendChild(h("div",{class:"ah rad-top"},[h("div",{},[h("h2",{class:"t",style:"margin:0 0 8px",text:"Radar"}),h("p",{class:"lead",style:"margin:0",text:"Comprenez ce qui vise votre serveur et ce que CoreLab a réellement fait."})]),
+h("div",{class:"rad-ctl"},[liveBtn,seg,h("button",{class:"rad-btn",type:"button","aria-label":"Actualiser",onclick:function(){load()}},rf)])]));
 c.appendChild(body);
 function arm(){clearInterval(timer);timer=0;if(live)timer=setInterval(function(){if(!body.isConnected){clearInterval(timer);return}load(true)},15000)}
 function load(quiet){if(busy)return;busy=true;if(!quiet&&!data){body.innerHTML="";body.appendChild(h("p",{class:"muted",text:"Chargement…"}))}
-api("/api/guilds/"+G.id+"/radar?range="+R).then(function(d){data=d;draw()})
-.catch(function(e){if(e&&e.message==="auth")return;if(quiet)return;body.innerHTML="";
-if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(body,"Le Radar");else body.appendChild(h("p",{class:"err",text:"Impossible de charger le Radar."}))})
+api("/api/guilds/"+G.id+"/radar?range="+R).then(function(d){data=d;missing=false;draw()})
+.catch(function(e){if(e&&e.message==="auth")return;
+if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error)){data={};missing=true;draw()}
+else if(!quiet){body.innerHTML="";body.appendChild(h("p",{class:"err",text:"Impossible de charger le Radar."}))}})
 .then(function(){busy=false})}
-function draw(){var d=data||{},t=d.totals||{},ev=d.events||[],cats=d.categories||{},ser=d.series||{},vals=ser.values||[];body.innerHTML="";
-var sig=t.signals||0,act=t.actions||0,rev=t.review||0,scam=t.scams||0,span=R==="24h"?"24 dernières heures":"7 derniers jours";
-var ban=h("div",{class:"rad-ban"+(rev?" warn":"")},[h("span",{style:"font-size:22px",text:rev?"⚠️":"🛡️"}),h("div",{},[
+function draw(){var d=data||{},t=d.totals||{},ev=d.events||[],cats=d.categories||{},ser=d.series||{},vals=(ser.values||[]).slice(),labels=(ser.labels||[]).slice();body.innerHTML="";
+var sig=t.signals||0,act=t.actions||0,rev=t.review||0,scam=t.scams||0,span=R==="24h"?"24 dernières heures":"7 derniers jours",i;
+if(missing)body.appendChild(h("p",{class:"rad-note",text:"Aucune donnée reçue : l’endpoint /radar n’est pas encore disponible côté bot."}));
+body.appendChild(h("div",{class:"rad-ban"+(rev?" warn":"")},[rIc(rev?"warn":"ok","rad-bi"),h("div",{},[
 h("b",{text:rev?rev+" action"+(rev>1?"s":"")+" à vérifier":sig?"Tout est géré":"Tout est sous contrôle"}),
-h("span",{text:rev?"CoreLab a besoin d’un avis de votre équipe sur ces décisions.":sig?sig+" signal"+(sig>1?"ux":"")+" détecté"+(sig>1?"s":"")+" sur les "+span+", traité"+(sig>1?"s":"")+" automatiquement.":"Aucun signal sur les "+span+"."})])]);
-body.appendChild(ban);
-body.appendChild(h("div",{class:"kpis"},[["Signaux détectés",sig],["Actions appliquées",act],["Actions à vérifier",rev],["Arnaques",scam]].map(function(k){return h("div",{class:"kpi"},[h("span",{text:k[0]}),h("b",{text:fmtN(k[1])})])})));
-var n=vals.length||(R==="24h"?24:7),labels=ser.labels||[],i;
-if(!labels.length)for(i=0;i<n;i++)labels.push(R==="24h"?(i+1)+"h":"J"+(i+1));
-if(!vals.length)for(i=0;i<n;i++)vals.push(0);
-var mx=vals.reduce(function(a,b){return Math.max(a,b)},0);
-var chart=barChart({title:"Signaux",labels:labels,tips:labels,every:R==="24h"?4:1,series:[{name:"Signaux",color:"#e8510d",values:vals}]});
-var left=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Le rythme de votre communauté"}),h("small",{text:"Max "+fmtN(mx)})]),h("small",{class:"muted",style:"display:block;margin:-6px 0 8px",text:"Signaux par "+(R==="24h"?"heure sur les 24 dernières heures.":"jour sur les 7 derniers jours.")}),chart]);
-var right=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Répartition"})]),h("small",{class:"muted",style:"display:block;margin:-6px 0 8px",text:"Cliquez sur une catégorie pour filtrer le journal."})]);
-RAD_CATS.forEach(function(k){right.appendChild(h("button",{type:"button",class:"rad-c"+(cat===k[0]?" on":""),onclick:function(){cat=cat===k[0]?"":k[0];draw()}},[h("span",{text:k[1]}),h("b",{text:fmtN(cats[k[0]]||0)})]))});
+h("span",{text:rev?"CoreLab a besoin d’un avis de votre équipe sur ces décisions.":sig?sig+" signal"+(sig>1?"ux":"")+" détecté"+(sig>1?"s":"")+" sur les "+span+", traité"+(sig>1?"s":"")+" automatiquement.":"Aucun signal sur les "+span+"."})])]));
+body.appendChild(h("div",{class:"rad-k"},[["act","Signaux détectés",sig],["ok","Actions appliquées",act],["warn","Actions à vérifier",rev],["scam","Arnaques",scam]].map(function(k){return h("div",{class:"rad-kc"},[h("div",{class:"rad-kl"},[rIc(k[0]),h("span",{text:k[1]})]),h("b",{text:fmtN(k[2])})])})));
+var n=vals.length||(R==="24h"?24:7);
+for(i=0;i<n;i++){if(vals[i]==null)vals[i]=0;if(!labels[i])labels[i]=R==="24h"?(i+1)+"h":"J"+(i+1)}
+var mx=vals.reduce(function(a,b){return Math.max(a,b)},0),every=R==="24h"?4:1,bars=h("div",{class:"rad-bars"}),axis=h("div",{class:"rad-axis"});
+vals.forEach(function(v,j){var col=h("div",{class:"rad-col",title:labels[j]+" : "+v}),b=h("i",{class:v?"":"z"});if(v)b.style.height=Math.max(3,v/mx*100)+"%";col.appendChild(b);bars.appendChild(col);axis.appendChild(h("span",{text:j%every===0?labels[j]:""}))});
+var left=h("div",{class:"rad-card"},[h("div",{class:"rad-ch"},[h("div",{},[h("b",{text:"Le rythme de votre communauté"}),h("small",{text:"Signaux par "+(R==="24h"?"heure sur les 24 dernières heures.":"jour sur les 7 derniers jours.")})]),h("span",{class:"rad-max",text:"Max "+fmtN(mx)})]),h("div",{class:"rad-plot"},[bars,axis])]);
+var right=h("div",{class:"rad-card"},[h("div",{class:"rad-ch"},[h("div",{},[h("b",{text:"Répartition"}),h("small",{text:"Cliquez sur une catégorie pour filtrer le journal."})])])]);
+RAD_CATS.forEach(function(k){right.appendChild(h("button",{type:"button",class:"rad-c"+(cat===k[0]?" on":""),onclick:function(){cat=cat===k[0]?"":k[0];draw()}},[h("span",{class:"rad-cl"},[rIc(k[0]),k[1]]),h("b",{text:fmtN(cats[k[0]]||0)})]))});
 body.appendChild(h("div",{class:"rad-g"},[left,right]));
-var shown=ev.filter(function(e){return !cat||e.category===cat}),jr=h("div",{class:"cc"},[h("div",{class:"ch"},[h("b",{text:"Journal de décision"}),cat?h("button",{class:"btn ghost sm",type:"button",text:"Retirer le filtre",onclick:function(){cat="";draw()}}):null]),
-h("small",{class:"muted",style:"display:block;margin:-6px 0 12px",text:"Les décisions récentes de CoreLab : ce qui a été détecté et ce qui a été fait."})]);
+var shown=ev.filter(function(e){return !cat||e.category===cat}),jr=h("div",{class:"rad-card"},[h("div",{class:"rad-ch"},[h("div",{},[h("b",{text:"Journal de décision"}),h("small",{text:"Les décisions récentes de CoreLab : ce qui a été détecté et ce qui a été fait."})]),cat?h("button",{class:"rad-btn",type:"button",style:"width:auto;padding:0 12px",text:"Retirer le filtre",onclick:function(){cat="";draw()}}):null])]);
 if(!shown.length)jr.appendChild(h("div",{class:"empty",text:cat?"Aucun évènement dans cette catégorie.":"Aucun évènement sur cette période."}));
-shown.forEach(function(e){var cl=(RAD_CATS.filter(function(k){return k[0]===e.category})[0]||[0,e.category||""])[1],det=[];
-if(e.description)det.push(e.description);var mt=[];if(e.member)mt.push(secName(e.member));if(e.action)mt.push("Action : "+e.action);if(e.ts)mt.push(secDT(e.ts));if(mt.length)det.push(mt.join(" · "));
+shown.forEach(function(e){var cl=(RAD_CATS.filter(function(k){return k[0]===e.category})[0]||[0,e.category||""])[1],det=[],mt=[];
+if(e.description)det.push(e.description);if(e.member)mt.push(secName(e.member));if(e.action)mt.push("Action : "+e.action);if(e.ts)mt.push(secDT(e.ts));if(mt.length)det.push(mt.join(" · "));
 jr.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[e.title||"Évènement",cl?h("span",{class:"pill",style:"margin-left:8px",text:cl.toUpperCase()}):null,e.status==="review"?h("span",{class:"pill pr",text:"À VÉRIFIER"}):null])].concat(det.map(function(x){return h("span",{class:"ad",text:x})})))]))});
 body.appendChild(jr)}
 load();arm()}
