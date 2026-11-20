@@ -546,7 +546,19 @@ SUIVI.forEach(function(m){var ic=h("span",{class:"ic"});ic.innerHTML=m.svg;ic.ap
 sui.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:"sv"+(r.m===m.id?" on":""),"data-n":m.name.toLowerCase()+" "+m.kw},ic))});
 sui.count(SUIVI.length);
 var by={},order=[];G.modules.forEach(function(m){if(!by[m.group]){by[m.group]=[];order.push(m.group)}by[m.group].push(m)});
+var SECIT=secBuild(G);
+SEC.forEach(function(sg){
+var gk=nz(sg.group),mine=SECIT.filter(function(x){return x.g===gk}),claimed={},extra=[];
+mine.forEach(function(x){claimed[x.route]=1});
+order.forEach(function(k){if(nz(k)===gk)by[k].forEach(function(m){if(!claimed[m.id])extra.push(m)})});
+var box=catBox(sg.group.toUpperCase(),mine.some(function(x){return x.route===r.m})||extra.some(function(m){return m.id===r.m}));
+mine.forEach(function(x){var ic=h("span",{class:"ic"});ic.innerHTML=x.it.svg;ic.appendChild(h("span",{text:x.it.name}));
+var kids=[ic];if(x.mod&&x.mod.enabled!==null&&x.mod.enabled!==undefined)kids.push(h("i",{class:"dotk"+(x.mod.enabled?" on":"")}));
+box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+x.route,class:"sv"+(r.m===x.route?" on":""),"data-n":x.it.name.toLowerCase()+" "+(x.it.kw||"")},kids))});
+extra.forEach(function(m){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
+box.count(mine.length+extra.length)});
 order.forEach(function(k){
+if(SEC.some(function(sg){return nz(sg.group)===nz(k)}))return;
 var open=!!(r.m&&(by[k].some(function(m){return m.id===r.m})||(k.toLowerCase()==="serveur"&&r.m==="notifs")));
 var box=catBox(k.toUpperCase(),open),n=by[k].length;
 by[k].forEach(function(m){box.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:r.m===m.id?"on":"","data-n":m.name.toLowerCase()},[m.name,h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})]))});
@@ -560,7 +572,7 @@ box.classList.toggle("open",q?any:box.getAttribute("data-open")==="1")})});
 side.appendChild(nav);
 var content=h("div",{class:"content"});
 app.appendChild(h("div",{class:"dash"},[side,content]));
-if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="serverstats")serverstatsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else moduleView(content,G,r.m)
+if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(content,G);else if(r.m==="commands")commandsView(content,G);else if(r.m==="tickets")ticketsView(content,G);else if(r.m==="rules")rulesView(content,G);else if(r.m==="autoresponses")autoresponsesView(content,G);else if(r.m==="serverstats")serverstatsView(content,G);else if(r.m==="notifs")notifsView(content,G);else if(r.m==="audit")auditView(content,G);else if(r.m==="transcripts")transcriptsView(content,G);else if(r.m==="absences")absencesView(content,G);else secDispatch(content,G,r.m,SECIT)
 }).catch(function(e){if(e&&e.message==="auth")return;app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/",text:"Retour aux serveurs"})])))})}
 
@@ -1299,7 +1311,7 @@ redraw()
 }
 
 var CARD_LOOK=/(^|[._])(style|look|theme|template|design|layout|preset|modele)/i;
-function moduleView(c,G,mid){c.appendChild(h("p",{class:"muted",text:"Chargement…"}));
+function moduleView(c,G,mid,it){c.appendChild(h("p",{class:"muted",text:"Chargement…"}));
 api("/api/guilds/"+G.id+"/modules/"+mid).then(function(d){c.innerHTML="";
 var meta=META[G.id],form=h("div",{class:"form"}),inputs={},last=null;
 var isCard=!!d.module.preview,fields=d.module.fields.filter(function(f){return !(isCard&&CARD_LOOK.test(f.key))});
@@ -1506,7 +1518,10 @@ fields.forEach(function(f){
 if(f.section&&f.section!==last){form.appendChild(h("div",{class:"sec",text:f.section}));last=f.section}
 var b=buildField(f,d.values[f.key],meta,d.premium,dirty);inputs[f.key]=b;form.appendChild(b.wrap)});
 colL.appendChild(form);deps();if(live)live();
-}).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
+}).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";
+if(it&&e&&(e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
+var bx=h("div");c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:it.name}));c.appendChild(h("p",{class:"lead",text:it.desc||""}));c.appendChild(bx);noEndpoint(bx,it.name)}
+else c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
 
 
 /* ---- Suivi : Journal d’audit · Transcripts · Absences du staff ---- */
@@ -1522,11 +1537,11 @@ function noEndpoint(box,what){box.innerHTML="";box.appendChild(h("div",{class:"e
 var AUD_CATS=[["","Tout"],["messages","Messages"],["members","Membres"],["moderation","Modération"],["staff","Staff"],["channels","Salons"],["roles","Rôles"],["voice","Vocal"],["server","Serveur"]];
 var AUD_ICO={"Message supprimé":["#e0a526","🗑️"],"Messages supprimés en masse":["#e0a526","🗑️"],"Membre expulsé":["#ed4245","🚫"],"Membre banni":["#ed4245","🔨"],"Membre mis en timeout":["#d9941a","⏳"],"Avertissement":["#d9941a","⚠️"],"Mute":["#d9941a","🔇"],"Membre parti":["#6b6878","📤"],"Absence déclarée":["#1fb6c9","🗓️"],"Absence approuvée":["#3ba55d","🗓️"],"Absence refusée":["#ed4245","🗓️"],"Absence annulée":["#1fb6c9","🗓️"]};
 var AUD_CAT_ICO={messages:["#5865f2","💬"],members:["#3ba55d","👤"],moderation:["#ed4245","🔨"],staff:["#1fb6c9","🗓️"],channels:["#e8510d","#️⃣"],roles:["#d9941a","🏷️"],voice:["#9b59b6","🎙️"],server:["#6b6878","⚙️"]};
-function auditView(c,G){
+function auditView(c,G,o){o=o||{};
 c.classList.add("wide");
-c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Journal d’audit"}));
-c.appendChild(h("p",{class:"lead",text:"Tout ce qui est négatif sur « "+G.name+" » : messages supprimés, expulsions, bannissements, mutes et timeouts, avertissements, départs, salons et rôles supprimés, absences du staff."}));
-var F={cat:"",q:"",actor:"",action:"",from:"",to:""},cursor=null,timer=0,busy=false,first=true,acts=[];
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:o.title||"Journal d’audit"}));
+c.appendChild(h("p",{class:"lead",text:o.lead||"Tout ce qui est négatif sur « "+G.name+" » : messages supprimés, expulsions, bannissements, mutes et timeouts, avertissements, départs, salons et rôles supprimés, absences du staff."}));
+var F={cat:o.cat||"",q:"",actor:"",action:"",from:"",to:""},cursor=null,timer=0,busy=false,first=true,acts=[];
 var chips=h("div",{class:"fchips"}),list=h("div",{class:"jrl"}),more=h("button",{class:"btn ghost sm",type:"button",text:"Charger plus",style:"display:none;margin:14px auto 0"});
 var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un mot, un salon, un message…","aria-label":"Rechercher dans le journal"});
 var auto=h("input",{type:"checkbox"}),status=h("span",{class:"h"});
@@ -1824,6 +1839,140 @@ listBox.appendChild(h("div",{class:"nfl"},list.map(card)))})}
 listBox.appendChild(h("p",{class:"muted",text:"Chargement…"}));
 api("/api/guilds/"+G.id+"/notifs").then(function(d){items=d.items;max=d.max;draw()}).catch(function(e){if(e&&e.message==="auth")return;listBox.innerHTML="";listBox.appendChild(h("p",{class:"err",text:"Impossible de charger les notifications."}))})}
 
+
+/* ---- Modération & Protection : entrées de la sidebar + pages ---- */
+function nz(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"")}
+function svg24(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>'}
+var SEC=[
+{group:"Modération",items:[
+{id:"mod-todo",name:"À traiter",kind:"list",ep:"mod/queue",kw:"file attente signalements validation",
+svg:svg24('<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'),
+desc:"Tout ce qui attend une décision d’un modérateur : signalements, messages suspects, éléments à valider.",empty:"Rien à traiter pour le moment 🎉",
+actions:[{k:"resolve",l:"Traiter"},{k:"dismiss",l:"Ignorer",g:1,c:"Ignorer cet élément ?"}]},
+{id:"mod-reports",name:"Signalements",kind:"list",ep:"mod/reports",kw:"report plainte",
+svg:svg24('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>'),
+desc:"Les signalements faits par les membres : traitez-les ou classez-les.",empty:"Aucun signalement.",
+filters:[["","Tous"],["open","Ouverts"],["resolved","Traités"],["dismissed","Ignorés"]],
+actions:[{k:"resolve",l:"Traiter"},{k:"dismiss",l:"Ignorer",g:1,c:"Ignorer ce signalement ?"}]},
+{id:"mod-infractions",name:"Infractions",kind:"list",ep:"mod/infractions",kw:"warn avertissement historique",
+svg:svg24('<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>'),
+desc:"L’historique des infractions relevées sur les membres du serveur.",empty:"Aucune infraction enregistrée.",
+filters:[["","Toutes"],["warn","Avertissements"],["timeout","Timeouts"],["kick","Expulsions"],["ban","Bannissements"]],
+actions:[{k:"",l:"Retirer",m:"DELETE",g:1,c:"Retirer cette infraction ?"}]},
+{id:"automod",name:"Automodération",kind:"module",alias:["automod","automoderation","auto_moderation","moderation_auto"],kw:"filtre spam insultes liens",
+svg:svg24('<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>'),
+desc:"Filtres automatiques : insultes, liens, spam, majuscules, mentions de masse."},
+{id:"mod-watch",name:"Surveillance",kind:"list",ep:"mod/watchlist",add:true,kw:"watchlist suivi membres",
+svg:svg24('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>'),
+desc:"Membres placés sous surveillance : l’équipe est alertée quand ils agissent.",empty:"Personne n’est sous surveillance.",
+actions:[{k:"",l:"Retirer",m:"DELETE",g:1,c:"Retirer ce membre de la surveillance ?"}]},
+{id:"mod-sanctions",name:"Sanctions",kind:"list",ep:"mod/sanctions",kw:"ban mute timeout kick",
+svg:svg24('<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>'),
+desc:"Les sanctions en cours et passées : bannissements, mutes, timeouts, expulsions.",empty:"Aucune sanction.",
+filters:[["","Toutes"],["active","En cours"],["expired","Expirées"],["revoked","Levées"]],
+actions:[{k:"revoke",l:"Lever",g:1,c:"Lever cette sanction ?"}]},
+{id:"mod-staff",name:"Staff",kind:"list",ep:"mod/staff",kw:"équipe modérateurs activité",
+svg:svg24('<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>'),
+desc:"L’équipe de modération et l’activité de chacun (sanctions, signalements traités…).",empty:"Aucun membre du staff trouvé."},
+{id:"mod-logs",name:"Logs",kind:"audit",cat:"moderation",kw:"journal historique audit",
+svg:svg24('<path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>'),
+title:"Logs de modération",lead:"Toutes les actions de modération du serveur : sanctions, messages supprimés, avertissements."}
+]},
+{group:"Protection",items:[
+{id:"radar",name:"Radar",kind:"module",alias:["radar"],kw:"détection menaces scam",
+svg:svg24('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'),
+desc:"Détection des comportements suspects sur le serveur."},
+{id:"antiraid",name:"Anti-raid",kind:"module",alias:["antiraid","anti_raid"],kw:"raid arrivées massives lockdown",
+svg:svg24('<path d="m2 2 20 20"/><path d="M5 5a1 1 0 0 0-1 1v7c0 5 3.5 7.5 7.67 8.94a1 1 0 0 0 .67.01c2.35-.82 4.48-1.97 5.9-3.71"/><path d="M9.309 3.652A12.252 12.252 0 0 0 11.24 2.28a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1v7a9.784 9.784 0 0 1-.08 1.264"/>'),
+desc:"Protège le serveur contre les arrivées massives de comptes."},
+{id:"nightmode",name:"Mode nuit",kind:"module",alias:["nightmode","night_mode","mode_nuit"],kw:"horaires nuit verrouillage",
+svg:svg24('<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>'),
+desc:"Renforce automatiquement la protection pendant les horaires de nuit."},
+{id:"netalerts",name:"Alertes réseau",kind:"module",alias:["netalerts","network_alerts","alertes_reseau","alertsnetwork"],kw:"alertes réseau partage serveurs",
+svg:svg24('<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>'),
+desc:"Alertes partagées entre serveurs sur les comptes et menaces connus."},
+{id:"sensperms",name:"Permissions sensibles",kind:"module",alias:["sensperms","sensitive_permissions","sensitiveperms","permissions_sensibles"],kw:"permissions administrateur rôles",
+svg:svg24('<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>'),
+desc:"Surveille les permissions dangereuses données à des rôles ou des membres."},
+{id:"captcha",name:"Captchas",kind:"module",alias:["captcha"],kw:"vérification arrivée bot",
+svg:svg24('<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>'),
+desc:"Vérification par captcha à l’arrivée des nouveaux membres."}
+]}
+];
+
+/* Associe chaque entrée à un module existant du bot (par id ou par nom) ; sinon route de repli */
+function secBuild(G){var out=[];
+SEC.forEach(function(sg){var gk=nz(sg.group);
+sg.items.forEach(function(it){var route=it.id,mod=null;
+if(it.kind==="module"){var ids=(it.alias||[]).map(nz),nm=nz(it.name);
+mod=G.modules.filter(function(m){var a=nz(m.id),b=nz(m.name);return ids.indexOf(a)>-1||a===nm||b===nm})[0]||null;
+route=mod?mod.id:((it.alias&&it.alias[0])||it.id)}
+out.push({g:gk,it:it,route:route,mod:mod})})});
+return out}
+
+function secDispatch(c,G,mid,list){
+var x=list.filter(function(y){return y.route===mid})[0];
+if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&x.it);
+if(x.it.kind==="audit")return auditView(c,G,{cat:x.it.cat,title:x.it.title,lead:x.it.lead});
+return secList(c,G,x.it)}
+
+var SEC_ST={open:["Ouvert",""],pending:["En attente",""],resolved:["Traité","on"],dismissed:["Ignoré",""],active:["En cours","on"],expired:["Expirée",""],revoked:["Levée",""]};
+function secDT(ts){try{return new Date(ts).toLocaleString("fr-FR",{timeZone:"Europe/Paris",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(x){return ""}}
+function secName(v){return v&&typeof v==="object"?(v.name||v.username||v.id||""):(v||"")}
+
+/* Page « liste » générique : GET /api/guilds/:id/<ep> → {items:[…],next} */
+function secList(c,G,it){
+c.classList.add("wide");
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:it.name}));
+c.appendChild(h("p",{class:"lead",text:it.desc}));
+var base="/api/guilds/"+G.id+"/"+it.ep,F={q:"",status:""},cursor=null,busy=false,timer=0;
+var chips=h("div",{class:"fchips"}),box=h("div",{class:"trl"}),status=h("span",{class:"h"}),auto=h("input",{type:"checkbox"});
+var more=h("button",{class:"btn ghost sm",type:"button",text:"Charger plus",style:"display:none;margin:14px auto 0"});
+var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un membre, un motif…","aria-label":"Rechercher"});
+c.appendChild(h("div",{class:"tb"},[search,h("button",{class:"btn ghost sm",type:"button",text:"Actualiser",onclick:function(){load(true)}}),h("label",{class:"live2"},[auto,"Temps réel"])]));
+if(it.filters){it.filters.forEach(function(f){var b=h("button",{type:"button",class:f[0]===F.status?"on":"",text:f[1],onclick:function(){F.status=f[0];[].forEach.call(chips.children,function(x){x.className=x===b?"on":""});load(true)}});chips.appendChild(b)});c.appendChild(chips)}
+if(it.add){
+var who=h("input",{type:"text",maxlength:60,placeholder:"Pseudo ou ID du membre"}),why=h("input",{type:"text",maxlength:200,placeholder:"Motif (facultatif)"});
+var bAdd=h("button",{class:"btn sm",type:"button",text:"Ajouter",onclick:function(){
+if(!who.value.trim()){toast("Indiquez le membre à surveiller.",true);return}
+bAdd.disabled=true;
+api(base,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({member:who.value.trim(),reason:why.value.trim()})})
+.then(function(){toast("Membre ajouté ✓");who.value=why.value="";load(true)})
+.catch(function(e){if(e&&e.message==="auth")return;toast(errText(e),true)}).then(function(){bAdd.disabled=false})}});
+c.appendChild(h("div",{class:"abs"},[lab("Membre",who),lab("Motif",why),bAdd]))}
+c.appendChild(box);c.appendChild(more);c.appendChild(status);
+function run(e,a){if(a.c&&!confirm(a.c))return;
+api(base+"/"+encodeURIComponent(e.id)+(a.m==="DELETE"?"":"/"+a.k),{method:a.m||"POST"})
+.then(function(){toast(a.l+" ✓");load(true)})
+.catch(function(x){if(x&&x.message==="auth")return;toast(errText(x),true)})}
+function rowOf(e){var st=SEC_ST[e.status],who=secName(e.member),det=[],mt=[],
+done=["resolved","dismissed","revoked","expired"].indexOf(e.status)>-1;
+if(e.description)det.push(e.description);
+if(e.type)mt.push(e.type);if(e.moderator)mt.push("Par "+secName(e.moderator));if(e.reason)mt.push("Motif : "+e.reason);
+if(e.expires)mt.push("Expire le "+secDT(e.expires));if(e.count!=null)mt.push(e.count+" action"+(e.count>1?"s":""));if(e.ts)mt.push(secDT(e.ts));
+if(mt.length)det.push(mt.join(" · "));
+var head=e.title?e.title+(who?" · "+who:""):(who||"?");
+var btns=done?[]:(it.actions||[]).map(function(a){return h("button",{class:"btn sm"+(a.g?" ghost":""),type:"button",text:a.l,onclick:function(){run(e,a)}})});
+return h("div",{class:"arow",style:done?"opacity:.6":""},[
+e.avatar?h("img",{src:e.avatar,alt:"",width:36,height:36,style:"border-radius:50%;flex:none"}):null,
+h("div",{class:"ati"},[h("b",{},[head,st?h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()}):null])].concat(det.map(function(t){return h("span",{class:"ad",text:t})}))),
+h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)])}
+function qs(){var p=["limit=50"];if(F.q)p.push("q="+encodeURIComponent(F.q));if(F.status)p.push("status="+encodeURIComponent(F.status));return p.join("&")}
+function stop(){clearInterval(timer);timer=0;auto.checked=false}
+function load(reset){if(busy)return;busy=true;status.textContent="Chargement…";
+api(base+"?"+qs()+(!reset&&cursor?"&before="+encodeURIComponent(cursor):""))
+.then(function(d){var es=d.items||[];if(reset)box.innerHTML="";es.forEach(function(e){box.appendChild(rowOf(e))});
+cursor=d.next||null;more.style.display=cursor?"":"none";
+if(!box.children.length)box.appendChild(h("div",{class:"empty",text:it.empty||"Rien à afficher."}));
+status.textContent="Dernière mise à jour à "+new Date().toLocaleTimeString("fr-FR",{timeZone:"Europe/Paris"})})
+.catch(function(e){if(e&&e.message==="auth")return;box.innerHTML="";
+if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(box,it.name);else box.appendChild(h("p",{class:"err",text:"Impossible de charger cette section."}));
+status.textContent="";stop()})
+.then(function(){busy=false})}
+more.addEventListener("click",function(){load(false)});
+var qt=0;search.addEventListener("input",function(){clearTimeout(qt);qt=setTimeout(function(){F.q=search.value.trim();load(true)},350)});
+auto.addEventListener("change",function(){clearInterval(timer);timer=0;if(auto.checked)timer=setInterval(function(){if(!box.isConnected){stop();return}load(true)},15000)});
+load(true)}
 
 /* ---- Barre « Enregistrer » globale : garde les modifications de tous les modules et les enregistre d’un coup ---- */
 function anyPend(){return Object.keys(PEND).some(function(g){return Object.keys(PEND[g]).length>0})}
