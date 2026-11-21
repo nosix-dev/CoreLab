@@ -526,6 +526,75 @@ body.hs .content,body.hs .content.wide{max-width:none;margin-left:280px;padding:
 .rad-c:hover{background:var(--s1)}.rad-c.on{background:rgba(232,81,13,.14)}
 .rad-cl{display:inline-flex;align-items:center;gap:12px}.rad-c b{font-variant-numeric:tabular-nums}
 @media(max-width:900px){.rad-g{grid-template-columns:1fr}.rad-k{grid-template-columns:1fr 1fr}}
+/* ---- Page de connexion ---- */
+.lgn{min-height:calc(100vh - var(--nav) - 80px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:clamp(30px,8vw,120px);align-items:center;max-width:1180px;margin:0 auto;padding:50px 0}
+.lgn-eye{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac2);margin:0 0 22px}
+.lgn h1{font-size:clamp(40px,6vw,66px);letter-spacing:-.04em;line-height:1.02;margin:0 0 26px}
+.lgn h1 span{display:block;color:var(--mu)}
+.lgn-sub{color:var(--mu);font-size:18px;max-width:470px;margin:0 0 44px}
+.lgn-ft{list-style:none;margin:0;padding:0;max-width:500px}
+.lgn-ft li{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--ln)}
+.lgn-ft li:first-child{border-top:0}
+.lgn-ic{flex:none;width:40px;height:40px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);display:grid;place-items:center}
+.lgn-ic svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lgn-ft b{display:block;font-size:16px}.lgn-ft span{color:var(--mu);font-size:14.5px}
+.lgn-card{padding:32px;border:1px solid var(--ln);border-radius:24px;background:linear-gradient(160deg,var(--s1),rgba(22,21,28,.55));box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.lgn-logo{width:54px;height:54px;border:1px solid var(--ln);border-radius:16px;background:var(--bg);display:grid;place-items:center;margin:0 0 26px}
+.lgn-logo img{width:30px;height:30px;border-radius:8px}
+.lgn-card h2{font-size:30px;letter-spacing:-.03em;margin:0 0 10px}
+.lgn-card>p{color:var(--mu);margin:0 0 26px}
+.lgn-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:16px 20px;border:1px solid #6b77f5;border-radius:12px;background:#5865f2;color:#fff;font-weight:700;font-size:16px;transition:transform .15s,box-shadow .15s,background .15s}
+.lgn-btn:hover{background:#6573f7;transform:translateY(-2px);box-shadow:0 10px 28px rgba(88,101,242,.45)}
+.lgn-btn svg{width:22px;height:22px;fill:currentColor;flex:none}
+.lgn-btn .ar{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lgn-btn span{flex:1;text-align:center}
+.lgn-notes{list-style:none;margin:26px 0 0;padding:22px 0 0;border-top:1px solid var(--ln);display:grid;gap:12px;font-size:14px;color:var(--mu)}
+.lgn-notes li{display:flex;gap:10px;align-items:flex-start}
+.lgn-notes svg{flex:none;width:16px;height:16px;margin-top:3px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lgn-notes li:first-child{color:var(--tx)}.lgn-notes li:not(:first-child) svg{color:var(--ok)}
+.lgn-err{margin:18px 0 0;padding:12px 14px;border:1px solid rgba(255,107,94,.5);border-radius:12px;background:rgba(255,107,94,.08);color:#ff8a80;font-size:14px}
+.lgn-help{display:flex;align-items:center;gap:14px;margin-top:14px;padding:16px 18px;border:1px solid var(--ln);border-radius:18px;background:rgba(22,21,28,.6);transition:border-color .2s}
+.lgn-help:hover{border-color:var(--mu)}
+.lgn-help b{display:block;font-size:15px}.lgn-help span{color:var(--mu);font-size:13.5px}
+.lgn-help .lgn-ic{width:36px;height:36px;border-radius:50%}
+.lgn-help>i{margin-left:auto;color:var(--mu);font-style:normal}
+.lgn-foot{max-width:1180px;margin:0 auto;padding:22px 0;border-top:1px solid var(--ln);display:flex;justify-content:space-between;gap:12px;color:var(--mu);font-size:13.5px}
+@media(max-width:900px){.lgn{grid-template-columns:1fr;padding:30px 0;gap:36px}.lgn-card{order:-1}.lgn-foot{flex-direction:column}}
+/* ---- Liste des serveurs ---- */
+.sl-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 26px}
+.sl-tabs{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}
+.sl-tabs button{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:9px;background:transparent;color:var(--mu);padding:8px 14px;font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
+.sl-tabs button:hover{color:var(--tx)}.sl-tabs button.on{background:var(--s2);color:var(--tx);box-shadow:inset 0 0 0 1px var(--ln)}
+.sl-tabs em{font-style:normal;font-size:11.5px;padding:1px 7px;border-radius:6px;background:var(--bg);color:var(--mu)}
+.sl-tools{display:flex;gap:8px;align-items:center;flex:1;justify-content:flex-end;min-width:240px}
+.sl-tools .find{max-width:340px;margin:0;border-radius:12px;height:44px}
+.sl-rf{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--ln);border-radius:12px;background:transparent;color:var(--tx);cursor:pointer;flex:none}
+.sl-rf:hover{background:var(--s1)}.sl-rf svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sl-h{display:flex;align-items:center;gap:10px;margin:30px 0 16px;font-size:24px;letter-spacing:-.02em}
+.sl-h em{font-style:normal;font-size:12px;font-weight:700;padding:2px 8px;border-radius:7px;background:var(--s2);color:var(--mu)}
+.sl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.sl-card{border:1px solid var(--ln);border-radius:18px;background:var(--s1);overflow:hidden;transition:border-color .2s,transform .2s}
+.sl-card:hover{border-color:var(--ac);transform:translateY(-3px)}
+.sl-ban{height:84px;background:radial-gradient(ellipse at 30% 0,rgba(232,81,13,.45),transparent 70%),linear-gradient(180deg,rgba(232,81,13,.12),transparent)}
+.sl-in{padding:0 20px 18px;margin-top:-30px}
+.sl-in .av{width:56px;height:56px;border-radius:16px;border:3px solid var(--s1);font-size:20px}
+.sl-in .av img{border-radius:0}
+.sl-in b{display:block;font-size:19px;margin:10px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--mu);font-size:13.5px}
+.sl-bot{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--ln)}
+.sl-on{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.sl-on::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(59,165,93,.2)}
+.sl-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.sl-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px dashed var(--ln);border-radius:14px;background:var(--s1);min-width:0}
+.sl-row .av{width:40px;height:40px;border-radius:12px;font-size:15px}
+.sl-row .av img{border-radius:0}
+.sl-row>div{min-width:0;flex:1}
+.sl-row b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl-row span.r{font-size:13px;color:var(--mu)}
+.sl-row .btn{flex:none;border-color:#4a56c9;background:#2a3170;color:#fff;box-shadow:none}
+.sl-row .btn:hover{background:#3340a0;box-shadow:none}
+.sl-note{display:flex;align-items:center;gap:10px;margin:34px 0 0;color:var(--mu);font-size:13.5px}
+@media(max-width:700px){.sl-tools{justify-content:stretch}.sl-tools .find{max-width:none}.sl-rows{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="fx.css">
 </head>
@@ -575,22 +644,59 @@ hr.appendChild(h("button",{class:"btn ghost sm",onclick:function(){logout()},tex
 
 var LOGIN_MSG={state:"La session de connexion a expiré (le bot était peut-être endormi). Réessayez.",denied:"La connexion a été annulée ou refusée sur Discord.",login:"Discord a refusé la connexion. Réessayez, ou prévenez le support si ça continue."};
 function viewLogin(){document.body.classList.remove("hs");app.innerHTML="";
-app.appendChild(h("div",{class:"center"},h("div",{},[
-h("h1",{text:"Gérez CoreLab depuis votre navigateur."}),
-h("p",{text:"Connectez-vous avec Discord pour configurer le bot sur les serveurs que vous administrez."}),
-h("a",{class:"btn",href:API+"/auth/login",text:"Se connecter avec Discord"}),
-LOGIN_ERR?h("p",{class:"err",text:LOGIN_MSG[LOGIN_ERR]||LOGIN_MSG.login}):null])))}
+function ic(p,cls){var e=h("span",{class:cls||"lgn-ic"});e.innerHTML='<svg viewBox="0 0 24 24">'+p+'</svg>';return e}
+var P_SHIELD='<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+P_TUNE='<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+P_TEAM='<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+P_LOCK='<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+P_CHECK='<path d="M20 6 9 17l-5-5"/>',P_CHAT='<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>';
+var feats=[[P_SHIELD,"Protégez votre communauté","Des règles et des protections adaptées à votre serveur."],[P_TUNE,"Gardez vos repères","Modération, tickets, logs et statistiques au même endroit."],[P_TEAM,"Travaillez en équipe","Des accès définis par vos rôles et vos permissions."]];
+var left=h("div",{},[h("p",{class:"lgn-eye",text:"Votre espace vous attend"}),h("h1",{},["La bonne équipe.",h("span",{text:"Les bons outils."})]),
+h("p",{class:"lgn-sub",text:"Retrouvez vos communautés et gardez la main sur ce qui compte, depuis votre espace CoreLab."}),
+h("ul",{class:"lgn-ft"},feats.map(function(f){return h("li",{},[ic(f[0]),h("div",{},[h("b",{text:f[1]}),h("span",{text:f[2]})])])}))]);
+var dsc=h("a",{class:"lgn-btn",href:API+"/auth/login"});
+dsc.innerHTML='<svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.29a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.197.373.29a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg><span>Continuer avec Discord</span><svg class="ar" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+var card=h("div",{class:"lgn-card"},[h("div",{class:"lgn-logo"},h("img",{src:"logo.png",alt:""})),h("h2",{text:"Bon retour sur CoreLab."}),
+h("p",{text:"Utilisez votre compte Discord pour retrouver les serveurs que vous pouvez gérer."}),dsc,
+LOGIN_ERR?h("p",{class:"lgn-err",text:LOGIN_MSG[LOGIN_ERR]||LOGIN_MSG.login}):null,
+h("ul",{class:"lgn-notes"},[h("li",{},[ic(P_LOCK,"lgn-i"),h("span",{},[h("b",{text:"Vous vous connectez sur Discord. "}),"CoreLab ne vous demande jamais votre mot de passe."])]),
+h("li",{},[ic(P_CHECK,"lgn-i"),"Vous choisissez le compte à utiliser."]),h("li",{},[ic(P_CHECK,"lgn-i"),"Vos permissions déterminent vos accès."])])]);
+var help=h("a",{class:"lgn-help",href:"https://discord.gg/WecpyxrSBT",target:"_blank",rel:"noopener"},[ic(P_CHAT),h("div",{},[h("b",{text:"Une question avant de commencer ?"}),h("span",{text:"Retrouvez la communauté sur Discord."})]),h("i",{text:"↗"})]);
+app.appendChild(h("div",{class:"lgn"},[left,h("div",{},[card,help])]));
+app.appendChild(h("div",{class:"lgn-foot"},[h("span",{text:"© 2026 CoreLab"}),h("span",{text:"Un espace pour votre communauté."})]))}
 
 function viewServers(){document.body.classList.remove("hs");app.innerHTML="";
+var all=(ME.guilds||[]).slice().sort(function(a,b){return (b.botIn?1:0)-(a.botIn?1:0)||a.name.localeCompare(b.name)}),tab="all",q="";
 app.appendChild(h("h2",{class:"t",text:"Vos serveurs"}));
-app.appendChild(h("p",{class:"lead",text:"Choisissez le serveur à configurer."}));
-if(!ME.guilds.length){app.appendChild(h("p",{class:"muted",text:"Aucun serveur où vous avez la permission « Gérer le serveur »."}));return}
-var g=h("div",{class:"sg"});
-ME.guilds.slice().sort(function(a,b){return (b.botIn?1:0)-(a.botIn?1:0)||a.name.localeCompare(b.name)}).forEach(function(s){
+app.appendChild(h("p",{class:"lead",text:"Choisissez le serveur que vous voulez configurer."}));
+if(!all.length){app.appendChild(h("p",{class:"muted",text:"Aucun serveur où vous avez la permission « Gérer le serveur »."}));return}
+var nW=all.filter(function(s){return s.botIn}).length,nA=all.length-nW,tabs=h("div",{class:"sl-tabs"}),body=h("div"),
+find=h("input",{class:"find",type:"search",placeholder:"Rechercher un serveur…","aria-label":"Rechercher un serveur"}),
+rf=h("button",{class:"sl-rf",type:"button","aria-label":"Actualiser",title:"Actualiser",onclick:function(){rf.disabled=true;api("/api/me").then(function(m){ME=m;render()}).catch(function(){rf.disabled=false})}});
+rf.innerHTML='<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>';
+[["all","Tous",all.length],["with","Avec CoreLab",nW],["add","À ajouter",nA]].forEach(function(t){
+tabs.appendChild(h("button",{type:"button","data-t":t[0],class:t[0]===tab?"on":"",onclick:function(){tab=t[0];[].forEach.call(tabs.children,function(b){b.className=b.getAttribute("data-t")===tab?"on":""});draw()}},[t[1],h("em",{text:String(t[2])})]))});
+app.appendChild(h("div",{class:"sl-top"},[tabs,h("div",{class:"sl-tools"},[find,rf])]));
+app.appendChild(body);
+app.appendChild(h("p",{class:"sl-note",text:"🔒 Retrouvez les serveurs que vous pouvez gérer. Ajoutez CoreLab ou ouvrez son dashboard."}));
+find.addEventListener("input",function(){q=find.value.trim().toLowerCase();draw()});
+function role(s){return typeof s.owner==="boolean"?(s.owner?"Propriétaire":"Administrateur"):""}
+function head(t,n){return h("h3",{class:"sl-h"},[t,h("em",{text:String(n)})])}
+function draw(){body.innerHTML="";
+var list=all.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>-1}),w=list.filter(function(s){return s.botIn}),a=list.filter(function(s){return !s.botIn});
+if(tab==="with")a=[];if(tab==="add")w=[];
+if(!w.length&&!a.length){body.appendChild(h("div",{class:"empty",text:"Aucun serveur ne correspond."}));return}
+if(w.length){body.appendChild(head("Avec CoreLab",w.length));
+body.appendChild(h("div",{class:"sl-grid"},w.map(function(s){var meta=[];
+if(role(s))meta.push(h("span",{text:role(s)}));if(typeof s.members==="number")meta.push(h("span",{text:fmtN(s.members)+" membres"}));
+return h("div",{class:"sl-card"},[h("div",{class:"sl-ban"}),h("div",{class:"sl-in"},[icon(s.id,s.icon,s.name,56),h("b",{text:s.name}),h("div",{class:"sl-meta"},meta)]),
+h("div",{class:"sl-bot"},[h("span",{class:"sl-on",text:"Connecté"}),h("a",{class:"btn ghost sm",href:"#/g/"+s.id,text:"Ouvrir →"})])])})))}
+if(a.length){body.appendChild(head("À ajouter",a.length));
+body.appendChild(h("div",{class:"sl-rows"},a.map(function(s){
 var inv="https://discord.com/oauth2/authorize?client_id="+CLIENT_ID+"&scope=bot%20applications.commands&permissions=8&guild_id="+s.id+"&disable_guild_select=true";
-var card=s.botIn?h("a",{class:"sc",href:"#/g/"+s.id},[icon(s.id,s.icon,s.name),h("div",{},[h("b",{text:s.name}),h("span",{text:"Configurer"})])])
-:h("div",{class:"sc"},[icon(s.id,s.icon,s.name),h("div",{},[h("b",{text:s.name}),h("span",{text:"Bot absent"})]),h("a",{class:"btn sm ghost",href:inv,target:"_blank",rel:"noopener",text:"Inviter"})]);
-g.appendChild(card)});app.appendChild(g)}
+return h("div",{class:"sl-row"},[icon(s.id,s.icon,s.name,40),h("div",{},[h("b",{text:s.name}),role(s)?h("span",{class:"r",text:role(s)}):null]),
+h("a",{class:"btn sm",href:inv,target:"_blank",rel:"noopener",text:"＋ Ajouter CoreLab"})])})))}}
+draw()}
 
 function viewGuild(r){document.body.classList.add("hs");app.innerHTML="";app.appendChild(h("p",{class:"muted",text:"Chargement…"}));
 Promise.all([api("/api/guilds/"+r.g),META[r.g]?Promise.resolve(META[r.g]):api("/api/guilds/"+r.g+"/meta")]).then(function(res){
