@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0d12">
+<meta name="description" content="Outils Discord gratuits par CoreLab : horodatages, décodeur d'identifiant, compteur de limites. Tout se passe dans votre navigateur.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<script>try{var _t=localStorage.getItem("cl_theme");if(_t)document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
+<title>Outils Discord gratuits · CoreLab</title>
+<style>
+:root{--bg:#0e0d12;--s1:#16151c;--s2:#1e1c26;--ln:#2b2934;--tx:#f4f2f7;--mu:#a09cad;--ac:#e8510d;--ac2:#ff7a3d;--f:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;--nav:64px}
+:root[data-theme="light"]{--bg:#f6f4f8;--s1:#fff;--s2:#efecf3;--ln:#dcd8e3;--tx:#18161d;--mu:#625e70;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--nav) + 10px);overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--f);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% -5%,rgba(232,81,13,.18),transparent 70%)}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ac);color:#fff}
+:focus-visible{outline:2px solid var(--ac2);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+header{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px)}
+nav{height:var(--nav);display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo img{width:30px;height:30px;border-radius:8px}
+.nvp{display:flex;gap:2px;padding:5px;border:1px solid var(--ln);border-radius:14px;background:rgba(22,21,28,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+[data-theme="light"] .nvp{background:rgba(255,255,255,.8)}
+.nvp a{padding:9px 16px;border-radius:10px;color:var(--mu);font-weight:500;font-size:14.5px;white-space:nowrap;transition:color .15s,background .15s}
+.nvp a:hover,.nvp a.on{color:var(--tx);background:var(--s2)}
+.back{padding:9px 18px;border:1px solid var(--ln);border-radius:12px;font-weight:600;font-size:14px;color:var(--tx)}
+.back:hover{background:var(--s1)}
+main{padding:calc(var(--nav) + 70px) 0 90px}
+.hero{max-width:640px;margin-bottom:46px}
+.hero small{color:var(--ac2);font-weight:600;font-size:14px}
+h1{font-size:clamp(34px,5.6vw,60px);line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:10px 0 14px}
+h1 em{color:var(--ac2);font-style:normal}
+.hero p{color:var(--mu);font-size:18px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+.card{padding:24px;background:var(--s1);border:1px solid var(--ln);border-radius:18px;transition:border-color .2s}
+.card:hover{border-color:rgba(232,81,13,.5)}
+.card.open{grid-column:1/-1;border-color:var(--ac)}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.ic{width:40px;height:40px;border-radius:12px;background:var(--s2);border:1px solid var(--ln);display:grid;place-items:center}
+.ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cat{font-size:11.5px;letter-spacing:.12em;font-weight:700;color:var(--mu)}
+.card h2{margin:0 0 8px;font-size:20px;letter-spacing:-.02em;font-weight:600}
+.card>p{margin:0 0 18px;color:var(--mu);font-size:14.5px}
+.go{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--tx);font:700 14.5px var(--f);cursor:pointer;padding:0}
+.go svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}
+.go:hover svg{transform:translateX(3px)}
+.card.open .go svg{transform:rotate(90deg)}
+.soon{display:inline-block;padding:3px 12px;border:1px solid var(--ln);border-radius:999px;color:var(--mu);font-size:12.5px;font-weight:600}
+.panel{display:none;margin-top:22px;padding-top:22px;border-top:1px solid var(--ln)}
+.card.open .panel{display:block}
+label{display:block;margin:0 0 6px;font-size:13px;font-weight:600;color:var(--mu)}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:500 15px var(--f)}
+textarea{min-height:130px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--ac)}
+.row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px}
+.out{display:grid;gap:8px;margin-top:6px}
+.line{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg)}
+.line code{font:13.5px var(--mono);color:var(--ac2);flex:none}
+.line span{flex:1;min-width:0;color:var(--mu);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp{padding:6px 14px;border:1px solid var(--ln);border-radius:999px;background:var(--s2);color:var(--tx);font:600 12.5px var(--f);cursor:pointer}
+.cp:hover{border-color:var(--ac)}
+.res{margin-top:12px;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);font-size:15px}
+.res b{color:var(--ac2)}
+.cnt{margin-top:10px;font-weight:800;font-size:28px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cnt.bad{color:#ff5a5f}
+.bar{height:8px;border-radius:99px;background:var(--s2);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .15s}
+.bar i.bad{background:#ff5a5f}
+footer{border-top:1px solid var(--ln);padding:28px 0 40px;color:var(--mu);font-size:13.5px}
+@media(max-width:1020px){.nvp{display:none}}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.line span{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="logo" href="index.html"><img src="logo.png" alt="" width="30" height="30">CoreLab</a>
+<div class="nvp"><a href="index.html#fonctions">Fonctions</a><a href="docs.html">Documentation</a><a href="status.html">Statut</a><a href="blog.html">Blog</a><a href="outils.html" class="on">Outils</a><a href="tarifs.html">Tarifs</a></div>
+<a class="back" href="index.html">← Accueil</a>
+</nav></div></header>
+
+<main><div class="wrap">
+<div class="hero"><small>Gratuit, sans compte</small><h1>Outils <em>Discord</em></h1><p>Des petits outils pratiques pour votre serveur. Tout se passe dans votre navigateur, rien n’est envoyé.</p></div>
+
+<div class="grid" id="grid">
+
+<article class="card" id="t-time">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="cat">MESSAGES</span></div>
+<h2>Générateur d’horodatages Discord</h2><p>Une date, et les codes &lt;t:…&gt; que Discord affiche à l’heure de chaque membre.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel"><label for="tm">Date et heure</label><input id="tm" type="datetime-local" style="max-width:320px;margin-bottom:14px"><div class="out" id="tmo"></div></div>
+</article>
+
+<article class="card" id="t-id">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 11c0 3-1 5-3 7M16 8a5 5 0 0 0-9 3c0 2-.5 3.5-1.5 5M19 12c0 3-1 6-2.5 8M12 8v.01M12 15c0 1-.3 2-.8 3"/></svg></span><span class="cat">MODÉRATION</span></div>
+<h2>Décodeur d’identifiant Discord</h2><p>La date de création d’un compte, d’un serveur ou d’un message à partir de son identifiant.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel"><label for="sf">Identifiant (ex. 1403513450273177772)</label><input id="sf" inputmode="numeric" placeholder="Collez un identifiant" style="max-width:420px"><div class="res" id="sfo" hidden></div></div>
+</article>
+
+<article class="card" id="t-lim">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h6"/></svg></span><span class="cat">MESSAGES</span></div>
+<h2>Compteur des limites Discord</h2><p>La limite de caractères de chaque champ Discord, avec un compteur.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel"><div class="row"><div><label for="lf">Champ</label><select id="lf"></select></div><div></div></div><label for="lt">Texte</label><textarea id="lt" placeholder="Écrivez ou collez votre texte"></textarea><div class="cnt" id="lc">0 / 0</div><div class="bar"><i id="lb"></i></div></div>
+</article>
+
+<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></span><span class="cat">MESSAGES</span></div><h2>Générateur d’embeds Discord</h2><p>Créez un embed, voyez le rendu et envoyez-le par webhook.</p><span class="soon">Bientôt</span></article>
+<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg></span><span class="cat">SERVEUR</span></div><h2>Générateur de règlement Discord</h2><p>Un règlement clair pour votre serveur en une minute, prêt à coller dans Discord.</p><span class="soon">Bientôt</span></article>
+<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l3 3M14 9l2 2"/></svg></span><span class="cat">BOTS</span></div><h2>Calculateur de permissions Discord</h2><p>Cochez des permissions pour obtenir leur valeur et un lien d’invitation de bot.</p><span class="soon">Bientôt</span></article>
+<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 0 0 3-3c0-5-4-11-8-11Z"/></svg></span><span class="cat">SERVEUR</span></div><h2>Palette de couleurs de rôles</h2><p>Des couleurs de rôles qui vont ensemble et restent lisibles en thème clair comme sombre.</p><span class="soon">Bientôt</span></article>
+</div>
+</div></main>
+
+<footer><div class="wrap">© 2026 CoreLab · Tous droits réservés</div></footer>
+
+<script>
+function $(q,r){return (r||document).querySelector(q)}
+/* ouvrir / fermer */
+document.querySelectorAll(".card .go").forEach(function(b){b.addEventListener("click",function(){var c=b.closest(".card"),o=!c.classList.contains("open");document.querySelectorAll(".card.open").forEach(function(x){x.classList.remove("open")});if(o){c.classList.add("open");c.scrollIntoView({behavior:"smooth",block:"nearest"})}})});
+function copy(t,b){var d=function(){var o=b.textContent;b.textContent="Copié";setTimeout(function(){b.textContent=o},1100)};
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(d).catch(function(){});else{var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");d()}catch(e){}a.remove()}}
+
+/* horodatages */
+var tm=$("#tm"),tmo=$("#tmo"),FM=[["t","Heure courte"],["T","Heure longue"],["d","Date courte"],["D","Date longue"],["f","Date et heure"],["F","Jour, date et heure"],["R","Relatif"]];
+function pad(n){return ("0"+n).slice(-2)}
+var n0=new Date();tm.value=n0.getFullYear()+"-"+pad(n0.getMonth()+1)+"-"+pad(n0.getDate())+"T"+pad(n0.getHours())+":"+pad(n0.getMinutes());
+function ts(){tmo.innerHTML="";var t=new Date(tm.value).getTime();if(isNaN(t))return;t=Math.floor(t/1000);
+FM.forEach(function(f){var code="<t:"+t+":"+f[0]+">",l=document.createElement("div");l.className="line";
+var c=document.createElement("code");c.textContent=code;var s=document.createElement("span");s.textContent=f[1];var b=document.createElement("button");b.type="button";b.className="cp";b.textContent="Copier";
+b.addEventListener("click",function(){copy(code,b)});l.appendChild(c);l.appendChild(s);l.appendChild(b);tmo.appendChild(l)})}
+tm.addEventListener("input",ts);ts();
+
+/* décodeur d'identifiant */
+var sf=$("#sf"),sfo=$("#sfo");
+sf.addEventListener("input",function(){var v=sf.value.trim();sfo.hidden=true;if(!/^\d{15,20}$/.test(v)||typeof BigInt==="undefined")return;
+var id=BigInt(v),ms=Number((id>>22n)+1420070400000n),d=new Date(ms);if(isNaN(d.getTime()))return;
+var w=Number((id&0x3E0000n)>>17n),p=Number((id&0x1F000n)>>12n),i=Number(id&0xFFFn);
+sfo.hidden=false;sfo.innerHTML="";
+function add(k,val){var r=document.createElement("div");var b=document.createElement("b");b.textContent=k+" : ";r.appendChild(b);r.appendChild(document.createTextNode(val));sfo.appendChild(r)}
+add("Créé le",d.toLocaleString("fr-FR",{dateStyle:"full",timeStyle:"medium"}));
+add("Horodatage",String(Math.floor(ms/1000)));
+add("Worker / Process / Incrément",w+" / "+p+" / "+i)});
+
+/* compteur de limites */
+var LIM=[["Contenu du message",2000],["Titre d’embed",256],["Description d’embed",4096],["Nom de champ d’embed",256],["Valeur de champ d’embed",1024],["Auteur d’embed",256],["Pied d’embed",2048],["Pseudo du serveur",32],["Nom de rôle",100],["Nom de salon",100],["Sujet de salon",1024],["Statut personnalisé",128]],
+lf=$("#lf"),lt=$("#lt"),lc=$("#lc"),lb=$("#lb");
+LIM.forEach(function(l,i){var o=document.createElement("option");o.value=i;o.textContent=l[0]+" ("+l[1]+")";lf.appendChild(o)});
+function cnt(){var max=LIM[+lf.value][1],n=Array.from(lt.value).length,bad=n>max;lc.textContent=n+" / "+max;lc.classList.toggle("bad",bad);lb.classList.toggle("bad",bad);lb.style.width=Math.min(100,n/max*100)+"%"}
+lf.addEventListener("change",cnt);lt.addEventListener("input",cnt);cnt();
+</script>
+</body>
+</html>

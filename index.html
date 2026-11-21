@@ -323,10 +323,11 @@ header nav{position:relative}
 <a href="docs.html"><b data-t="n3"></b><span data-t="rd1"></span></a>
 <a href="status.html"><b data-t="n5"></b><span data-t="rd2"></span></a>
 <a href="blog.html"><b data-t="n6"></b><span data-t="rd3"></span></a>
-<a href="diamant.html"><b>Diamant</b><span data-t="rd4"></span></a>
+<a href="outils.html"><b data-t="nout"></b><span data-t="rd5"></span></a>
+<a href="diamant.html"><b>💎 Diamant</b><span data-t="rd4"></span></a>
 </div></div>
 <a href="tarifs.html" data-t="ntar"></a>
-<a href="https://discord.gg/GfbkAqHaFn" target="_blank" rel="noopener">Discord <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+<a href="https://discord.gg/WecpyxrSBT" target="_blank" rel="noopener">Discord <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
 </div>
 <div class="right">
 <div class="hgrp">
@@ -738,7 +739,7 @@ var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){t.classList
 (function(){
 var PANEL="https://corelab-bot.onrender.com/panel",CH='<svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>',
 FL={fr:'<svg viewBox="0 0 24 16"><rect width="8" height="16" fill="#0055a4"/><rect x="8" width="8" height="16" fill="#fff"/><rect x="16" width="8" height="16" fill="#ef4135"/></svg>',en:'<svg viewBox="0 0 24 16"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#fff" stroke-width="3"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.2"/><path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="5"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3"/></svg>'};
-Object.assign(T,{nres:["Ressources","Resources"],ntar:["Tarifs","Pricing"],rd1:["Chaque module expliqué pas à pas","Every module explained step by step"],rd2:["L’état du bot en direct","Live bot status"],rd3:["Les nouveautés et les guides","News and guides"],rd4:["La mascotte et le jeu Diamant","The Diamond mascot and game"],conn:["Se connecter","Log in"],deco:["Déconnexion","Log out"],prof:["Profil","Profile"],param:["Paramètres","Settings"],supp:["Support Discord","Discord support"]});
+Object.assign(T,{nres:["Ressources","Resources"],ntar:["Tarifs","Pricing"],rd1:["Chaque module expliqué pas à pas","Every module explained step by step"],rd2:["L’état du bot en direct","Live bot status"],rd3:["Les nouveautés et les guides","News and guides"],rd4:["La mascotte et le jeu Diamant","The Diamond mascot and game"],nout:["Outils Discord","Discord tools"],rd5:["Horodatages, identifiants, limites de caractères","Timestamps, IDs, character limits"],conn:["Se connecter","Log in"],deco:["Déconnexion","Log out"],prof:["Profil","Profile"],param:["Paramètres","Settings"],supp:["Support Discord","Discord support"]});
 window.USER=null;
 try{window.USER=JSON.parse(localStorage.getItem("cl_user")||"null")}catch(e){}
 function closeAll(ex){$$(".dd").forEach(function(d){if(d!==ex){d.classList.remove("open");var b=d.querySelector(".dd-b");if(b)b.setAttribute("aria-expanded","false")}})}
