@@ -163,6 +163,29 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .td-chev.open{transform:rotate(180deg)}
 .td-cfg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px;padding-top:16px;border-top:1px solid var(--ln)}
 .td-h3{margin:22px 0 2px;font-size:16px;font-weight:700}
+.rtabs{display:flex;gap:28px;margin:24px 0 22px;border-bottom:1px solid var(--ln);overflow-x:auto}
+.rtabs button{flex:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 0;color:var(--mu);font:inherit;font-weight:600;cursor:pointer;transition:color .15s}
+.rtabs button:hover{color:var(--tx)}.rtabs button.on{color:var(--tx);border-bottom-color:var(--tx)}
+.rp-sel{max-width:none;margin:0 0 12px}
+.rp-hd{display:flex;align-items:center;gap:12px;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.rp-hd .in{flex:1;min-width:0}.rp-hd .in b{display:block}.rp-hd .in .d{display:block;color:var(--mu);font-size:13.5px;margin-top:2px}
+.rp-av{width:36px;height:36px;border-radius:50%;flex:none;object-fit:cover;background:var(--s2);display:grid;place-items:center;font-weight:700}
+.rp-body{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--ln)}
+.rp-bulk{display:flex;gap:8px;flex-wrap:wrap}
+.rp-note{margin:12px 0 0;color:var(--mu);font-size:13.5px}
+.rp-row{margin:2px 0}
+.pill.bad{background:rgba(237,66,69,.18);color:#f27b7d}
+.stabs{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0;padding-bottom:22px;border-bottom:1px solid var(--ln)}
+.stabs button{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--ln);border-radius:10px;background:var(--s1);color:var(--mu);font:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
+.stabs button svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.stabs button:hover{color:var(--tx)}.stabs button.on{color:var(--tx);border-color:var(--tx);background:var(--s2)}
+.sv-form{display:grid;grid-template-columns:minmax(200px,1fr) minmax(220px,1.6fr) auto;gap:12px;align-items:end}
+.sv-form input{width:100%;padding:11px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:14px}
+@media(max-width:700px){.sv-form{grid-template-columns:1fr}}
+.sv-empty{text-align:center;padding:34px 20px}.sv-empty .td-ic{margin:0 auto}.sv-empty b{display:block;font-size:17px;margin:12px 0 4px}.sv-empty p{margin:0;color:var(--mu);font-size:14px}
+.sv-act{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--mu)}
+.sv-act time{margin-left:8px;opacity:.75}
+.sv-link{color:var(--tx);font-weight:600;text-decoration:none;white-space:nowrap}
 .inf-lbl{margin:26px 0 8px;font-size:13.5px;font-weight:700}
 .inf-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
 .inf-bar .fld{min-width:240px}
@@ -2248,7 +2271,7 @@ var SEC=[
 svg:svg24('<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'),
 desc:"Tout ce qui attend une décision d’un modérateur : signalements, messages suspects, éléments à valider.",empty:"Rien à traiter pour le moment 🎉",
 actions:[{k:"resolve",l:"Traiter"},{k:"dismiss",l:"Ignorer",g:1,c:"Ignorer cet élément ?"}]},
-{id:"mod-reports",name:"Signalements",kind:"list",ep:"mod/reports",kw:"report plainte",
+{id:"mod-reports",name:"Signalements",kind:"reports",ep:"reports",kw:"report plainte",
 svg:svg24('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>'),
 desc:"Les signalements faits par les membres : traitez-les ou classez-les.",empty:"Aucun signalement.",
 filters:[["","Tous"],["open","Ouverts"],["resolved","Traités"],["dismissed","Ignorés"]],
@@ -2261,7 +2284,7 @@ actions:[{k:"",l:"Retirer",m:"DELETE",g:1,c:"Retirer cette infraction ?"}]},
 {id:"automod",name:"Automodération",kind:"module",alias:["automod","automoderation","auto_moderation","moderation_auto"],kw:"filtre spam insultes liens",
 svg:svg24('<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>'),
 desc:"Filtres automatiques : insultes, liens, spam, majuscules, mentions de masse."},
-{id:"mod-watch",name:"Surveillance",kind:"list",ep:"mod/watchlist",add:true,kw:"watchlist suivi membres",
+{id:"mod-watch",name:"Surveillance",kind:"surveillance",ep:"mod/watchlist",kw:"watchlist suivi membres",
 svg:svg24('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>'),
 desc:"Membres placés sous surveillance : l’équipe est alertée quand ils agissent.",empty:"Personne n’est sous surveillance.",
 actions:[{k:"",l:"Retirer",m:"DELETE",g:1,c:"Retirer ce membre de la surveillance ?"}]},
@@ -2314,6 +2337,8 @@ var x=list.filter(function(y){return y.route===mid})[0];
 if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&Object.assign({},x.it,{missing:!x.mod}));
 if(x.it.kind==="radar")return radarView(c,G);
 if(x.it.kind==="todo")return todoView(c,G,x.it);
+if(x.it.kind==="reports")return reportsView(c,G,x.it);
+if(x.it.kind==="surveillance")return survView(c,G,x.it);
 if(x.it.kind==="stafftools")return stafftoolsView(c,G,x.it);
 if(x.it.kind==="discipline")return disciplineView(c,G,x.it);
 if(x.it.kind==="infractions")return infractionsView(c,G,x.it);
@@ -2378,6 +2403,142 @@ more.addEventListener("click",function(){load(false)});
 var qt=0;search.addEventListener("input",function(){clearTimeout(qt);qt=setTimeout(function(){F.q=search.value.trim();load(true)},350)});
 auto.addEventListener("change",function(){clearInterval(timer);timer=0;if(auto.checked)timer=setInterval(function(){if(!box.isConnected){stop();return}load(true)},15000)});
 load(true)}
+
+/* ---- Signalements : onglets Incidents / Réglages / Regroupement et confiance ---- */
+var RP_WIN=[1,2,6,12,24,48,72,168],RP_ST={open:["Ouvert",""],resolved:["Traité","on"],dismissed:["Ignoré",""]};
+function reportsView(c,G,it){
+c.classList.add("wide");
+var base="/api/guilds/"+G.id+"/reports",meta=META[G.id]||{channels:[]},D=null,S={},E=false,CH="",tab="inc",status="open",q="",opened={},busy=false;
+var top=h("div",{class:"net-ico"});top.innerHTML=svg24(TD_IC.flag);c.appendChild(top);
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Incidents de signalement"}));
+c.appendChild(h("p",{class:"lead",text:"Un dossier par membre, avec les signalements et leur suivi."}));
+var tabs=h("div",{class:"rtabs",role:"tablist"}),body=h("div");c.appendChild(tabs);c.appendChild(body);
+var TABS=[["inc","Incidents"],["set","Réglages"],["grp","Regroupement et confiance"]];
+function drawTabs(){tabs.innerHTML="";TABS.forEach(function(t){tabs.appendChild(h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",text:t[1],onclick:function(){tab=t[0];drawTabs();draw()}}))})}
+function fail(e){if(e&&e.message==="auth")return;toast(errText(e),true)}
+function jsonOpt(m,o){return{method:m,headers:{"Content-Type":"application/json"},body:JSON.stringify(o)}}
+function load(){if(busy)return;busy=true;
+api(base+"?status="+encodeURIComponent(status)+(q?"&q="+encodeURIComponent(q):"")).then(function(d){D=d;S=Object.assign({},d.settings);E=!!d.enabled;CH=d.channel||"";busy=false;draw()})
+.catch(function(e){busy=false;if(e&&e.message==="auth")return;body.innerHTML="";if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))noEndpoint(body,"Les signalements");else body.appendChild(h("p",{class:"err",text:"Impossible de charger cette section."}))})}
+function avatar(m){return m.avatar?h("img",{class:"rp-av",src:m.avatar,alt:"",width:36,height:36}):h("span",{class:"rp-av",text:String(m.name||"?").charAt(0).toUpperCase()})}
+function trustPill(t){if(!t)return null;return h("span",{class:"pill"+(t.level==="high"?" on":t.level==="low"?" bad":""),style:"margin-left:8px",title:"Traités : "+t.resolved+" · Ignorés : "+t.dismissed,text:t.level==="new"?"NOUVEAU SIGNALEUR":"CONFIANCE "+t.pct+" %"})}
+function act(ids,action,label,conf){if(conf&&!confirm(conf))return;
+api(base+"/batch",jsonOpt("POST",{ids:ids,action:action})).then(function(){toast(label+" ✓");load()}).catch(fail)}
+function card(d){var key=d.member.id,isOpen=!!opened[key],chev=h("span",{class:"td-chev"+(isOpen?" open":"")});chev.innerHTML=svg24('<path d="m6 9 6 6 6-6"/>');
+var sum=[d.open+" ouvert"+(d.open>1?"s":""),d.total+" au total",d.reporters+" signaleur"+(d.reporters>1?"s":""),"dernier : "+secDT(d.lastTs)];
+var cd=h("div",{class:"td-card"},[h("button",{type:"button",class:"rp-hd",onclick:function(){opened[key]=!opened[key];draw()}},[avatar(d.member),
+h("div",{class:"in"},[h("b",{},[d.member.name||d.member.id,d.priority?h("span",{class:"pill bad",style:"margin-left:8px",text:"PRIORITÉ"}):null]),h("span",{class:"d",text:sum.join(" · ")})]),chev])]);
+if(d.priority)cd.appendChild(h("p",{class:"rp-note",text:d.cluster+" signaleurs distincts en "+S.group_window_hours+" h : à examiner en priorité."}));
+if(isOpen){var b=h("div",{class:"rp-body"}),ops=d.reports.filter(function(r){return r.status==="open"}).map(function(r){return r.id});
+if(ops.length>1)b.appendChild(h("div",{class:"rp-bulk"},[h("button",{class:"btn sm",type:"button",text:"Tout traiter ("+ops.length+")",onclick:function(){act(ops,"resolve","Dossier traité")}}),h("button",{class:"btn sm ghost",type:"button",text:"Tout ignorer",onclick:function(){act(ops,"dismiss","Dossier ignoré","Ignorer tous les signalements ouverts de ce membre ?")}})]));
+d.reports.forEach(function(r){var st=RP_ST[r.status]||["",""],det=["Motif : "+(r.reason||"—")];
+det.push(secDT(r.ts)+(r.channel?" · #"+r.channel:"")+(r.decidedBy?" · par "+r.decidedBy:""));
+var btns=r.status==="open"?[h("button",{class:"btn sm",type:"button",text:"Traiter",onclick:function(){act([r.id],"resolve","Traité")}}),h("button",{class:"btn sm ghost",type:"button",text:"Ignorer",onclick:function(){act([r.id],"dismiss","Ignoré","Ignorer ce signalement ?")}})]:[];
+b.appendChild(h("div",{class:"arow",style:r.status==="open"?"":"opacity:.65"},[avatar(r.reporter),
+h("div",{class:"ati"},[h("b",{},[r.reporter.name||r.reporter.id,trustPill(r.reporter.trust),h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"ad",text:t})}))),
+h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]))});
+cd.appendChild(b)}
+return cd}
+function drawInc(){var st=D.stats||{},sel=h("select",{"aria-label":"Statut"});
+[["open","À traiter ("+st.open+")"],["resolved","Traités ("+st.resolved+")"],["dismissed","Ignorés ("+st.dismissed+")"],["","Tous ("+(st.open+st.resolved+st.dismissed)+")"]].forEach(function(o){sel.appendChild(opt(o[0],o[1]))});
+sel.value=status;sel.addEventListener("change",function(){status=sel.value;load()});
+var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un membre, un motif…","aria-label":"Rechercher"});search.value=q;
+var qt=0;search.addEventListener("input",function(){clearTimeout(qt);qt=setTimeout(function(){q=search.value.trim();load()},350)});
+body.appendChild(h("div",{class:"fld rp-sel"},[sel]));
+body.appendChild(h("div",{class:"tb"},[h("button",{class:"btn ghost sm",type:"button",text:"Actualiser",onclick:load}),search]));
+if(!D.enabled)body.appendChild(h("p",{class:"rp-note",text:"Les signalements sont désactivés : activez-les dans l’onglet Réglages pour que /report fonctionne."}));
+if(!D.dossiers.length)body.appendChild(h("div",{class:"td-card"},[h("p",{class:"td-empty",style:"margin:0",text:"Aucun incident à afficher."})]));
+else D.dossiers.forEach(function(d){body.appendChild(card(d))})}
+function row(title,desc,input){return h("div",{class:"td-hd rp-row"},[h("div",{class:"in"},[h("b",{text:title}),h("span",{class:"d",text:desc})]),input])}
+function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
+function saveBtn(fn){return h("button",{class:"btn",type:"button",style:"margin-top:18px",text:"Enregistrer",onclick:fn})}
+function drawSet(){var cd=h("div",{class:"td-card"}),cs=h("select",{"aria-label":"Salon des signalements"});
+cs.appendChild(opt("","— Choisir un salon —"));(meta.channels||[]).forEach(function(x){cs.appendChild(opt(x.id,"# "+x.name))});
+if(CH&&!(meta.channels||[]).some(function(x){return x.id===CH}))cs.appendChild(opt(CH,"(salon supprimé)"));cs.value=CH;cs.addEventListener("change",function(){CH=cs.value});
+cd.appendChild(row("Activer les signalements","Les membres peuvent signaler quelqu’un au staff avec /report.",sw(E,function(v){E=v})));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"fld td-sel"},[h("label",{class:"l",text:"Salon des signalements"}),cs]));
+cd.appendChild(h("p",{class:"muted",style:"margin:6px 0 0;font-size:13.5px",text:"Chaque signalement y est aussi posté pour l’équipe de modération."}));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(row("Bloquer les doublons","Un membre ne peut pas re-signaler la même personne tant que son signalement est ouvert.",sw(S.block_duplicates,function(v){S.block_duplicates=v})));
+cd.appendChild(saveBtn(function(){if(E&&!CH){toast("Choisissez le salon des signalements.",true);return}
+var b={signalement_enabled:E};if(CH)b.signalement_channel_id=CH;
+api("/api/guilds/"+G.id+"/modules/transparency",jsonOpt("PUT",b)).then(function(){return api(base+"/settings",jsonOpt("PUT",{block_duplicates:!!S.block_duplicates}))}).then(function(){toast("Enregistré ✓");load()}).catch(fail)}));
+body.appendChild(cd)}
+function drawGrp(){var cd=h("div",{class:"td-card"}),ws=h("select",{"aria-label":"Fenêtre"}),ts=h("select",{"aria-label":"Seuil"});
+RP_WIN.forEach(function(x){ws.appendChild(opt(x,x<48?x+(x>1?" heures":" heure"):(x/24)+" jours"))});
+if(RP_WIN.indexOf(Number(S.group_window_hours))<0)ws.appendChild(opt(S.group_window_hours,S.group_window_hours+" h"));
+ws.value=S.group_window_hours;ws.addEventListener("change",function(){S.group_window_hours=Number(ws.value)});
+for(var i=2;i<=10;i++)ts.appendChild(opt(i,i+" signaleurs"));ts.value=S.priority_threshold;ts.addEventListener("change",function(){S.priority_threshold=Number(ts.value)});
+cd.appendChild(row("Regrouper les signalements","Repère quand plusieurs personnes signalent le même membre en peu de temps.",sw(S.group_enabled,function(v){S.group_enabled=v})));
+cd.appendChild(h("div",{class:"td-cfg"},[h("div",{class:"fld"},[h("label",{class:"l",text:"Fenêtre de regroupement"}),ws]),h("div",{class:"fld"},[h("label",{class:"l",text:"Passer en priorité à partir de"}),ts])]));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(row("Tenir compte de la confiance","Un signaleur dont les signalements sont souvent ignorés ne compte plus dans le regroupement.",sw(S.trust_enabled,function(v){S.trust_enabled=v})));
+cd.appendChild(h("p",{class:"muted",style:"margin:12px 0 0;font-size:13.5px",text:"La confiance d’un signaleur monte quand ses signalements sont traités et baisse quand ils sont ignorés. Elle reste « nouveau signaleur » tant que moins de 3 de ses signalements ont été jugés, puis passe en confiance élevée (70 % ou plus) ou faible (35 % ou moins). Elle sert d’indication : rien n’est ignoré automatiquement."}));
+cd.appendChild(saveBtn(function(){api(base+"/settings",jsonOpt("PUT",{group_enabled:!!S.group_enabled,group_window_hours:S.group_window_hours,priority_threshold:S.priority_threshold,trust_enabled:!!S.trust_enabled})).then(function(){toast("Enregistré ✓");load()}).catch(fail)}));
+body.appendChild(cd)}
+function draw(){body.innerHTML="";if(!D){body.appendChild(h("p",{class:"td-empty",text:"Chargement…"}));return}
+if(tab==="inc")drawInc();else if(tab==="set")drawSet();else drawGrp()}
+drawTabs();draw();load()}
+
+/* ---- Surveillance : onglets Membres surveillés / Conflits entre membres ---- */
+var SV_IC={eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',swords:'<polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',check:'<path d="M20 6 9 17l-5-5"/>',eyeoff:'<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/>'};
+var SV_ST={open:["À traiter",""],calmed:["Calmé","on"],ignored:["Ignoré",""]},SV_ACT={delete:"🗑️",nick:"✏️",sanction:"⚖️"};
+function survView(c,G,it){
+c.classList.add("wide");
+var meta=META[G.id]||{channels:[]},W=null,C=null,tab="watch",wErr=false,cErr=false;
+var head=h("div"),tabs=h("div",{class:"stabs",role:"tablist"}),body=h("div",{style:"margin-top:26px"});
+c.appendChild(head);c.appendChild(tabs);c.appendChild(body);
+function ico(k){var s=h("span",{class:"td-ic"});s.innerHTML=svg24(SV_IC[k]);return s}
+function drawHead(){head.innerHTML="";var top=h("div",{class:"net-ico"});top.innerHTML=svg24(SV_IC[tab==="watch"?"eye":"swords"]);head.appendChild(top);
+head.appendChild(h("h2",{class:"t",style:"margin-top:0",text:tab==="watch"?"Surveillance":"Conflits entre membres"}));
+head.appendChild(h("p",{class:"lead",text:tab==="watch"?"Les membres à garder à l’œil et tout ce qu’ils ont fait récemment : sanctions, messages supprimés, changements de pseudo.":"Quand deux membres se répondent sans arrêt et que le ton monte, le staff reçoit une alerte avec l’échange. Le modérateur choisit la suite : CoreLab ne sanctionne personne."}))}
+function drawTabs(){tabs.innerHTML="";[["watch","eye","Membres surveillés"],["conf","swords","Conflits entre membres"]].forEach(function(t){var b=h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",onclick:function(){tab=t[0];draw()}});var s=h("span");s.innerHTML='<svg viewBox="0 0 24 24">'+SV_IC[t[1]]+'</svg>';b.appendChild(s.firstChild);b.appendChild(document.createTextNode(t[2]));tabs.appendChild(b)})}
+function fail(e){if(e&&e.message==="auth")return;toast(errText(e),true)}
+function jo(m,o){return{method:m,headers:{"Content-Type":"application/json"},body:JSON.stringify(o)}}
+function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
+function chanSel(val,fn,label){var s=h("select",{"aria-label":label});s.appendChild(opt("","— Choisir un salon —"));(meta.channels||[]).forEach(function(x){s.appendChild(opt(x.id,"# "+x.name))});
+if(val&&!(meta.channels||[]).some(function(x){return x.id===val}))s.appendChild(opt(val,"(salon supprimé)"));s.value=val||"";s.addEventListener("change",function(){fn(s.value)});return h("div",{class:"fld td-sel",style:"margin-top:14px"},[h("label",{class:"l",text:label}),s])}
+function loadW(){api("/api/guilds/"+G.id+"/mod/watchlist").then(function(d){W=d;wErr=false;if(tab==="watch")draw()}).catch(function(e){if(e&&e.message==="auth")return;wErr=true;if(tab==="watch")draw()})}
+function loadC(){api("/api/guilds/"+G.id+"/mod/conflicts").then(function(d){C=d;cErr=false;if(tab==="conf")draw()}).catch(function(e){if(e&&e.message==="auth")return;cErr=true;if(tab==="conf")draw()})}
+function drawWatch(){
+if(wErr){noEndpoint(body,"La surveillance");return}
+if(!W){body.appendChild(h("p",{class:"td-empty",text:"Chargement…"}));return}
+var who=h("input",{type:"text",maxlength:60,placeholder:"@ Pseudo ou ID du membre…","aria-label":"Membre"}),why=h("input",{type:"text",maxlength:200,placeholder:"Ex. : compte récent qui poste des liens","aria-label":"Raison"});
+var go=h("button",{class:"btn",type:"button",text:"Surveiller",onclick:function(){if(!who.value.trim()){toast("Indiquez le membre à surveiller.",true);return}go.disabled=true;
+api("/api/guilds/"+G.id+"/mod/watchlist",jo("POST",{member:who.value.trim(),reason:why.value.trim()})).then(function(){toast("Membre sous surveillance ✓");loadW()}).catch(fail).then(function(){go.disabled=false})}});
+body.appendChild(h("div",{class:"td-card"},[h("div",{class:"sv-form"},[lab("Membre",who),lab("Raison",why),go])]));
+var s=W.settings||{},AE=!!s.alerts_enabled,AC=s.alert_channel_id||"",ac=h("div",{class:"td-card"}),acSel=h("div");
+function saveA(){if(AE&&!AC){drawA();return}api("/api/guilds/"+G.id+"/mod/watchlist/settings",jo("PUT",{alerts_enabled:AE,alert_channel_id:AC||null})).then(function(){toast(AE?"Alertes activées ✓":"Alertes désactivées ✓")}).catch(function(e){fail(e);loadW()})}
+function drawA(){acSel.innerHTML="";if(AE){acSel.appendChild(chanSel(AC,function(v){AC=v;saveA()},"Salon des alertes"));if(!AC)acSel.appendChild(h("p",{class:"muted",style:"margin:8px 0 0;font-size:13.5px",text:"Choisissez un salon pour activer les alertes."}))}}
+ac.appendChild(h("div",{class:"td-hd"},[h("div",{class:"in"},[h("b",{text:"Alertes en direct"}),h("span",{class:"d",text:"Prévenir l’équipe quand un membre surveillé écrit, change de pseudo ou rejoint un salon vocal. Au plus une alerte de chaque type toutes les 10 minutes par membre."})]),sw(AE,function(v){AE=v;drawA();saveA()})]));
+ac.appendChild(acSel);drawA();body.appendChild(ac);
+if(!W.items.length){body.appendChild(h("div",{class:"td-card sv-empty"},[ico("eye"),h("b",{text:"Personne sous surveillance"}),h("p",{text:"Ajoutez un membre ici pour suivre ses sanctions, ses messages supprimés et ses changements de pseudo."})]));return}
+W.items.forEach(function(w){var act=h("ul",{class:"sv-act"});
+if(!w.activity.length)act.appendChild(h("li",{text:"Aucune activité récente."}));
+w.activity.forEach(function(a){act.appendChild(h("li",{},[(SV_ACT[a.type]||"•")+" "+a.text,h("time",{text:secDT(a.ts)})]))});
+body.appendChild(h("div",{class:"td-card"},[h("div",{class:"td-hd"},[h("span",{class:"rp-av",text:String(w.member.name||"?").charAt(0).toUpperCase()}),
+h("div",{class:"in"},[h("b",{text:w.member.name||w.member.id}),h("span",{class:"d",text:(w.reason?"Raison : "+w.reason+" · ":"")+"Surveillé depuis le "+secDT(w.ts)+(w.moderator&&w.moderator.name?" par "+w.moderator.name:"")})]),
+h("button",{class:"btn ghost sm",type:"button",text:"Retirer",onclick:function(){if(!confirm("Retirer ce membre de la surveillance ?"))return;api("/api/guilds/"+G.id+"/mod/watchlist/"+encodeURIComponent(w.id),{method:"DELETE"}).then(function(){toast("Retiré ✓");loadW()}).catch(fail)}})]),act]))})}
+function stat(k,label,val){var kk=h("div",{class:"k"});kk.innerHTML=svg24(SV_IC[k]);kk.appendChild(document.createTextNode(label));return h("div",{class:"net-st"},[kk,h("div",{class:"v",text:String(val)})])}
+function drawConf(){
+if(cErr){noEndpoint(body,"Les conflits entre membres");return}
+if(!C){body.appendChild(h("p",{class:"td-empty",text:"Chargement…"}));return}
+var s=C.settings||{},EN=!!s.enabled,CH=s.channel_id||"",mod=h("div",{class:"td-card"}),selBox=h("div");
+function saveM(){if(EN&&!CH){drawM();return}api("/api/guilds/"+G.id+"/mod/conflicts/settings",jo("PUT",{enabled:EN,channel_id:CH||null})).then(function(){toast(EN?"Module activé ✓":"Module désactivé ✓")}).catch(function(e){fail(e);loadC()})}
+function drawM(){selBox.innerHTML="";if(EN){selBox.appendChild(chanSel(CH,function(v){CH=v;saveM()},"Salon des alertes"));if(!CH)selBox.appendChild(h("p",{class:"muted",style:"margin:8px 0 0;font-size:13.5px",text:"Choisissez un salon pour activer le module."}))}}
+mod.appendChild(h("div",{class:"td-hd"},[sw(EN,function(v){EN=v;drawM();saveM()}),h("div",{class:"in"},[h("b",{text:"Activer ce module sur votre serveur"})]),h("a",{class:"sv-link",href:"docs.html",target:"_blank",rel:"noopener",text:"Docs ↗"})]));
+mod.appendChild(selBox);drawM();body.appendChild(mod);
+var st=C.stats||{};body.appendChild(h("div",{class:"net-stats td-stats"},[stat("bell","Alertes sur 7 jours",st.week||0),stat("check","Calmées par le staff",st.calmed||0),stat("eyeoff","Ignorées",st.ignored||0)]));
+var card=h("div",{class:"td-card"});card.appendChild(h("div",{class:"td-hd"},[ico("bell"),h("div",{class:"in"},[h("b",{text:"Dernières alertes"}),h("span",{class:"d",text:"Les 30 dernières. Le staff les traite depuis les boutons de l’alerte sur Discord."})])]));
+card.appendChild(h("hr",{class:"td-sep"}));
+if(!C.items.length)card.appendChild(h("p",{class:"td-empty",style:"margin:0",text:"Aucune alerte pour l’instant."}));
+else{var l=h("div",{class:"trl"});C.items.forEach(function(a){var st2=SV_ST[a.status]||["",""];
+l.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[a.users.map(function(u){return u.name||u.id}).join(" et "),h("span",{class:"pill"+(st2[1]?" "+st2[1]:""),style:"margin-left:8px",text:st2[0].toUpperCase()})]),
+h("span",{class:"ad",text:"#"+(a.channelName||"?")+" · "+secDT(a.ts)+(a.decidedBy?" · par "+a.decidedBy:"")})].concat((a.excerpt||[]).slice(-3).map(function(t){return h("span",{class:"ad",text:t})})))]))});card.appendChild(l)}
+body.appendChild(card)}
+function draw(){body.innerHTML="";drawHead();drawTabs();if(tab==="watch")drawWatch();else drawConf()}
+draw();loadW();loadC()}
 
 /* ---- À traiter ---- */
 var TD_IC={inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',down:'<path d="m6 9 6 6 6-6"/>'};
@@ -2457,7 +2618,7 @@ api("/api/guilds/"+G.id+"/modules/pending").then(function(d){Object.assign(vals,
 load()}
 
 /* ---- Infractions ---- */
-var INF_TYPES={warn:"Avertissement",timeout:"Timeout",kick:"Expulsion",ban:"Bannissement"};
+var INF_TYPES={warn:"Avertissement",infraction:"Infraction",timeout:"Timeout",mute:"Mute",kick:"Expulsion",ban:"Bannissement"};
 function infractionsView(c,G,it){
 c.classList.add("wide");
 var base="/api/guilds/"+G.id+"/"+it.ep,F="",pages=[null],idx=0,nextC=null,busy=false,count=0;
@@ -2466,23 +2627,20 @@ c.appendChild(ico);
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Infractions"}));
 c.appendChild(h("p",{class:"lead",text:"Liste des infractions du serveur."}));
 var sel=h("select",{"aria-label":"Filtrer les infractions"});
-[["","Toutes les infractions"],["warn","Avertissements"],["timeout","Timeouts"],["kick","Expulsions"],["ban","Bannissements"]].forEach(function(o){sel.appendChild(opt(o[0],o[1]))});
+[["","Toutes les infractions"],["warn","Avertissements"],["infraction","Infractions ajoutées"],["timeout","Timeouts"],["mute","Mutes"],["kick","Expulsions"],["ban","Bannissements"]].forEach(function(o){sel.appendChild(opt(o[0],o[1]))});
 var go=h("button",{class:"btn ghost",type:"button",text:"Rechercher",onclick:function(){F=sel.value;pages=[null];idx=0;load()}});
 c.appendChild(h("div",{class:"inf-lbl",text:"Filtrer"}));
 c.appendChild(h("div",{class:"inf-bar"},[h("div",{class:"fld"},[sel]),go]));
-var tbody=h("tbody"),wrap=h("div",{class:"inf-wrap"},[h("table",{class:"inf-t"},[h("thead",{},[h("tr",{},["Identifiant","Membre","Type","Motif","Modérateur","Date",""].map(function(t){return h("th",{text:t})}))]),tbody])]);
+var tbody=h("tbody"),wrap=h("div",{class:"inf-wrap"},[h("table",{class:"inf-t"},[h("thead",{},[h("tr",{},["Identifiant","Membre","Type","Motif","Modérateur","Date"].map(function(t){return h("th",{text:t})}))]),tbody])]);
 var info=h("span",{text:"Aucun résultat"}),prev=h("button",{class:"btn ghost sm",type:"button",text:"Précédent",disabled:true,onclick:function(){if(idx>0){idx--;load()}}}),next=h("button",{class:"btn ghost sm",type:"button",text:"Suivant",disabled:true,onclick:function(){if(nextC){pages[idx+1]=nextC;idx++;load()}}});
 c.appendChild(wrap);c.appendChild(h("div",{class:"inf-ft"},[info,h("div",{},[prev,next])]));
-function empty(t){tbody.innerHTML="";tbody.appendChild(h("tr",{},[h("td",{class:"inf-empty",colspan:7,text:t})]))}
-function remove(e){if(!confirm("Retirer cette infraction ?"))return;
-api(base+"/"+encodeURIComponent(e.id),{method:"DELETE"}).then(function(){toast("Retirer ✓");load()}).catch(function(x){if(x&&x.message==="auth")return;toast(errText(x),true)})}
+function empty(t){tbody.innerHTML="";tbody.appendChild(h("tr",{},[h("td",{class:"inf-empty",colspan:6,text:t})]))}
 function load(){if(busy)return;busy=true;prev.disabled=next.disabled=true;
 api(base+"?limit=25"+(F?"&status="+encodeURIComponent(F):"")+(pages[idx]?"&before="+encodeURIComponent(pages[idx]):""))
 .then(function(d){var es=d.items||[];nextC=d.next||null;count=es.length;tbody.innerHTML="";
 if(!es.length)empty("Aucune donnée disponible");
 es.forEach(function(e){var t=INF_TYPES[e.type]||e.type||"—";
-tbody.appendChild(h("tr",{},[h("td",{class:"id",title:String(e.id||""),text:String(e.id||"—")}),h("td",{text:secName(e.member)||"—"}),h("td",{text:t}),h("td",{class:"rs",text:e.reason||"—"}),h("td",{text:secName(e.moderator)||"—"}),h("td",{class:"dt",text:e.ts?secDT(e.ts):"—"}),
-h("td",{},[h("button",{class:"btn ghost sm",type:"button",text:"Retirer",onclick:function(){remove(e)}})])]))});
+tbody.appendChild(h("tr",{},[h("td",{class:"id",title:String(e.id||""),text:String(e.id||"—")}),h("td",{text:secName(e.member)||"—"}),h("td",{text:t}),h("td",{class:"rs",text:e.reason||"—"}),h("td",{text:secName(e.moderator)||"—"}),h("td",{class:"dt",text:e.ts?secDT(e.ts):"—"})]))});
 info.textContent=es.length?"Page "+(idx+1)+" · "+es.length+" résultat"+(es.length>1?"s":""):"Aucun résultat";
 prev.disabled=idx===0;next.disabled=!nextC})
 .catch(function(e){if(e&&e.message==="auth")return;tbody.innerHTML="";
