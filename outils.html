@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e0d12">
-<meta name="description" content="Outils Discord gratuits par CoreLab : horodatages, décodeur d'identifiant, compteur de limites. Tout se passe dans votre navigateur.">
+<meta name="description" content="Outils Discord gratuits par CoreLab : embeds, règlement, permissions, couleurs de rôles, horodatages, identifiants, limites. Tout se passe dans votre navigateur.">
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,6 +76,27 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--ac)}
 footer{border-top:1px solid var(--ln);padding:28px 0 40px;color:var(--mu);font-size:13.5px}
 @media(max-width:1020px){.nvp{display:none}}
 @media(max-width:860px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.line span{display:none}}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.fld{margin-bottom:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 18px;border:1px solid var(--ln);border-radius:999px;background:var(--s2);color:var(--tx);font:600 14px var(--f);cursor:pointer}
+.btn:hover{border-color:var(--ac)}.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.note{color:var(--mu);font-size:13px;margin:10px 0 0}.note.bad{color:#ff5a5f}.note.ok{color:#3ba55d}
+.dpv{background:#313338;border-radius:12px;padding:16px;color:#dbdee1;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:anywhere}
+.dpv .row{display:flex;gap:12px}.dpv .av{width:38px;height:38px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.dpv .nm{font-weight:600;color:#fff}.dpv .tg{background:#5865f2;color:#fff;font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;margin-left:6px}
+.dpv .emb{border-left:4px solid var(--c,#e8510d);background:#2b2d31;border-radius:4px;padding:10px 14px;margin-top:6px;max-width:480px}
+.dpv .emb h4{margin:0 0 4px;font-size:15px;color:#fff}.dpv .emb p{margin:0;white-space:pre-wrap}.dpv .emb small{display:block;margin-top:8px;color:#b5bac1;font-size:12px}
+.dpv .emb img.big{display:block;max-width:100%;border-radius:4px;margin-top:8px}.dpv .emb img.th{float:right;width:64px;height:64px;object-fit:cover;border-radius:4px;margin-left:10px}
+.dpv code{background:#1e1f22;padding:1px 4px;border-radius:3px;font-size:13px}
+.perms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.chk{display:flex!important;align-items:center;gap:10px;margin:0!important;padding:9px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--bg);color:var(--tx)!important;font-size:14px!important;cursor:pointer}
+.chk input{width:auto;accent-color:var(--ac)}.chk:hover{border-color:var(--mu)}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.swc{border:1px solid var(--ln);border-radius:12px;overflow:hidden;background:var(--bg);cursor:pointer;text-align:left;color:var(--tx);font:inherit;padding:0}
+.swc i{display:block;height:54px}.swc b{display:block;padding:8px 10px 0;font:600 13px var(--mono)}.swc span{display:block;padding:0 10px 8px;font-size:11.5px;color:var(--mu)}
+.dpv .rl{font-weight:600;margin:4px 0}
+@media(max-width:860px){.split,.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -111,10 +132,65 @@ footer{border-top:1px solid var(--ln);padding:28px 0 40px;color:var(--mu);font-s
 <div class="panel"><div class="row"><div><label for="lf">Champ</label><select id="lf"></select></div><div></div></div><label for="lt">Texte</label><textarea id="lt" placeholder="Écrivez ou collez votre texte"></textarea><div class="cnt" id="lc">0 / 0</div><div class="bar"><i id="lb"></i></div></div>
 </article>
 
-<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></span><span class="cat">MESSAGES</span></div><h2>Générateur d’embeds Discord</h2><p>Créez un embed, voyez le rendu et envoyez-le par webhook.</p><span class="soon">Bientôt</span></article>
-<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg></span><span class="cat">SERVEUR</span></div><h2>Générateur de règlement Discord</h2><p>Un règlement clair pour votre serveur en une minute, prêt à coller dans Discord.</p><span class="soon">Bientôt</span></article>
-<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l3 3M14 9l2 2"/></svg></span><span class="cat">BOTS</span></div><h2>Calculateur de permissions Discord</h2><p>Cochez des permissions pour obtenir leur valeur et un lien d’invitation de bot.</p><span class="soon">Bientôt</span></article>
-<article class="card"><div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 0 0 3-3c0-5-4-11-8-11Z"/></svg></span><span class="cat">SERVEUR</span></div><h2>Palette de couleurs de rôles</h2><p>Des couleurs de rôles qui vont ensemble et restent lisibles en thème clair comme sombre.</p><span class="soon">Bientôt</span></article>
+<article class="card" id="t-embed">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></span><span class="cat">MESSAGES</span></div>
+<h2>Générateur d’embeds Discord</h2><p>Créez un embed, voyez le rendu et envoyez-le par webhook.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel"><div class="split">
+<div>
+<div class="fld"><label for="e-content">Message au-dessus (optionnel)</label><input id="e-content" maxlength="2000"></div>
+<div class="two"><div class="fld"><label for="e-author">Auteur</label><input id="e-author" maxlength="256"></div><div class="fld"><label for="e-title">Titre</label><input id="e-title" maxlength="256" value="Nouveauté"></div></div>
+<div class="fld"><label for="e-desc">Description</label><textarea id="e-desc" maxlength="4096">Écrivez ici votre message. **Gras**, *italique* et `code` sont pris en charge.</textarea></div>
+<div class="two"><div class="fld"><label for="e-color">Couleur</label><input id="e-color" type="color" value="#e8510d" style="height:46px;padding:4px"></div><div class="fld"><label for="e-foot">Pied de page</label><input id="e-foot" maxlength="2048"></div></div>
+<div class="two"><div class="fld"><label for="e-img">Image (lien https)</label><input id="e-img" placeholder="https://…"></div><div class="fld"><label for="e-thumb">Miniature (lien https)</label><input id="e-thumb" placeholder="https://…"></div></div>
+<div class="fld"><label for="e-hook">Webhook (pour envoyer)</label><input id="e-hook" placeholder="https://discord.com/api/webhooks/…" autocomplete="off"></div>
+<div class="acts"><button class="btn pri" id="e-send" type="button">Envoyer par webhook</button><button class="btn" id="e-copy" type="button">Copier le JSON</button></div>
+<p class="note" id="e-st"></p>
+</div>
+<div><label>Aperçu</label><div class="dpv" id="e-pv"></div></div>
+</div></div>
+</article>
+
+<article class="card" id="t-rules">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg></span><span class="cat">SERVEUR</span></div>
+<h2>Générateur de règlement Discord</h2><p>Un règlement clair pour votre serveur en une minute, prêt à coller dans Discord.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel"><div class="split">
+<div>
+<div class="fld"><label for="r-name">Nom du serveur</label><input id="r-name" maxlength="60" placeholder="Mon serveur"></div>
+<label>Règles à inclure</label><div class="perms" id="r-list" style="margin-bottom:14px"></div>
+<div class="fld"><label for="r-extra">Vos propres règles (une par ligne)</label><textarea id="r-extra" placeholder="Pas de spoil dans #général"></textarea></div>
+<div class="fld"><label for="r-end">Sanctions (optionnel)</label><input id="r-end" maxlength="200" placeholder="Le non-respect du règlement peut entraîner un avertissement, un mute ou un bannissement."></div>
+<div class="acts"><button class="btn pri" id="r-copy" type="button">Copier le règlement</button></div>
+</div>
+<div><label>Aperçu</label><div class="dpv" id="r-pv" style="white-space:pre-wrap"></div></div>
+</div></div>
+</article>
+
+<article class="card" id="t-perm">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l3 3M14 9l2 2"/></svg></span><span class="cat">BOTS</span></div>
+<h2>Calculateur de permissions Discord</h2><p>Cochez des permissions pour obtenir leur valeur et un lien d’invitation de bot.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel">
+<div class="perms" id="p-list"></div>
+<div class="two" style="margin-top:18px"><div class="fld"><label for="p-val">Valeur des permissions</label><input id="p-val" inputmode="numeric" value="0"></div><div class="fld"><label for="p-cid">Identifiant du bot (client ID)</label><input id="p-cid" inputmode="numeric" placeholder="1403513450273177772"></div></div>
+<div class="res" id="p-link"></div>
+<div class="acts" style="margin-top:12px"><button class="btn" id="p-all" type="button">Tout cocher</button><button class="btn" id="p-none" type="button">Tout décocher</button><button class="btn" id="p-cv" type="button">Copier la valeur</button><button class="btn pri" id="p-cl" type="button">Copier le lien</button></div>
+</div>
+</article>
+
+<article class="card" id="t-pal">
+<div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 0 0 3-3c0-5-4-11-8-11Z"/></svg></span><span class="cat">SERVEUR</span></div>
+<h2>Palette de couleurs de rôles</h2><p>Des couleurs de rôles qui vont ensemble et restent lisibles en thème clair comme sombre.</p>
+<button class="go" type="button">Ouvrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div class="panel">
+<div class="two"><div class="fld"><label for="c-base">Couleur de départ</label><input id="c-base" type="color" value="#e8510d" style="height:46px;padding:4px"></div><div class="fld"><label for="c-mode">Harmonie</label><select id="c-mode"><option value="ana">Voisines</option><option value="tri">Triade</option><option value="com">Complémentaires</option><option value="spl">Complémentaires proches</option></select></div></div>
+<div class="acts" style="margin:0 0 14px"><button class="btn" id="c-rnd" type="button">Couleur au hasard</button></div>
+<div class="sw-grid" id="c-out"></div>
+<div class="two" style="margin-top:16px"><div class="dpv" id="c-dark"></div><div class="dpv" id="c-light" style="background:#fff;color:#313338"></div></div>
+<p class="note">Le rapport de contraste est calculé sur le fond sombre de Discord (#313338) et sur le fond clair (#ffffff). Visez 3 ou plus des deux côtés.</p>
+</div>
+</article>
 </div>
 </div></main>
 
@@ -154,6 +230,102 @@ lf=$("#lf"),lt=$("#lt"),lc=$("#lc"),lb=$("#lb");
 LIM.forEach(function(l,i){var o=document.createElement("option");o.value=i;o.textContent=l[0]+" ("+l[1]+")";lf.appendChild(o)});
 function cnt(){var max=LIM[+lf.value][1],n=Array.from(lt.value).length,bad=n>max;lc.textContent=n+" / "+max;lc.classList.toggle("bad",bad);lb.classList.toggle("bad",bad);lb.style.width=Math.min(100,n/max*100)+"%"}
 lf.addEventListener("change",cnt);lt.addEventListener("input",cnt);cnt();
+/* ---------- outils : embed ---------- */
+(function(){
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function md(s){return esc(s).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\*(.+?)\*/g,"<i>$1</i>")}
+function url(v){v=(v||"").trim();return /^https:\/\/[^\s]+$/i.test(v)?v:""}
+var g=function(i){return document.getElementById(i)};
+function data(){var e={};
+if(g("e-author").value.trim())e.author={name:g("e-author").value.trim()};
+if(g("e-title").value.trim())e.title=g("e-title").value.trim();
+if(g("e-desc").value.trim())e.description=g("e-desc").value;
+e.color=parseInt(g("e-color").value.slice(1),16);
+if(g("e-foot").value.trim())e.footer={text:g("e-foot").value.trim()};
+if(url(g("e-img").value))e.image={url:url(g("e-img").value)};
+if(url(g("e-thumb").value))e.thumbnail={url:url(g("e-thumb").value)};
+var p={embeds:[e]};if(g("e-content").value.trim())p.content=g("e-content").value;return p}
+function pv(){var d=data(),e=d.embeds[0],h='<div class="row"><div class="av">C</div><div style="min-width:0"><div class="nm">Mon webhook<span class="tg">APP</span></div>';
+if(d.content)h+='<div>'+md(d.content)+'</div>';
+h+='<div class="emb" style="--c:'+g("e-color").value+'">';
+if(e.thumbnail)h+='<img class="th" alt="" src="'+esc(e.thumbnail.url)+'">';
+if(e.author)h+='<small style="margin:0 0 6px;color:#fff;font-weight:600">'+esc(e.author.name)+'</small>';
+if(e.title)h+='<h4>'+esc(e.title)+'</h4>';
+if(e.description)h+='<p>'+md(e.description)+'</p>';
+if(e.image)h+='<img class="big" alt="" src="'+esc(e.image.url)+'">';
+if(e.footer)h+='<small>'+esc(e.footer.text)+'</small>';
+g("e-pv").innerHTML=h+'</div></div></div>'}
+["e-content","e-author","e-title","e-desc","e-color","e-foot","e-img","e-thumb"].forEach(function(i){g(i).addEventListener("input",pv)});pv();
+function st(t,c){var s=g("e-st");s.textContent=t;s.className="note "+(c||"")}
+g("e-copy").addEventListener("click",function(){var b=g("e-copy");navigator.clipboard.writeText(JSON.stringify(data(),null,2)).then(function(){var o=b.textContent;b.textContent="Copié";setTimeout(function(){b.textContent=o},1100)}).catch(function(){st("Copie impossible.","bad")})});
+g("e-send").addEventListener("click",function(){var u=g("e-hook").value.trim(),d=data();
+if(!/^https:\/\/(discord|discordapp)\.com\/api\/webhooks\/\d+\/[\w-]+$/.test(u)){st("Lien de webhook invalide.","bad");return}
+if(!d.content&&!d.embeds[0].title&&!d.embeds[0].description){st("L’embed est vide.","bad");return}
+var b=g("e-send");b.disabled=true;st("Envoi…");
+fetch(u,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)}).then(function(r){if(r.ok||r.status===204)st("Envoyé ✓","ok");else st("Discord a refusé l’envoi ("+r.status+").","bad")}).catch(function(){st("Envoi impossible.","bad")}).then(function(){b.disabled=false})});
+})();
+
+/* ---------- outils : règlement ---------- */
+(function(){
+var g=function(i){return document.getElementById(i)};
+var R=[["Respectez tous les membres : pas d’insultes, de harcèlement ni de discrimination.",1],["Pas de spam, de flood ni de mentions abusives.",1],["Pas de publicité ni d’invitation vers un autre serveur sans accord du staff.",1],["Pas de contenu choquant ou NSFW.",1],["Pas de débats politiques ou religieux.",0],["Respectez les conditions d’utilisation et les règles de la communauté de Discord.",1],["Utilisez les salons aux bons endroits.",1],["Les décisions du staff sont à respecter ; contestez-les en privé.",1],["Ne partagez jamais d’informations personnelles (les vôtres ou celles d’autres).",0],["Pas de liens suspects, de logiciels piratés ni d’arnaques.",1]];
+var list=g("r-list");
+R.forEach(function(r,i){var l=document.createElement("label");l.className="chk";var c=document.createElement("input");c.type="checkbox";c.checked=!!r[1];c.dataset.i=i;c.addEventListener("change",out);l.appendChild(c);var s=document.createElement("span");s.textContent=r[0].split(":")[0].split(".")[0];l.appendChild(s);list.appendChild(l)});
+function build(){var rules=[];[].forEach.call(list.querySelectorAll("input:checked"),function(c){rules.push(R[+c.dataset.i][0])});
+g("r-extra").value.split("\n").forEach(function(x){x=x.trim();if(x)rules.push(x)});
+var n=g("r-name").value.trim(),t="📜 **Règlement"+(n?" de "+n:" du serveur")+"**\n\n";
+rules.forEach(function(r,i){t+="**"+(i+1)+".** "+r+"\n"});
+if(g("r-end").value.trim())t+="\n⚠️ "+g("r-end").value.trim()+"\n";
+t+="\n✅ En restant sur ce serveur, vous acceptez ce règlement.";return t}
+function out(){g("r-pv").textContent=build()}
+["r-name","r-extra","r-end"].forEach(function(i){g(i).addEventListener("input",out)});out();
+g("r-copy").addEventListener("click",function(){var b=g("r-copy");navigator.clipboard.writeText(build()).then(function(){var o=b.textContent;b.textContent="Copié";setTimeout(function(){b.textContent=o},1100)})});
+})();
+
+/* ---------- outils : permissions ---------- */
+(function(){
+var g=function(i){return document.getElementById(i)};
+var P=[["Créer une invitation",0],["Expulser des membres",1],["Bannir des membres",2],["Administrateur",3],["Gérer les salons",4],["Gérer le serveur",5],["Ajouter des réactions",6],["Voir les logs du serveur",7],["Voix prioritaire",8],["Vidéo / partage d’écran",9],["Voir les salons",10],["Envoyer des messages",11],["Envoyer des messages TTS",12],["Gérer les messages",13],["Intégrer des liens",14],["Joindre des fichiers",15],["Voir l’historique des messages",16],["Mentionner @everyone",17],["Utiliser des émojis externes",18],["Voir les analyses du serveur",19],["Se connecter en vocal",20],["Parler en vocal",21],["Couper le micro des membres",22],["Mettre en sourdine des membres",23],["Déplacer des membres",24],["Détection de la voix",25],["Changer de pseudo",26],["Gérer les pseudos",27],["Gérer les rôles",28],["Gérer les webhooks",29],["Gérer émojis et autocollants",30],["Utiliser les commandes slash",31],["Demander la parole",32],["Gérer les évènements",33],["Gérer les fils",34],["Créer des fils publics",35],["Créer des fils privés",36],["Utiliser des autocollants externes",37],["Envoyer dans les fils",38],["Lancer des activités",39],["Exclure temporairement",40]];
+var list=g("p-list"),val=g("p-val"),cid=g("p-cid"),boxes=[];
+P.forEach(function(p){var l=document.createElement("label");l.className="chk";var c=document.createElement("input");c.type="checkbox";c.dataset.b=p[1];c.addEventListener("change",fromBoxes);boxes.push(c);l.appendChild(c);var s=document.createElement("span");s.textContent=p[0];l.appendChild(s);list.appendChild(l)});
+function fromBoxes(){var v=0n;boxes.forEach(function(c){if(c.checked)v|=1n<<BigInt(c.dataset.b)});val.value=v.toString();link()}
+function fromVal(){var t=val.value.replace(/\D/g,"");val.value=t||"0";var v=BigInt(val.value);boxes.forEach(function(c){c.checked=!!(v&(1n<<BigInt(c.dataset.b)))});link()}
+function link(){var el=g("p-link"),id=cid.value.trim();
+if(!/^\d{15,20}$/.test(id)){el.textContent="Entrez l’identifiant du bot pour obtenir le lien d’invitation.";return}
+el.textContent="https://discord.com/oauth2/authorize?client_id="+id+"&scope=bot%20applications.commands&permissions="+val.value}
+function cp(t,b){navigator.clipboard.writeText(t).then(function(){var o=b.textContent;b.textContent="Copié";setTimeout(function(){b.textContent=o},1100)})}
+val.addEventListener("input",fromVal);cid.addEventListener("input",link);
+g("p-all").addEventListener("click",function(){boxes.forEach(function(c){c.checked=true});fromBoxes()});
+g("p-none").addEventListener("click",function(){boxes.forEach(function(c){c.checked=false});fromBoxes()});
+g("p-cv").addEventListener("click",function(){cp(val.value,g("p-cv"))});
+g("p-cl").addEventListener("click",function(){var id=cid.value.trim();if(!/^\d{15,20}$/.test(id))return;cp(g("p-link").textContent,g("p-cl"))});
+link();
+})();
+
+/* ---------- outils : palette ---------- */
+(function(){
+var g=function(i){return document.getElementById(i)};
+function h2r(h,s,l){h=((h%360)+360)%360;s/=100;l/=100;var k=function(n){return (n+h/30)%12},a=s*Math.min(l,1-l),f=function(n){return l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)))};return[f(0),f(8),f(4)].map(function(x){return Math.round(x*255)})}
+function hex(rgb){return"#"+rgb.map(function(x){return("0"+x.toString(16)).slice(-2)}).join("")}
+function r2h(r,gg,b){r/=255;gg/=255;b/=255;var mx=Math.max(r,gg,b),mn=Math.min(r,gg,b),d=mx-mn,h=0,l=(mx+mn)/2,s=d?d/(1-Math.abs(2*l-1)):0;
+if(d){if(mx===r)h=((gg-b)/d)%6;else if(mx===gg)h=(b-r)/d+2;else h=(r-gg)/d+4;h*=60}return[(h+360)%360,s*100,l*100]}
+function lum(rgb){var c=rgb.map(function(x){x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function cr(a,b){var x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+var DK=[49,51,56],LT=[255,255,255];
+function fix(h,s){var best=null,bs=-1;for(var l=40;l<=68;l+=2){var rgb=h2r(h,s,l),m=Math.min(cr(rgb,DK),cr(rgb,LT));if(m>bs){bs=m;best=rgb}}return best}
+var NM=["Membre","Modérateur","Admin","VIP","Booster","Fondateur","Support","Invité"];
+function gen(){var b=g("c-base").value,rgb=[1,3,5].map(function(i){return parseInt(b.substr(i,2),16)}),hsl=r2h(rgb[0],rgb[1],rgb[2]),H=hsl[0],S=Math.max(55,Math.min(85,hsl[1])),m=g("c-mode").value;
+var off=m==="ana"?[-45,-30,-15,0,15,30,45,60]:m==="tri"?[0,120,240,20,140,260,-20,100]:m==="com"?[0,180,15,195,-15,165,30,210]:[0,150,210,20,170,230,-20,130];
+var cols=off.map(function(o,i){return fix(H+o,i%2?S-10:S)});
+var out=g("c-out");out.innerHTML="";
+cols.forEach(function(c,i){var x=hex(c),a=cr(c,DK),bb=cr(c,LT),bt=document.createElement("button");bt.type="button";bt.className="swc";bt.title="Copier "+x;
+bt.innerHTML='<i style="background:'+x+'"></i><b>'+x.toUpperCase()+'</b><span>Sombre '+a.toFixed(1)+' · Clair '+bb.toFixed(1)+'</span>';
+bt.addEventListener("click",function(){navigator.clipboard.writeText(x.toUpperCase()).then(function(){var s=bt.querySelector("b"),o=s.textContent;s.textContent="Copié";setTimeout(function(){s.textContent=o},900)})});out.appendChild(bt)});
+["c-dark","c-light"].forEach(function(id){var el=g(id);el.innerHTML="";cols.forEach(function(c,i){var d=document.createElement("div");d.className="rl";d.style.color=hex(c);d.textContent="● "+NM[i];el.appendChild(d)})})}
+g("c-base").addEventListener("input",gen);g("c-mode").addEventListener("change",gen);
+g("c-rnd").addEventListener("click",function(){g("c-base").value=hex(h2r(Math.random()*360,70,55));gen()});
+gen();
+})();
 </script>
 </body>
 </html>
