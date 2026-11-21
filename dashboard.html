@@ -2719,11 +2719,11 @@ var STF_TABS=[{k:"votes",l:"Votes du staff",i:"vote"},{k:"hours",l:"Heures sans 
 var STF_FIELDS={
 votes:[
 {key:"stafftools_vote_channel",type:"channel",label:"Salon privé du vote",hint:"Le vote est publié dans ce salon : seul le staff doit pouvoir le voir.",def:""},
-{key:"stafftools_vote_hours",type:"select",label:"Délai du vote",options:[{v:6,l:"6 heures"},{v:12,l:"12 heures"},{v:24,l:"24 heures"},{v:48,l:"48 heures"},{v:72,l:"72 heures"}],def:24},
+{key:"stafftools_vote_hours",type:"select",label:"Délai du vote",options:[{v:"6",l:"6 heures"},{v:"12",l:"12 heures"},{v:"24",l:"24 heures"},{v:"48",l:"48 heures"},{v:"72",l:"72 heures"}],def:"24"},
 {key:"stafftools_vote_min",type:"number",label:"Minimum de votants",hint:"Sans ce nombre de votes à la fin du délai, le vote est rejeté.",min:1,max:50,def:3}],
 hours:[
 {key:"stafftools_gap_alert",type:"bool",label:"Alerter quand aucun staff n’est actif",hint:"Une alerte est envoyée quand aucun membre du staff n’a été actif pendant la durée choisie.",def:false},
-{key:"stafftools_gap_hours",type:"select",label:"Durée sans staff avant l’alerte",options:[{v:2,l:"2 heures"},{v:4,l:"4 heures"},{v:6,l:"6 heures"},{v:8,l:"8 heures"}],def:4,dep:"stafftools_gap_alert"},
+{key:"stafftools_gap_hours",type:"select",label:"Durée sans staff avant l’alerte",options:[{v:"2",l:"2 heures"},{v:"4",l:"4 heures"},{v:"6",l:"6 heures"},{v:"8",l:"8 heures"}],def:"4",dep:"stafftools_gap_alert"},
 {key:"stafftools_gap_channel",type:"channel",label:"Salon d’alerte",def:"",dep:"stafftools_gap_alert"}]};
 
 function stafftoolsView(c,G,it){
