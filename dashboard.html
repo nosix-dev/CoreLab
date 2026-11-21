@@ -2900,7 +2900,7 @@ function phIconFor(m,list){if(!m)return ICO_HOME;if(m==="antiscam_test")return I
 var x=(list||[]).filter(function(y){return y.route===m})[0];if(x)return x.it.svg;
 var s=SUIVI.filter(function(y){return y.id===m})[0];return s?s.svg:ICO_MOD}
 function phDecor(content,svg){var box=h("div",{class:"ph-ic"});box.innerHTML=svg;
-function put(){var t=content.querySelector("h2.t");if(t&&!content.querySelector(".ph-ic"))t.parentNode.insertBefore(box,t)}
+function put(){var t=content.querySelector("h2.t");if(t&&!content.querySelector(".ph-ic,.net-ico"))t.parentNode.insertBefore(box,t)}
 new MutationObserver(put).observe(content,{childList:true,subtree:true});put()}
 
 /* ---- Barre « Enregistrer » globale : garde les modifications de tous les modules et les enregistre d’un coup ---- */
