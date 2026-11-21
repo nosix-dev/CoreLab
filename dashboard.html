@@ -1715,14 +1715,15 @@ var NIGHT_FIELDS=[
 {key:"night_schedules",type:"schedules",label:"Horaires",def:[],card:"Horaires des salons"}
 ];
 
-function moduleView(c,G,mid,it){c.appendChild(h("p",{class:"muted",text:"Chargement…"}));
-api("/api/guilds/"+G.id+"/modules/"+mid).then(function(d){c.innerHTML="";
+function moduleView(c,G,mid,it,offline){c.appendChild(h("p",{class:"muted",text:"Chargement…"}));
+(offline?Promise.resolve({module:{id:mid,name:it.name,desc:it.desc,fields:[]},values:{},premium:false,offline:true}):api("/api/guilds/"+G.id+"/modules/"+mid)).then(function(d){c.innerHTML="";
 var meta=META[G.id],form=h("div",{class:"form"}),inputs={},last=null;
 var isNight=/night|nuit/i.test(mid),isNet=!isNight&&/netalert|network|reseau|réseau/i.test(mid),isPerm=!isNight&&!isNet&&/sensperm|sensitive|permission/i.test(mid),isNM=isNight||isNet||isPerm,isCard=!isNM&&!!d.module.preview,fields=isNight?NIGHT_FIELDS:isNet?NET_FIELDS:isPerm?PERM_FIELDS:d.module.fields.filter(function(f){return !(isCard&&CARD_LOOK.test(f.key))});
 if(isNM)c.classList.add("wide");
 if(isNet||isPerm){var ni=h("div",{class:"net-ico"});ni.innerHTML=isNet?NET_GLOBE:PERM_KEY;c.appendChild(ni)}
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:d.module.name}));
 c.appendChild(h("p",{class:"lead",text:isNet?NET_LEAD:d.module.desc}));
+if(d.offline)c.appendChild(h("p",{class:"net-note",text:"Aperçu des réglages avec les valeurs par défaut : le module n’est pas encore actif côté bot. Mettez le bot à jour pour pouvoir enregistrer."}));
 if(mid==="ai"){
 var aiInfo=h("div",{class:"ai-limit-info"},[
 h("b",{text:"Assistant IA limité par CoreLab"}),
@@ -1918,7 +1919,7 @@ colL.appendChild(h("div",{class:"pvbox"},[bgst,h("div",{style:"display:flex;gap:
 bgStatus();run()}
 function deps(){fields.forEach(function(f){if(!f.dep||!inputs[f.dep])return;inputs[f.key].wrap.classList.toggle("off",!inputs[f.dep].get())})}
 function collect(){var body={};fields.forEach(function(f){var i=inputs[f.key];if(i&&!i.locked)body[f.key]=i.get()});return body}
-function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id][mid]={label:d.module.name||d.module.title||mid,body:collect()};updateGBar();deps();if(live)live()}
+function dirty(){if(d.offline){deps();if(live)live();return}PEND[G.id]=PEND[G.id]||{};PEND[G.id][mid]={label:d.module.name||d.module.title||mid,body:collect()};updateGBar();deps();if(live)live()}
 var pm=(PEND[G.id]||{})[mid];if(pm)Object.keys(pm.body).forEach(function(k){d.values[k]=pm.body[k]});
 var card=null,cardKey=null,grp=null,grpKey=null;
 if(isNet){var ns=d.stats||d.values||{};colL.appendChild(h("div",{class:"net-stats"},[netStat(NET_SHARE,"Bans partagés",ns.shared_bans!=null?ns.shared_bans:ns.net_shared_bans,"par votre serveur"),netStat(NET_USERS,"Comptes signalés",ns.reported_accounts!=null?ns.reported_accounts:ns.net_reported_accounts,"dans le réseau CoreLab")]))}
@@ -1941,6 +1942,7 @@ lst.appendChild(h("div",{class:"net-al"},[t+(who?" · "+who:""),a.ts?h("small",{
 colL.appendChild(lst)}
 if(!isNM)colL.appendChild(form);deps();if(live)live();
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";
+if(it&&e&&!offline&&/^(nightmode|netalerts|sensperms)$/.test(it.id)&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){moduleView(c,G,mid,it,true);return}
 if(it&&e&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
 var bx=h("div");c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:it.name}));c.appendChild(h("p",{class:"lead",text:it.desc||""}));c.appendChild(bx);noEndpoint(bx,it.name)}
 else c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
