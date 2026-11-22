@@ -57,14 +57,14 @@ nav{height:var(--nav);display:flex;align-items:center;justify-content:space-betw
 .heroTxt{position:relative;text-align:center;width:100%}
 .js .intro:not(.static) .heroTxt{opacity:0;transform:translateY(26px);pointer-events:none;will-change:opacity,transform}
 .hint{position:absolute;left:0;right:0;bottom:26px;margin:0}
-.intro.static .hint{display:none}
+
 
 /* nouvelle animation d'accueil */
 .aur{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .aur i{position:absolute;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,rgba(232,81,13,.55),transparent 65%);animation:aur 16s ease-in-out infinite alternate;will-change:transform}
-.aur i:nth-child(1){width:48vw;height:48vw;left:-12vw;top:-10vw}
-.aur i:nth-child(2){width:42vw;height:42vw;right:-12vw;top:18vh;background:radial-gradient(circle,rgba(255,140,60,.45),transparent 65%);animation-delay:-6s}
-.aur i:nth-child(3){width:38vw;height:38vw;left:28vw;bottom:-18vw;animation-delay:-11s}
+.aur i:nth-child(1){width:44vw;height:88%;left:-14vw;top:12%;border-radius:50%}
+.aur i:nth-child(2){width:40vw;height:88%;right:-14vw;top:14%;background:radial-gradient(circle,rgba(255,140,60,.45),transparent 65%);animation-delay:-6s}
+.aur i:nth-child(3){width:38vw;height:50%;left:31vw;bottom:-12%;animation-delay:-11s}
 @keyframes aur{to{transform:translate3d(8vw,6vh,0) scale(1.2)}}
 #net{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .hub{position:relative;display:block;width:96px;height:96px;margin:0 auto 18px}
@@ -72,13 +72,15 @@ nav{height:var(--nav);display:flex;align-items:center;justify-content:space-betw
 .hub::after{animation-delay:1.5s}
 @keyframes hubp{from{transform:scale(.8);opacity:.9}to{transform:scale(2.1);opacity:0}}
 .hlogo{position:relative;display:block;width:96px;height:96px;border-radius:22px;filter:drop-shadow(0 0 22px rgba(232,81,13,.7))}
-.intro.static .pin{min-height:0;padding:calc(var(--nav) + 46px) 0 60px}
-.aur,#net{-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.intro.static .pin{min-height:100svh;padding:calc(var(--nav) + 30px) 0 100px}
+.intro.static .hint{display:flex;bottom:28px;animation:hbob 2.4s ease-in-out infinite}
+@keyframes hbob{50%{transform:translateY(7px)}}
+.aur,#net{-webkit-mask-image:linear-gradient(#000 90%,transparent);mask-image:linear-gradient(#000 90%,transparent)}
 .heroTxt{z-index:3}
 .heroTxt>*{animation:hin .8s both cubic-bezier(.2,.7,.2,1)}
 .heroTxt>:nth-child(2){animation-delay:.1s}.heroTxt>:nth-child(3){animation-delay:.2s}.heroTxt>:nth-child(4){animation-delay:.3s}.heroTxt>:nth-child(5){animation-delay:.4s}.heroTxt>:nth-child(6){animation-delay:.5s}.heroTxt>:nth-child(7){animation-delay:.6s}
 @keyframes hin{from{opacity:0;transform:translateY(22px)}}
-@media(prefers-reduced-motion:reduce){.aur i,.hub::before,.hub::after,.heroTxt>*{animation:none}}
+@media(prefers-reduced-motion:reduce){.aur i,.hub::before,.hub::after,.heroTxt>*,.hint{animation:none}}
 .termsec{padding:30px 0 70px}
 .hi{font-size:clamp(18px,2.4vw,22px);color:var(--ac2);font-weight:600;margin:0}
 h1{font-size:clamp(40px,7.4vw,84px);line-height:1;letter-spacing:-.04em;font-weight:800;margin:14px auto 20px;max-width:900px}
@@ -388,6 +390,8 @@ header nav{position:relative}
 </section>
 
 <!-- APERCUS -->
+
+<!-- PROTECTION -->
 <section class="termsec" id="systeme">
 <div class="wrap">
 <div class="term">
@@ -396,8 +400,6 @@ header nav{position:relative}
 </div>
 </div>
 </section>
-
-<!-- PROTECTION -->
 <section class="pad cvs" id="protection">
 <div class="cv" data-cv style="--n:3">
 <div class="cv-pin">
@@ -527,7 +529,7 @@ n0:["Accueil","Home"],nprot:["Protection","Protection"],nrank:["Rankup","Rankup"
 invite:["Inviter le bot","Invite the bot"],badge:["CoreLab en ligne","CoreLab online"],hi:["Bienvenue chez CoreLab.","Welcome to CoreLab."],
 h1:["Le bot qui protège et gère <em>tout votre serveur</em>.","The bot that protects and manages <em>your entire server</em>."],
 sub:["Multifonction, multilingue, pensé pour les grandes communautés Discord. Protection, tickets, niveaux, économie, notifications : tout est personnalisable.","Multi-function, multilingual, built for large Discord communities. Protection, tickets, levels, economy, notifications: everything is customizable."],
-scroll:["Faites défiler pour la voir se désintégrer.","Scroll to watch it fall apart."],
+scroll:["Faites défiler vers le bas","Scroll down"],
 h2p:["Pendant que votre équipe <em>dort</em>.","While your team <em>sleeps</em>."],
 leadp:["Une scène qui arrive plus souvent qu’on ne le croit, et ce que CoreLab en fait.","A scene that happens more often than you think, and what CoreLab does about it."],
 p1h:["Un faux cadeau apparaît.","A fake gift shows up."],p1p:["Un compte inconnu poste un lien « Nitro gratuit » dans un salon très fréquenté. Il suffit d’un clic malheureux.","An unknown account posts a “free Nitro” link in a busy channel. One unlucky click is all it takes."],
