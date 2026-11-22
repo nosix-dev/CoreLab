@@ -726,7 +726,7 @@ body.hs>header{display:none}
 .hm-lab{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin:18px 0 6px;padding:0 4px}
 .hm-hero{display:flex;align-items:center;gap:18px;margin-bottom:22px}
 .hm-av{width:56px;height:56px;border-radius:50%;background:var(--s2);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;flex:none;object-fit:cover}
-.hm-eye{margin:0 0 2px;color:var(--mu);font-size:15px}.hm-hero h1{margin:0;font-size:34px;letter-spacing:-.02em}
+.hm-eye{margin:0 0 2px;color:var(--mu);font-size:15px}.hm-hero h1{margin:0;font-size:34px;letter-spacing:-.02em}.hm-hero h1 em{display:inline;font-size:inherit;margin:0;padding:0;font-style:normal}
 .hm-promo{display:flex;align-items:center;gap:16px;padding:20px 22px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);margin-bottom:16px}
 .hm-pi{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--s2);flex:none}
 .hm-pi svg,.hm-sti svg,.hm-rii svg,.hm-plus svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -749,11 +749,11 @@ body.hs>header{display:none}
 .hm-reco{display:flex;flex-direction:column;gap:10px}
 .hm-ri{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--s2);transition:border-color .15s}.hm-ri:hover{border-color:var(--mu)}
 .hm-rii{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);flex:none}
-.hm-ri div{flex:1;min-width:0}.hm-ri b{display:block;font-size:15px}.hm-ri span{display:block;color:var(--mu);font-size:13px;margin-top:2px}.hm-ri em{font-style:normal;color:var(--mu);font-size:18px}
+.hm-ri div{flex:1;min-width:0}.hm-ri b{display:block;font-size:15px}.hm-ri div span{display:block;color:var(--mu);font-size:13px;margin-top:2px}.hm-ri em{font-style:normal;color:var(--mu);font-size:18px}
 .hm-ri.done b{text-decoration:line-through;color:var(--mu)}
 .hm-right{min-width:0}.hm-right .hm-sub{margin-bottom:14px}
 .hm-sv{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--ln);border-radius:14px;background:var(--s1);margin-bottom:12px;transition:border-color .15s}.hm-sv:hover{border-color:var(--mu)}
-.hm-sv div{flex:1;min-width:0}.hm-sv b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hm-sv span{display:block;color:var(--mu);font-size:13px;margin-top:2px}.hm-sv em{font-style:normal;color:var(--mu);font-size:18px}
+.hm-sv div{flex:1;min-width:0}.hm-sv b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hm-sv div span{display:block;color:var(--mu);font-size:13px;margin-top:2px}.hm-sv em{font-style:normal;color:var(--mu);font-size:18px}
 .hm-plus{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--ln);border-radius:12px;background:var(--s2);flex:none}
 .hm-all{display:inline-block;margin-top:6px;color:var(--mu);font-size:14px}.hm-all:hover{color:var(--tx)}
 @media(max-width:1280px){.hm-grid{grid-template-columns:1fr 1fr}.hm-right{grid-column:1/-1}.hm-sts{grid-template-columns:repeat(2,1fr)}}
@@ -843,6 +843,7 @@ P_LCK='<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 
 P_CHT='<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
 P_OK='<path d="M20 6 9 17l-5-5"/>',
 P_MSG='<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',P_USR='<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+P_SCALE='<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',P_WARN='<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',P_NOTE='<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>',
 P_IN='<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>';
 function invUrl(){return "https://discord.com/oauth2/authorize?client_id="+CLIENT_ID+"&scope=bot%20applications.commands&permissions=8"}
 function homeShell(active){document.body.classList.add("hs");app.innerHTML="";
@@ -869,13 +870,13 @@ var content=h("div",{class:"content wide"});app.appendChild(h("div",{class:"dash
 function viewHome(){var c=homeShell("home"),U=ME.user,rec=getRecents(),tgt=rec.filter(function(g){return g.botIn})[0]||null,gs=ME.guilds||[],nBot=gs.filter(function(g){return g.botIn}).length;
 c.classList.add("hm");
 var av=U.avatar?h("img",{class:"hm-av",src:"https://cdn.discordapp.com/avatars/"+U.id+"/"+U.avatar+".png?size=128",alt:""}):h("span",{class:"hm-av",text:String(U.username||"?").charAt(0).toUpperCase()});
-c.appendChild(h("div",{class:"hm-hero"},[av,h("div",{},[h("p",{class:"hm-eye",text:"Votre espace de modération"}),h("h1",{text:"Bon retour, "+(U.username||"")})])]));
+c.appendChild(h("div",{class:"hm-hero"},[av,h("div",{},[h("p",{class:"hm-eye",text:"Votre espace de modération"}),h("h1",{},["Bon retour, ",h("em",{text:U.username||""})])])]));
 c.appendChild(h("div",{class:"hm-promo"},[svgIc(P_SHD,"hm-pi"),h("div",{class:"hm-pt"},[h("small",{text:"CoreLab"}),h("b",{text:"Protégez un nouveau serveur"}),h("span",{text:"Ajoutez CoreLab : modération, tickets, XP, notifications et plus encore."})]),h("a",{class:"btn ghost sm",href:invUrl(),target:"_blank",rel:"noopener",text:"Ajouter →"})]));
 var vals={};
 function card(key,ic,label,sub,href){var b=h("b",{text:"…"});vals[key]=b;var sm=h("small",{text:sub});vals[key+"s"]=sm;
 return h("div",{class:"hm-st"},[h("div",{class:"hm-sth"},[svgIc(ic,"hm-sti"),h("a",{class:"hm-pill",href:href,text:"Voir les détails"})]),b,h("span",{text:label}),sm])}
 var tg=tgt?"#/g/"+tgt.id:"#/servers";
-c.appendChild(h("div",{class:"hm-sts"},[card("msg",P_MSG,"Messages","cette semaine",tg),card("act",P_USR,"Membres actifs","cette semaine",tg),card("jn",P_IN,"Arrivées","cette semaine",tg),card("mem",P_USR,"Membres",tgt?tgt.name:"Aucun serveur",tg)]));
+c.appendChild(h("div",{class:"hm-sts"},[card("inf",P_SCALE,"Infractions","cette semaine","#/servers"),card("wrn",P_WARN,"Avertissements","cette semaine","#/servers"),card("nt",P_NOTE,"Notes","cette semaine","#/servers"),card("mem",P_USR,"Membres","total des serveurs protégés","#/servers")]));
 var grid=h("div",{class:"hm-grid"}),actBox=h("section",{class:"hm-box hm-act"}),recoBox=h("section",{class:"hm-box"}),right=h("aside",{class:"hm-right"});
 grid.appendChild(actBox);grid.appendChild(recoBox);grid.appendChild(right);c.appendChild(grid);
 /* Activité */
@@ -903,20 +904,21 @@ right.appendChild(h("a",{class:"hm-sv",href:g.botIn?"#/g/"+g.id:"#/servers"},[ic
 right.appendChild(h("a",{class:"hm-sv add",href:invUrl(),target:"_blank",rel:"noopener"},[svgIc('<path d="M5 12h14"/><path d="M12 5v14"/>',"hm-plus"),h("div",{},[h("b",{text:"Ajouter CoreLab à un serveur"})]),h("em",{"aria-hidden":"true",text:"↗"})]));
 right.appendChild(h("a",{class:"hm-all",href:"#/servers",text:"Tous mes serveurs →"}));
 /* Données réelles du serveur le plus récent */
-function setZero(){vals.msg.textContent="0";vals.act.textContent="0";vals.jn.textContent="0";vals.mem.textContent="0"}
-if(!tgt){setZero();return}
-api("/api/guilds/"+tgt.id).then(function(G){if(!c.isConnected)return;vals.mem.textContent=fmtN(G.members);if(memEls[tgt.id])memEls[tgt.id].textContent=fmtN(G.members)+" membres";
+api("/api/me/summary").then(function(d){if(!c.isConnected)return;vals.inf.textContent=fmtN(d.infractions);vals.wrn.textContent=fmtN(d.warns);vals.nt.textContent=fmtN(d.notes);vals.mem.textContent=fmtN(d.members)})
+.catch(function(e){if(e&&e.message==="auth")return;["inf","wrn","nt","mem"].forEach(function(k){vals[k].textContent="—"})});
+if(!tgt)return;
+api("/api/guilds/"+tgt.id).then(function(G){if(!c.isConnected)return;if(memEls[tgt.id])memEls[tgt.id].textContent=fmtN(G.members)+" membres";
 var pr=(G.modules||[]).filter(function(m){return /protection/i.test(m.group||"")})[0];if(pr)rP.setAttribute("href","#/g/"+tgt.id+"/"+pr.id);
-var ac=(G.modules||[]).filter(function(m){return /acc|perm|role|rôle/i.test((m.id||"")+" "+(m.name||""))})[0];if(ac)rA.setAttribute("href","#/g/"+tgt.id+"/"+ac.id)}).catch(function(e){if(e&&e.message==="auth")return;vals.mem.textContent="—"});
+var ac=(G.modules||[]).filter(function(m){return /acc|perm|role|rôle/i.test((m.id||"")+" "+(m.name||""))})[0];if(ac)rA.setAttribute("href","#/g/"+tgt.id+"/"+ac.id)}).catch(function(e){if(e&&e.message==="auth")return});
 api("/api/guilds/"+tgt.id+"/activity?days=7").then(function(d){if(!c.isConnected)return;var t=d.totals;
-vals.msg.textContent=fmtN(t.messages);vals.act.textContent=fmtN(t.activeUsers);vals.jn.textContent=fmtN(t.joins);ringN.textContent=fmtN(t.messages);
+ringN.textContent=fmtN(t.messages);
 var mx=Math.max(t.messages,t.voiceMinutes,t.joins,t.leaves,1);
 [["msg",t.messages],["voc",t.voiceMinutes],["jn",t.joins],["lv",t.leaves]].forEach(function(x){RW[x[0]].v.textContent=fmtN(x[1]);RW[x[0]].bar.style.width=Math.max(x[1]?4:0,x[1]/mx*100)+"%"})})
-.catch(function(e){if(e&&e.message==="auth")return;vals.msg.textContent="—";vals.act.textContent="—";vals.jn.textContent="—"})}
+.catch(function(e){if(e&&e.message==="auth")return})}
 
 function viewAccount(){var c=homeShell("account"),U=ME.user,gs=ME.guilds||[];c.classList.add("hm");
 var av=U.avatar?h("img",{class:"hm-av",src:"https://cdn.discordapp.com/avatars/"+U.id+"/"+U.avatar+".png?size=128",alt:""}):h("span",{class:"hm-av",text:String(U.username||"?").charAt(0).toUpperCase()});
-c.appendChild(h("div",{class:"hm-hero"},[av,h("div",{},[h("p",{class:"hm-eye",text:"Mon compte"}),h("h1",{text:U.username||""})])]));
+c.appendChild(h("div",{class:"hm-hero"},[av,h("div",{},[h("p",{class:"hm-eye",text:"Mon compte"}),h("h1",{},[h("em",{text:U.username||""})])])]));
 c.appendChild(h("div",{class:"hm-box",style:"max-width:640px"},[h("h3",{text:"Compte Discord"}),h("p",{class:"hm-sub",text:"Vous êtes connecté avec Discord. CoreLab ne voit jamais votre mot de passe."}),
 h("div",{class:"hm-rows",style:"margin:16px 0"},[h("div",{class:"hm-rt"},[h("span",{text:"Serveurs gérables"}),h("b",{text:fmtN(gs.length)})]),h("div",{class:"hm-rt"},[h("span",{text:"Avec CoreLab"}),h("b",{text:fmtN(gs.filter(function(g){return g.botIn}).length)})])]),
 h("button",{class:"btn ghost sm",type:"button",text:"Se déconnecter",onclick:function(){logout()}})]))}
