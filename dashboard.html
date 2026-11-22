@@ -1856,10 +1856,27 @@ var NIGHT_FIELDS=[
 {key:"night_schedules",type:"schedules",label:"Horaires",def:[],card:"Horaires des salons"}
 ];
 
+/* ---- Captchas : champs affichés en cartes ---- */
+var CAP_DIFF=[{v:"easy",l:"Facile"},{v:"standard",l:"Standard"},{v:"hard",l:"Difficile"}];
+var CAPTCHA_FIELDS=[
+{key:"captcha_enabled",type:"bool",label:"Activer la vérification par captcha",hint:"Chaque nouveau membre doit recopier un code avant d’accéder au serveur.",def:false,card:""},
+{key:"captcha_difficulty",type:"select",label:"Difficulté du défi",options:CAP_DIFF,def:"standard",group:"d",dep:"captcha_enabled",card:"Défi"},
+{key:"captcha_max_attempts",type:"number",label:"Nombre maximal d’essais",hint:"Essais autorisés par challenge.",min:1,max:20,def:3,group:"d",dep:"captcha_enabled",card:"Défi"},
+{key:"captcha_timeout_minutes",type:"number",label:"Expiration du challenge (minutes)",hint:"Entre 1 et 120 minutes.",min:1,max:120,def:5,group:"d",dep:"captcha_enabled",card:"Défi"},
+{key:"captcha_kick_on_fail",type:"bool",label:"Expulser en cas d’échec",hint:"Le membre est expulsé s’il épuise ses essais ou laisse expirer le challenge.",def:true,dep:"captcha_enabled",card:"Défi"},
+{key:"captcha_channel_id",type:"channel",label:"Salon de vérification",hint:"Le panneau de vérification est publié ici.",none:"Rechercher un salon",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
+{key:"captcha_role_id",type:"role",label:"Rôle avant vérification",hint:"Attribué aux nouveaux membres en attente.",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
+{key:"captcha_verified_role_id",type:"role",label:"Rôle après vérification",hint:"Attribué après un captcha réussi.",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
+{key:"captcha_exempt_roles",type:"roles",label:"Rôles dispensés de vérification",hint:"Ces membres n’ont pas de captcha à passer.",def:[],group:"r",dep:"captcha_enabled",card:"Salon et rôles"}
+];
+function capFields(d){var known={};CAPTCHA_FIELDS.forEach(function(f){known[f.key]=1});
+var extra=((d.module&&d.module.fields)||[]).filter(function(f){return !known[f.key]}).map(function(f){return Object.assign({},f,{card:"Autres réglages"})});
+return CAPTCHA_FIELDS.concat(extra)}
+
 function moduleView(c,G,mid,it,offline){c.appendChild(h("p",{class:"muted",text:"Chargement…"}));
 (offline?Promise.resolve({module:{id:mid,name:it.name,desc:it.desc,fields:[]},values:{},premium:false,offline:true}):api("/api/guilds/"+G.id+"/modules/"+mid)).then(function(d){c.innerHTML="";
 var meta=META[G.id],form=h("div",{class:"form"}),inputs={},last=null;
-var isNight=/night|nuit/i.test(mid),isNet=!isNight&&/netalert|network|reseau|réseau/i.test(mid),isPerm=!isNight&&!isNet&&/sensperm|sensitive|permission/i.test(mid),isNM=isNight||isNet||isPerm,isCard=!isNM&&!!d.module.preview,fields=isNight?NIGHT_FIELDS:isNet?NET_FIELDS:isPerm?PERM_FIELDS:d.module.fields.filter(function(f){return !(isCard&&CARD_LOOK.test(f.key))});
+var isNight=/night|nuit/i.test(mid),isNet=!isNight&&/netalert|network|reseau|réseau/i.test(mid),isPerm=!isNight&&!isNet&&/sensperm|sensitive|permission/i.test(mid),isCap=!isNight&&!isNet&&!isPerm&&/captcha/i.test(mid),isNM=isNight||isNet||isPerm||isCap,isCard=!isNM&&!!d.module.preview,fields=isNight?NIGHT_FIELDS:isNet?NET_FIELDS:isPerm?PERM_FIELDS:isCap?capFields(d):d.module.fields.filter(function(f){return !(isCard&&CARD_LOOK.test(f.key))});
 if(isNM)c.classList.add("wide");
 if(isNet||isPerm){var ni=h("div",{class:"net-ico"});ni.innerHTML=isNet?NET_GLOBE:PERM_KEY;c.appendChild(ni)}
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:d.module.name}));
@@ -1935,6 +1952,9 @@ var kick=inputs.captcha_kick_on_fail&&inputs.captcha_kick_on_fail.get();
 var channelId=inputs.captcha_channel_id&&inputs.captcha_channel_id.get();
 var pendingRoleId=inputs.captcha_role_id&&inputs.captcha_role_id.get();
 var verifiedRoleId=inputs.captcha_verified_role_id&&inputs.captcha_verified_role_id.get();
+var diffId=inputs.captcha_difficulty&&inputs.captcha_difficulty.get();
+var exempt=(inputs.captcha_exempt_roles&&inputs.captcha_exempt_roles.get())||[];
+var diff=CAP_DIFF.filter(function(x){return x.v===diffId})[0];
 var channel=(meta.channels||[]).filter(function(x){return x.id===channelId})[0];
 var pending=(meta.roles||[]).filter(function(x){return x.id===pendingRoleId})[0];
 var verified=(meta.roles||[]).filter(function(x){return x.id===verifiedRoleId})[0];
@@ -1948,6 +1968,8 @@ h("div",{class:"captcha-fields"},[
 h("span",{},["Salon : ",h("b",{text:channel?"# "+channel.name:"non défini"})]),
 h("span",{},["Rôle en attente : ",h("b",{text:pending?pending.name:"non défini"})]),
 h("span",{},["Rôle vérifié : ",h("b",{text:verified?verified.name:"non défini"})]),
+h("span",{},["Difficulté : ",h("b",{text:diff?diff.l:"Standard"})]),
+h("span",{},["Dispensés : ",h("b",{text:exempt.length?exempt.length+" rôle"+(exempt.length>1?"s":""):"aucun"})]),
 h("span",{},["Temps : ",h("b",{text:(timeout||5)+" minutes"})]),
 h("span",{},["Essais : ",h("b",{text:String(attempts||3)})]),
 h("span",{},["Échec : ",h("b",{text:kick?"expulsion":"aucune expulsion"})])
@@ -2074,6 +2096,26 @@ else{grpKey=null;grp=null;card.appendChild(nb.wrap)}
 return}
 if(f.section&&f.section!==last){form.appendChild(h("div",{class:"sec",text:f.section}));last=f.section}
 var b=buildField(f,v,meta,d.premium,dirty);inputs[f.key]=b;form.appendChild(b.wrap)});
+if(isCap){
+var capMsg=h("span",{class:"h"}),capRoles=h("button",{class:"btn ghost",type:"button",text:"Créer les rôles et régler les salons"}),capPub=h("button",{class:"btn",type:"button",text:"Publier le panneau de vérification"});
+if(d.offline){capRoles.disabled=true;capPub.disabled=true}
+function capRun(path,okMsg){
+capRoles.disabled=true;capPub.disabled=true;capMsg.textContent="Action en cours…";
+var pend=PEND[G.id]&&PEND[G.id][mid];
+(pend?api("/api/guilds/"+G.id+"/modules/"+mid,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(collect())}).then(function(data){d.values=data.values;delete PEND[G.id][mid];DIRTY=anyPend();updateGBar()}):Promise.resolve())
+.then(function(){return api("/api/guilds/"+G.id+"/captcha/"+path,{method:"POST"})})
+.then(function(r){if(r&&META[G.id]){var rl=META[G.id].roles||[];(r.roles||[]).forEach(function(x){if(!rl.some(function(y){return y.id===x.id}))rl.push(x)});META[G.id].roles=rl;
+var cl=META[G.id].channels||[];(r.channels||[]).forEach(function(x){if(!cl.some(function(y){return y.id===x.id}))cl.push(x)});META[G.id].channels=cl}
+toast(okMsg+(r&&r.channelsUpdated!=null?" · "+r.channelsUpdated+" salon"+(r.channelsUpdated>1?"s":"")+" réglé"+(r.channelsUpdated>1?"s":""):""),false);moduleView(c,G,mid)})
+.catch(function(e){if(e&&e.message==="auth")return;capRoles.disabled=false;capPub.disabled=false;capMsg.textContent="";
+toast(e&&(e.error==="not_found"||e.error==="unknown_route")?"Cette action n’est pas encore disponible côté bot.":errText(e),true)})}
+capRoles.addEventListener("click",function(){capRun("setup-roles","Rôles de vérification créés ✓")});
+capPub.addEventListener("click",function(){capRun("publish","Panneau publié dans Discord ✓")});
+colL.appendChild(h("div",{class:"form nm-card"},[
+h("h3",{class:"nm-title",text:"Créer les rôles de vérification"}),
+h("p",{class:"nm-sub",text:"CoreLab crée les rôles manquants « Non vérifié » et « Vérifié », puis règle tous les salons : un membre non vérifié ne voit que le salon de vérification. Les membres déjà présents gardent leur accès."}),
+h("div",{style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"},[capRoles,capPub,capMsg]),
+h("p",{class:"h",text:"Enregistrez avant publication. Chaque publication crée un message."})]))}
 if(isNet&&card)card.appendChild(h("p",{class:"net-note",text:"Les alertes sont réservées aux serveurs qui partagent leurs bans : le réseau ne fonctionne que si chacun y participe."}));
 if(isPerm){colL.appendChild(h("div",{class:"net-lbl",text:"Dernières alertes"}));
 var al=(d.alerts||d.recent||[]).slice(0,10),lst=h("div",{class:"net-alerts"});
@@ -2083,7 +2125,7 @@ lst.appendChild(h("div",{class:"net-al"},[t+(who?" · "+who:""),a.ts?h("small",{
 colL.appendChild(lst)}
 if(!isNM)colL.appendChild(form);deps();if(live)live();
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";
-if(it&&e&&!offline&&/^(nightmode|netalerts|sensperms)$/.test(it.id)&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){moduleView(c,G,mid,it,true);return}
+if(it&&e&&!offline&&/^(nightmode|netalerts|sensperms|captcha)$/.test(it.id)&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){moduleView(c,G,mid,it,true);return}
 if(it&&e&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
 var bx=h("div");c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:it.name}));c.appendChild(h("p",{class:"lead",text:it.desc||""}));c.appendChild(bx);noEndpoint(bx,it.name)}
 else c.appendChild(h("p",{class:"err",text:"Impossible de charger ce module."}))})}
