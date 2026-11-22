@@ -2972,7 +2972,7 @@ mod:[
 
 function logsView(c,G,it){
 c.classList.add("wide");
-var meta=META[G.id]||{channels:[]},tab="events",vals={logs_enabled:true,logs_events:{}},q="";
+var meta=META[G.id]||{channels:[]},tab="events",vals={logs_enabled:true,logs_events:{},dflt:""},q="";
 var ico=h("div",{class:"net-ico"});ico.innerHTML=svg24(LG_IC.log);c.appendChild(ico);
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Logs"}));
 c.appendChild(h("p",{class:"lead",text:"Choisissez les événements Discord à envoyer dans vos salons."}));
@@ -2981,16 +2981,17 @@ function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].logs={label:"Logs",body:{l
 function ev(k){return vals.logs_events[k]||(vals.logs_events[k]={enabled:false,channel:""})}
 function drawTabs(){bar.innerHTML="";LG_TABS.forEach(function(t){var b=h("button",{class:"dsc-tab"+(t.k===tab?" on":""),type:"button",role:"tab","aria-selected":t.k===tab?"true":"false",onclick:function(){tab=t.k;q="";drawTabs();drawBody()}});
 var sp=h("span",{style:"display:inline-flex"});sp.innerHTML=svg24(LG_IC[t.i]);b.appendChild(sp.firstChild);b.appendChild(document.createTextNode(t.l));bar.appendChild(b)})}
-function card(e){var st=ev(e[0]),ic=h("span",{class:"td-ic"}),pill=h("span",{class:"pill",style:"margin-left:8px;font-weight:600"}),cb=h("input",{type:"checkbox","aria-label":e[1]}),ch=h("button",{class:"td-chev",type:"button","aria-label":"Réglages"}),panel=h("div",{class:"td-cfg",style:"display:none"});
+function card(e){var st=ev(e[0]),ic=h("span",{class:"td-ic"}),pill=h("span",{class:"pill",style:"margin-left:8px;font-weight:600"}),cb=h("input",{type:"checkbox","aria-label":e[1]}),ch=h("button",{class:"td-chev",type:"button","aria-label":"Réglages"}),panel=h("div",{class:"td-cfg",style:"display:none"}),hint=h("p",{class:"err",style:"display:none;margin:8px 0 0",text:"Choisissez un salon : sans salon, rien ne sera envoyé dans Discord."});
 ic.innerHTML=svg24(LG_IC.log);cb.checked=!!st.enabled;
-function pl(){pill.textContent=cb.checked?"● Activée":"● Désactivée";pill.className="pill"+(cb.checked?" on":"")}pl();
-cb.addEventListener("change",function(){st.enabled=cb.checked;pl();dirty()});
+function eff(){return st.channel||vals.dflt||""}
+function pl(){var miss=cb.checked&&!eff();pill.textContent=cb.checked?(miss?"● Activée · aucun salon":"● Activée"):"● Désactivée";pill.className="pill"+(cb.checked?(miss?" bad":" on"):"");hint.style.display=miss?"":"none"}pl();
+cb.addEventListener("change",function(){st.enabled=cb.checked;pl();if(cb.checked&&!eff()){panel.style.display="";ch.className="td-chev open"}dirty()});
 ch.innerHTML=svg24(LG_IC.down);ch.addEventListener("click",function(){var o=panel.style.display==="none";panel.style.display=o?"":"none";ch.className="td-chev"+(o?" open":"")});
-var cs=h("select",{"aria-label":"Salon des logs"});cs.appendChild(opt("","— Choisir un salon —"));
+var cs=h("select",{"aria-label":"Salon des logs"});cs.appendChild(opt("",vals.dflt?"— Salon par défaut du bot —":"— Choisir un salon —"));
 (meta.channels||[]).forEach(function(o){cs.appendChild(opt(o.id,"# "+o.name))});
 if(st.channel&&!(meta.channels||[]).some(function(o){return o.id===st.channel}))cs.appendChild(opt(st.channel,"(salon supprimé)"));
-cs.value=st.channel||"";cs.addEventListener("change",function(){st.channel=cs.value;dirty()});
-panel.appendChild(h("div",{class:"fld"},[lab("Salon des logs",cs)]));
+cs.value=st.channel||"";cs.addEventListener("change",function(){st.channel=cs.value;pl();dirty()});
+panel.appendChild(h("div",{class:"fld"},[lab("Salon des logs",cs)]));panel.appendChild(hint);
 return h("div",{class:"td-card"},[h("div",{class:"td-hd"},[ic,h("div",{class:"in"},[h("b",{},[e[1],pill]),h("span",{class:"d",text:e[2]})]),h("label",{class:"sw"},[cb,h("i")]),ch]),panel])}
 function drawBody(){body.innerHTML="";
 if(tab==="history"){var hb=h("div");body.appendChild(hb);auditView(hb,G,{embed:true,cat:it.cat});return}
@@ -2998,13 +2999,18 @@ var cb=h("input",{type:"checkbox","aria-label":"Activer le module"});cb.checked=
 var list=h("div",{class:"lg-list"+(vals.logs_enabled?"":" lg-dis")});
 cb.addEventListener("change",function(){vals.logs_enabled=cb.checked;list.className="lg-list"+(cb.checked?"":" lg-dis");dirty()});
 body.appendChild(h("div",{class:"stf-top"},[h("label",{class:"sw"},[cb,h("i")]),h("span",{class:"t",text:"Activer ce module sur votre serveur"}),h("a",{href:"docs.html",target:"_blank",rel:"noopener",text:"Docs ↗"})]));
+var all=h("select",{"aria-label":"Salon pour tous les événements"});all.appendChild(opt("","— Choisir un salon —"));
+(meta.channels||[]).forEach(function(o){all.appendChild(opt(o.id,"# "+o.name))});
+var chs=LG_EVENTS.events.concat(LG_EVENTS.mod).map(function(e){return ev(e[0]).channel||""}).filter(function(x,i,a){return a.indexOf(x)===i});all.value=chs.length===1?chs[0]:"";
+all.addEventListener("change",function(){if(!all.value)return;LG_EVENTS.events.concat(LG_EVENTS.mod).forEach(function(e){ev(e[0]).channel=all.value});dirty();fill();toast("Salon appliqué à tous les événements — pensez à enregistrer")});
+body.appendChild(h("div",{class:"fld",style:"margin:0 0 12px"},[lab("Salon pour tous les événements",all)]));
 var find=h("input",{class:"find lg-find",type:"search",placeholder:"Rechercher un événement…","aria-label":"Rechercher un événement",value:q});
 body.appendChild(find);body.appendChild(list);
 function fill(){list.innerHTML="";var n=0;LG_EVENTS[tab].forEach(function(e){if(q&&(e[1]+" "+e[2]).toLowerCase().indexOf(q.toLowerCase())<0)return;n++;list.appendChild(card(e))});
 if(!n)list.appendChild(h("p",{class:"td-empty",text:"Aucun événement ne correspond."}))}
 find.addEventListener("input",function(){q=find.value.trim();fill()});fill()}
 drawTabs();body.appendChild(h("p",{class:"muted",text:"Chargement…"}));
-api("/api/guilds/"+G.id+"/modules/logs").then(function(d){var v=d.values||{};if(v.logs_enabled!=null)vals.logs_enabled=!!v.logs_enabled;if(v.logs_events&&typeof v.logs_events==="object")vals.logs_events=v.logs_events}).catch(function(){})
+api("/api/guilds/"+G.id+"/modules/logs").then(function(d){var v=d.values||{};if(v.logs_enabled!=null)vals.logs_enabled=!!v.logs_enabled;if(v.logs_events&&typeof v.logs_events==="object")vals.logs_events=v.logs_events;if(v.log_channel_id)vals.dflt=String(v.log_channel_id)}).catch(function(){})
 .then(function(){var pm=(PEND[G.id]||{}).logs;if(pm){vals.logs_enabled=pm.body.logs_enabled;vals.logs_events=pm.body.logs_events}if(body.isConnected)drawBody()})}
 
 /* ---- Radar : ce qui vise le serveur et ce que CoreLab a fait ---- */
