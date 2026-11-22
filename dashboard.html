@@ -3095,7 +3095,7 @@ h("button",{class:"btn sm",type:"button",text:gbusy?"Enregistrement…":"Tout en
 function saveAll(g){if(gbusy)return;var ids=Object.keys(PEND[g]||{}),fails=[],ok=0;gbusy=true;updateGBar();
 (function next(i){if(i>=ids.length)return done();var mid=ids[i],it=PEND[g][mid];
 api("/api/guilds/"+g+"/modules/"+mid,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(it.body)})
-.then(function(){ok++;delete PEND[g][mid];next(i+1)})
+.then(function(r){if(mid==="automod"&&!(r&&r.values&&Array.isArray(r.values.automod_rules))){fails.push(it.label+" : le bot n’a pas conservé ces réglages (route automod à ajouter côté bot)");return next(i+1)}ok++;delete PEND[g][mid];next(i+1)})
 .catch(function(e){if(e&&e.message==="auth"){gbusy=false;return}fails.push(it.label+" : "+errText(e));next(i+1)})})(0);
 function done(){gbusy=false;if(!fails.length){DIRTY=false;toast(ok>1?"Tout est enregistré ✓ ("+ok+" modules)":"Enregistré ✓")}else toast((ok?ok+" enregistré(s). ":"")+"Échec — "+fails.join(" | "),true);updateGBar();render()}}
 
