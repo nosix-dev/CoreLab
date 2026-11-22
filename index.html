@@ -100,6 +100,21 @@ h1{font-size:clamp(40px,7.4vw,84px);line-height:1;letter-spacing:-.04em;font-wei
 .term .ln{display:block;opacity:1}.js .term:not(.go) .ln{opacity:0}.term.go .ln{opacity:0;animation:ln .4s forwards}
 .term .ln:nth-child(1){animation-delay:.5s}.term .ln:nth-child(2){animation-delay:1s}.term .ln:nth-child(3){animation-delay:1.5s}.term .ln:nth-child(4){animation-delay:2s}.term .ln:nth-child(5){animation-delay:2.5s}
 @keyframes ln{to{opacity:1}}
+.adopt{margin:54px auto 0;text-align:center}
+.adopt[hidden]{display:none}
+.ad-t{margin:0 0 18px;font-size:15px;color:var(--mu)}.ad-t b{color:var(--tx);font-weight:700}
+.ad-mq{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.ad-in{display:flex;gap:14px;width:max-content;animation:adm var(--d,60s) linear infinite}
+.ad-mq:hover .ad-in{animation-play-state:paused}
+@keyframes adm{to{transform:translateX(-50%)}}
+.ad-c{display:flex;align-items:center;gap:12px;flex:none;width:250px;padding:10px 14px;border:1px solid var(--ln);border-radius:14px;background:var(--s1);text-align:left}
+.ad-c img,.ad-c .ad-a{width:42px;height:42px;flex:none;border-radius:10px;object-fit:cover;background:var(--s2)}
+.ad-c .ad-a{display:grid;place-items:center;font-weight:800;font-size:16px;color:var(--mu)}
+.ad-c div{min-width:0}.ad-c b{display:block;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad-c small{display:block;margin-top:2px;font-size:12px;color:var(--mu)}
+.ad-st{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:13px;color:var(--mu)}
+.ad-st:hover{color:var(--tx)}.ad-st i{width:9px;height:9px;border-radius:50%;background:#34d27b;box-shadow:0 0 0 3px rgba(52,210,123,.18)}
+.ad-st i.off{background:#e5484d;box-shadow:0 0 0 3px rgba(229,72,77,.18)}
 .down{margin:40px auto 0;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--mu);font-size:13px}
 .down i{display:block;width:1px;height:42px;background:linear-gradient(var(--ac),transparent);animation:dn 1.8s infinite}
 @keyframes dn{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
@@ -263,7 +278,7 @@ footer nav{height:auto;gap:18px}footer a:hover{color:var(--tx)}
 }
 @media(prefers-reduced-motion:reduce){
 html{scroll-behavior:auto}
-.mq-in,.dot,.down i{animation:none}
+.mq-in,.dot,.down i,.ad-in{animation:none}
 .term .ln{animation:none;opacity:1}
 .js .rv{opacity:1;transform:none;transition:none}
 .cv-card{transition:none}
@@ -402,6 +417,11 @@ header nav{position:relative}
 <div class="term">
 <div class="tb"><i></i><i></i><i></i><span>corelab terminal</span></div>
 <pre><span class="ln">$ <em>node .</em></span><span class="ln">✓ [BOOT] Modules ....................... <em>operational</em></span><span class="ln">✓ [BOOT] Guild config .................. <em>operational</em></span><span class="ln">✓ [/] Slash commands ................... <em>operational</em></span><span class="ln">✓ [PROTECT] Anti-scam · HoneyPot ....... <em>active</em></span></pre>
+</div>
+<div class="adopt" id="adopt" hidden>
+<p class="ad-t" id="adT"></p>
+<div class="ad-mq" aria-hidden="true"><div class="ad-in" id="adIn"></div></div>
+<a class="ad-st" href="status.html"><i id="adDot"></i><span id="adS"></span><b>→</b></a>
 </div>
 </div>
 </section>
@@ -651,7 +671,28 @@ if(reduce||from===to){el.textContent=F(to,dec)+suf;return}
 function paint(){$$("[data-c]").forEach(function(e){var v=SV[e.dataset.c],f=e.dataset.f,box=e.parentNode;
 if(typeof v!=="number"||isNaN(v)){if(box.hasAttribute("data-opt"))box.hidden=true;else e.textContent="—";return}
 box.hidden=false;
-if(f==="dur")e.textContent=fmtDur(v+(Date.now()-LAST)/1000);else if(f==="pct")count(e,v,1);else count(e,v)})}
+if(f==="dur")e.textContent=fmtDur(v+(Date.now()-LAST)/1000);else if(f==="pct")count(e,v,1);else count(e,v)});adopt()}
+var ADK="";
+function adopt(){var box=$("#adopt");if(!box)return;var g=SV.guilds,o=L==="fr"?0:1;
+if(!g||!g.length){box.hidden=true;return}
+box.hidden=false;
+var n=typeof SV.servers==="number"?SV.servers:g.length,u=typeof SV.users==="number"?SV.users:0;
+$("#adT").innerHTML=o?"Already adopted by <b>"+fmt(n)+"</b> servers and <b>"+fmtCmp(u)+"</b> members":"Déjà adopté par <b>"+fmt(n)+"</b> serveurs et <b>"+fmtCmp(u)+"</b> membres";
+var h=SV.history||[],last=h.slice(-30),a=0,b=0;last.forEach(function(x){a+=x.u;b+=x.t});
+var off=FAIL||(SV.bot&&SV.bot!=="online"),pct=b>0?fmt(a/b*100,2)+" %":"";
+$("#adDot").className=off?"off":"";
+$("#adS").textContent=(off?(o?"Issue in progress":"Incident en cours"):(o?"All systems operational":"Tous les systèmes fonctionnent"))+(pct?" · "+pct+(o?" uptime over 30 days":" de disponibilité sur 30 jours"):"");
+var key=L+JSON.stringify(g.map(function(x){return[x.n,x.m]}));if(key===ADK)return;ADK=key;
+var w=$("#adIn");w.innerHTML="";
+function card(x){var c=document.createElement("div");c.className="ad-c";var im;
+if(x.i){im=document.createElement("img");im.src=x.i;im.alt="";im.loading="lazy";im.referrerPolicy="no-referrer";
+im.onerror=function(){var f=document.createElement("span");f.className="ad-a";f.textContent=(x.n||"?").trim().charAt(0).toUpperCase();im.replaceWith(f)}}
+else{im=document.createElement("span");im.className="ad-a";im.textContent=(x.n||"?").trim().charAt(0).toUpperCase()}
+var d=document.createElement("div"),t=document.createElement("b"),s=document.createElement("small");
+t.textContent=x.n;s.textContent=fmt(x.m)+(o?" members":" membres");d.appendChild(t);d.appendChild(s);c.appendChild(im);c.appendChild(d);return c}
+var base=g.slice();while(base.length<8)base=base.concat(g);
+base.concat(base).forEach(function(x){w.appendChild(card(x))});
+w.style.setProperty("--d",Math.max(30,base.length*5)+"s")}
 function live(){var o=L==="fr"?0:1,off=FAIL||(SV.bot&&SV.bot!=="online"),d=$("#liveDot");if(!d)return;
 d.classList.toggle("off",!!off);
 $("#liveState").textContent=off?T.loff[o]:T.lon[o];

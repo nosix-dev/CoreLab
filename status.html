@@ -121,6 +121,53 @@ footer{border-top:1px solid var(--bd)}
 header.sh nav{padding:0!important;border:0!important;min-height:64px;flex-wrap:nowrap;width:100%}
 header.sh .tin{max-width:1120px;margin:0 auto;padding:0 22px!important;display:block}
 .wrap{max-width:1120px}
+
+/* ===== Statut façon Spider ===== */
+.head{padding:56px 0 0}
+.head .lead{color:var(--mut);font-size:17px;margin:-6px 0 26px;max-width:640px}
+.banner{display:flex;align-items:center;gap:16px;padding:18px 22px;border:1px solid var(--bd);border-radius:16px;background:var(--card)}
+.banner img{width:44px;height:44px;border-radius:12px;flex:none}
+.banner .bt{flex:1;min-width:0;display:flex;flex-direction:column}
+.banner .bt b{font-size:clamp(19px,3vw,24px);letter-spacing:-.02em}
+.banner .bt span{color:var(--mut);font-size:14px}
+.banner.ok{border-color:rgba(34,197,94,.45);background:linear-gradient(0deg,rgba(34,197,94,.09),rgba(34,197,94,.09)),var(--card)}
+.banner.warn{border-color:rgba(245,158,11,.5);background:linear-gradient(0deg,rgba(245,158,11,.09),rgba(245,158,11,.09)),var(--card)}
+.banner.down{border-color:rgba(239,68,68,.5);background:linear-gradient(0deg,rgba(239,68,68,.09),rgba(239,68,68,.09)),var(--card)}
+.bsup{flex:none;display:inline-flex;align-items:center;gap:8px}.bsup svg{width:16px;height:16px;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+.kp{padding:18px 20px;border:1px solid var(--bd);border-radius:16px;background:var(--card)}
+.kp .kl{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:14px}.kp .kl svg{width:17px;height:17px;color:var(--ac2);flex:none}
+.kp b{display:block;margin-top:6px;font-size:clamp(24px,3.2vw,32px);letter-spacing:-.03em;font-weight:700}
+.h2r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:48px 0 14px}.h2r h2{margin:0}
+.hn{font-size:13px;color:var(--mut)}
+.comps{border:1px solid var(--bd);border-radius:16px;background:var(--card);overflow:hidden}
+.cp{padding:20px 22px;border-bottom:1px solid var(--bd)}.cp:last-child{border-bottom:0}
+.cph{display:flex;align-items:center;gap:14px}
+.cpi{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--ac2);flex:none}.cpi svg{width:18px;height:18px}
+.cpt{flex:1;min-width:0;display:flex;flex-direction:column}.cpt b{font-size:16px}.cpt span{font-size:13px;color:var(--mut)}
+.pill{display:inline-flex;align-items:center;gap:7px;flex:none;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;color:#34d27b;background:rgba(34,197,94,.12)}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.bad{color:#f87171;background:rgba(239,68,68,.14)}
+.bars{display:grid;grid-template-columns:repeat(30,1fr);gap:3px;height:34px;margin-top:16px}
+.bars i{border-radius:3px;background:#22c55e;cursor:pointer;outline-offset:2px;min-width:0}
+.bars i.warn{background:#f59e0b}.bars i.down{background:#ef4444}.bars i.none{background:var(--bd);opacity:.55;cursor:default}
+.bl{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:12px;color:var(--mut)}.bl b{font-weight:600;color:var(--tx,var(--fg))}
+.chartbox{border:1px solid var(--bd);border-radius:16px;background:var(--card);padding:16px 12px 14px;overflow:hidden;position:relative}
+.chartbox svg{display:block;max-width:100%}
+.chartbox .gl{stroke:var(--bd);stroke-width:1}.chartbox .ax{fill:var(--mut);font:12px var(--f)}
+.chartbox .ln{stroke:#e8510d;stroke-width:1.8;stroke-linejoin:round}
+.chartbox .cx{stroke:var(--mut);stroke-dasharray:3 3}.chartbox .cdot{fill:#e8510d;stroke:var(--card);stroke-width:2}
+.cst{display:flex;gap:22px;flex-wrap:wrap;padding:6px 12px 0 58px;font-size:13px;color:var(--mut)}.cst b{color:var(--fg)}
+.cw{padding:40px 12px;text-align:center;color:var(--mut);font-size:14px}
+.incs{border:1px solid var(--bd);border-radius:16px;background:var(--card);overflow:hidden}
+.inc{padding:18px 22px;border-bottom:1px solid var(--bd)}.inc:last-child{border-bottom:0}
+.inc.none{color:var(--mut);font-size:14px;text-align:center;padding:26px}
+.ih{display:flex;justify-content:space-between;align-items:center;gap:12px}.ih b{font-size:16px}
+.inc p{margin:8px 0 6px}.inc small{color:var(--mut);font-size:13px}
+.note{margin:22px 0 0;font-size:13px;color:var(--mut)}
+[hidden]{display:none!important}
+@media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.banner{flex-wrap:wrap}.bsup{width:100%;justify-content:center}.bars{gap:2px}.cph{flex-wrap:wrap}.cpt{flex-basis:calc(100% - 60px)}.cst{padding-left:12px}.cp,.inc{padding:16px}}
 </style>
 <link rel="stylesheet" href="fx.css">
 </head>
@@ -137,23 +184,29 @@ header.sh .tin{max-width:1120px;margin:0 auto;padding:0 22px!important;display:b
 <div class="wrap">
 
 <div class="head">
-<div class="eyebrow">// monitoring</div>
+<div class="eyebrow" data-u="eyebrow"></div>
 <h1 data-u="title"></h1>
-<div class="overall"><i class="dot" id="odot"></i><span id="otxt"></span></div>
-<div class="demo" id="demo" hidden></div>
+<p class="lead" data-u="lead"></p>
+<div class="banner" id="banner">
+<img src="logo.png" alt="" width="44" height="44">
+<div class="bt"><b id="otxt"></b><span id="osub"></span></div>
+<a class="btn ghost sm bsup" href="https://discord.gg/WecpyxrSBT" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg><span data-u="support2"></span></a>
+</div>
 </div>
 
-<h2 data-u="services"></h2>
-<div class="rows" id="rows"></div>
+<div class="kpis" id="kpis"></div>
 
-<h2 data-u="hist"></h2>
-<div class="hist" id="hist"></div>
+<div class="h2r"><h2 data-u="comps"></h2><span class="hn" data-u="d30"></span></div>
+<div class="comps" id="comps"></div>
 
-<h2 data-u="system"></h2>
-<div class="grid" id="sys"></div>
+<div id="latsec">
+<div class="h2r"><h2 data-u="lat"></h2><span class="hn" data-u="h24"></span></div>
+<div class="chartbox" id="chart"></div>
+</div>
 
-<h2 data-u="bot"></h2>
-<div class="tiles" id="tiles"></div>
+<div class="h2r"><h2 data-u="incs"></h2><span class="hn" data-u="d30"></span></div>
+<div class="incs" id="incs"></div>
+<p class="note" id="note"></p>
 
 <footer><span data-u="f1"></span><span id="upd"></span></footer>
 </div>
@@ -164,114 +217,158 @@ header.sh .tin{max-width:1120px;margin:0 auto;padding:0 22px!important;display:b
 (function(){
 var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1}):null;
 window.reveal=function(){
-document.querySelectorAll(".head > *, h2, .rows, #hist, #sys, #tiles").forEach(function(el){
+document.querySelectorAll(".head > *, .h2r, .kpis, .comps, .chartbox, .incs, .note").forEach(function(el){
 if(el.dataset.r)return;el.dataset.r="1";
 var sib=Array.prototype.indexOf.call(el.parentNode.children,el);
 el.classList.add("reveal");
-el.style.transitionDelay=(el.classList.contains("card")?(sib%3)*100:Math.min(sib,5)*90)+"ms";
+el.style.transitionDelay=Math.min(sib,5)*90+"ms";
 el.addEventListener("transitionend",function h(ev){if(ev.propertyName!=="opacity")return;el.classList.remove("reveal","in");el.style.transitionDelay="";el.removeEventListener("transitionend",h)});
 if(io)io.observe(el);else el.classList.add("in");
 });
 };
 })();
-/* URL de votre API JSON (voir format ci-dessous). Laisser vide = données de démonstration. */
 var API_URL="https://corelab-bot.onrender.com/statut";
-/* Format attendu :
-{ "bot":"online|offline", "db_ms":9, "discord":"ok|degraded|down", "latency_ms":95, "uptime_s":162960,
-  "servers":0, "users":0, "commands":0,
-  "cpu":{"percent":2.3,"cores":1,"model":"..."}, "memory":{"used":855000000,"total":4100000000},
-  "storage":{"used":0,"total":0} } */
-var U={fr:{home:"Accueil",docs:"Documentation",blog:"Blog",dashboard:"Dashboard",status:"Statut",cmds:"Commandes",support:"Support",invite:"Inviter le bot",title:"Statut CoreLab",services:"Services",system:"Système",bot:"Bot",recent:"Serveurs récents",
-f1:"© 2026 CoreLab Tous droits réservés",all:"Tous les systèmes sont opérationnels",wait:"En attente des données du bot…",some:"Performances dégradées",down:"Panne en cours",
-demo:"Aucune donnée reçue : renseignez API_URL (voir status-api.js) pour afficher les vraies stats de CoreLab.",
-online:"En ligne",offline:"Hors ligne",ok:"Opérationnel",degraded:"Dégradé",dn:"Indisponible",
-sBot:"CoreLab",sDb:"Base de données",sDis:"API Discord",sLat:"Latence du bot",sUp:"Uptime",sSrv:"Serveurs",
-cpu:"Processeur",mem:"Mémoire",sto:"Stockage",cores:"cœur(s)",used:"utilisés",tS:"Serveurs",tU:"Utilisateurs",tC:"Commandes",tSt:"Statut",upd:"Mis à jour à ",none:"Aucun serveur récent",unit:"j",hist:"Historique d’uptime",hN:"{n} derniers jours",hU:"d’uptime",hDown:"d’indisponibilité",hNone:"Aucune indisponibilité",hNoData:"Pas de données",hToday:"Aujourd’hui",hAgo:"il y a {n} jours",hWait:"Collecte de l’historique en cours…",hMin:"min"},
-en:{home:"Home",docs:"Documentation",blog:"Blog",dashboard:"Dashboard",status:"Status",cmds:"Commands",support:"Support",invite:"Invite the bot",title:"CoreLab Status",services:"Services",system:"System",bot:"Bot",recent:"Recent servers",
-f1:"© 2026 CoreLab All rights reserved",all:"All systems operational",wait:"Waiting for bot data…",some:"Degraded performance",down:"Outage in progress",
-demo:"No data received: set API_URL (see status-api.js) to display CoreLab’s real stats.",
-online:"Online",offline:"Offline",ok:"Operational",degraded:"Degraded",dn:"Unavailable",
-sBot:"CoreLab",sDb:"Database",sDis:"Discord API",sLat:"Bot latency",sUp:"Uptime",sSrv:"Servers",
-cpu:"Processor",mem:"Memory",sto:"Storage",cores:"core(s)",used:"used",tS:"Servers",tU:"Users",tC:"Commands",tSt:"Status",upd:"Updated at ",none:"No recent servers",unit:"d",hist:"Uptime history",hN:"Last {n} days",hU:"uptime",hDown:"of downtime",hNone:"No downtime",hNoData:"No data",hToday:"Today",hAgo:"{n} days ago",hWait:"Collecting history…",hMin:"min"}};
-var DEMO={};
-var L="fr",data=DEMO,isDemo=true;
+var U={fr:{home:"Accueil",docs:"Documentation",blog:"Blog",dashboard:"Dashboard",status:"Statut",cmds:"Commandes",support:"Support",invite:"Inviter le bot",
+eyebrow:"STATUT",title:"Statut de CoreLab",lead:"La disponibilité en direct du bot, du service et de la base de données. Cette page se met à jour chaque minute.",
+support2:"Serveur support",f1:"© 2026 CoreLab Tous droits réservés",
+all:"Tous les systèmes fonctionnent",some:"Performances dégradées",down:"Panne en cours",wait:"En attente des données du bot…",nodata:"Impossible de joindre le bot pour le moment.",upd:"Mis à jour ",
+kLat:"Latence Discord",kUp:"En ligne depuis",kSrv:"Serveurs",kAv:"Disponibilité du bot (30 j)",
+comps:"Composants",d30:"30 derniers jours",lat:"Latence Discord",h24:"24 dernières heures · heure de Paris",incs:"Historique des incidents",
+cBot:"Bot Discord",cBotD:"Connexion à Discord, commandes et automatisations",cSvc:"Service CoreLab",cSvcD:"Traitement des actions, des modules, de l’API et du dashboard",cDb:"Base de données",cDbD:"Enregistrement des réglages et des dossiers",
+ok:"Opérationnel",dn:"Indisponible",ago:"Il y a 30 jours",today:"Aujourd’hui",av:"de disponibilité",noData:"Pas de données",noDown:"Aucune indisponibilité",downOf:"d’indisponibilité",
+avg:"Moyenne",min:"Min",max:"Max",latWait:"Collecte de la latence en cours…",
+iBot:"Bot déconnecté de Discord",iBotD:"CoreLab avait perdu sa connexion à Discord : les commandes et les automatisations étaient en pause.",
+iSvc:"Service CoreLab indisponible",iSvcD:"Le service ne répondait plus : le bot, le dashboard et les commandes étaient indisponibles.",
+iDb:"Stockage indisponible",iDbD:"Les réglages et les dossiers n’ont pas pu être enregistrés.",
+res:"Résolu",ong:"En cours",none:"Aucun incident sur les 30 derniers jours.",mn:"min",
+n1:"CoreLab vérifie ses composants toutes les minutes. Les coupures de moins d’une minute ne sont pas listées.",n2:" Surveillance depuis le "},
+en:{home:"Home",docs:"Documentation",blog:"Blog",dashboard:"Dashboard",status:"Status",cmds:"Commands",support:"Support",invite:"Invite the bot",
+eyebrow:"STATUS",title:"CoreLab Status",lead:"Live availability of the bot, the service and the database. This page refreshes every minute.",
+support2:"Support server",f1:"© 2026 CoreLab All rights reserved",
+all:"All systems operational",some:"Degraded performance",down:"Outage in progress",wait:"Waiting for bot data…",nodata:"The bot can’t be reached right now.",upd:"Updated ",
+kLat:"Discord latency",kUp:"Online for",kSrv:"Servers",kAv:"Bot uptime (30 d)",
+comps:"Components",d30:"Last 30 days",lat:"Discord latency",h24:"Last 24 hours · Paris time",incs:"Incident history",
+cBot:"Discord bot",cBotD:"Connection to Discord, commands and automations",cSvc:"CoreLab service",cSvcD:"Processing of actions, modules, the API and the dashboard",cDb:"Database",cDbD:"Saving of settings and records",
+ok:"Operational",dn:"Unavailable",ago:"30 days ago",today:"Today",av:"uptime",noData:"No data",noDown:"No downtime",downOf:"of downtime",
+avg:"Average",min:"Min",max:"Max",latWait:"Collecting latency data…",
+iBot:"Bot disconnected from Discord",iBotD:"CoreLab had lost its connection to Discord: commands and automations were paused.",
+iSvc:"CoreLab service unavailable",iSvcD:"The service stopped responding: the bot, the dashboard and the commands were unavailable.",
+iDb:"Storage unavailable",iDbD:"Settings and records could not be saved.",
+res:"Resolved",ong:"Ongoing",none:"No incidents in the last 30 days.",mn:"min",
+n1:"CoreLab checks its components every minute. Outages shorter than one minute are not listed.",n2:" Monitoring since "}};
+var L="fr",data=null,LAST=0,FAIL=false;
 try{L=localStorage.getItem("cs_lang")||((navigator.language||"fr").slice(0,2)==="fr"?"fr":"en")}catch(e){L=(navigator.language||"fr").slice(0,2)==="fr"?"fr":"en"}
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+var IC={
+lat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+srv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></svg>',
+chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>',
+bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+db:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>'};
 function nf(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US")}
-function bytes(b){if(!b)return "0 B";var u=["B","KB","MB","GB","TB"],i=Math.min(4,Math.floor(Math.log(b)/Math.log(1024)));return (b/Math.pow(1024,i)).toFixed(i>1?2:0)+" "+u[i]}
-function up(s){var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return d+U[L].unit+" "+h+"h "+m+"m"}
-function pct(u,t){return t?Math.min(100,u/t*100):0}
+function loc(){return L==="fr"?"fr-FR":"en-GB"}
+function pf(p){p=p>=100?100:Math.floor(p*100)/100;return p.toLocaleString(L==="fr"?"fr-FR":"en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function mins(m){var u=U[L];if(m<60)return m+" "+u.mn;if(m<1440)return Math.floor(m/60)+" h "+("0"+(m%60)).slice(-2)+" "+u.mn;return Math.floor(m/1440)+(L==="fr"?" j ":" d ")+Math.floor(m%1440/60)+" h"}
+function dur(s){s=Math.max(0,Math.floor(s));var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+return d>0?d+(L==="fr"?" j ":" d ")+h+" h":h>0?h+" h "+("0"+m).slice(-2)+" min":m+" min"}
+function hm(ms){return new Date(ms).toLocaleTimeString(loc(),{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Paris"})}
+function dt(ms){return new Date(ms).toLocaleString(loc(),{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Paris"})}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function hideTip(){document.getElementById("tip").style.opacity=0}
+function showTip(html,x,y){var t=document.getElementById("tip");t.innerHTML=html;t.style.opacity=1;var w=t.offsetWidth;t.style.left=Math.max(8,Math.min(window.innerWidth-w-8,x-w/2))+"px";t.style.top=Math.max(8,y-t.offsetHeight-10)+"px"}
+
+/* ---- 30 jours : barres d'un composant ---- */
+function series(arr){var m={};(Array.isArray(arr)?arr:[]).forEach(function(x){
+if(!x||!/^\d{4}-\d\d-\d\d$/.test(x.d))return;var t=+x.t,p=Math.min(+x.u,t);if(isFinite(t)&&t>0&&isFinite(p)&&p>=0)m[x.d]={u:p,t:t}});return m}
+function bars(m,u){var cells="",SU=0,ST=0,lc=L==="fr"?"fr-FR":"en-GB";
+for(var i=29;i>=0;i--){var k=new Date(Date.now()-i*864e5).toISOString().slice(0,10),x=m[k],
+d=new Date(k+"T00:00:00Z").toLocaleDateString(lc,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
+if(!x){cells+='<i class="none" data-tip="<b>'+d+'</b><br>'+u.noData+'"></i>';continue}
+var p=x.u/x.t*100,c=p>=99.9?"":p>=95?"warn":"down";SU+=x.u;ST+=x.t;
+cells+='<i class="'+c+'" tabindex="0" data-tip="<b>'+d+'</b><br>'+pf(p)+' % '+u.av+'<br>'+(x.t-x.u>0?mins(x.t-x.u)+' '+u.downOf:u.noDown)+'"></i>'}
+return {html:cells,pct:ST?SU/ST*100:null}}
+
+function openInc(c){return (data.incidents||[]).some(function(i){return !i.b&&i.c.indexOf(c)>-1})}
+function comp(icon,name,desc,up,b){return '<div class="cp"><div class="cph"><span class="cpi">'+IC[icon]+'</span><div class="cpt"><b>'+name+'</b><span>'+desc+'</span></div><span class="pill'+(up?"":" bad")+'"><i></i>'+(up?U[L].ok:U[L].dn)+'</span></div>'+
+'<div class="bars">'+b.html+'</div><div class="bl"><span>'+U[L].ago+'</span><b>'+(b.pct==null?"—":pf(b.pct)+" % "+U[L].av)+'</b><span>'+U[L].today+'</span></div></div>'}
+
 function render(){
-var u=U[L],d=data,E=isDemo,now=new Date().toLocaleTimeString(L==="fr"?"fr-FR":"en-GB"),D="—";
+var u=U[L],d=data,ok=!!d&&!FAIL,now=hm(Date.now());
 document.documentElement.lang=L;document.title="CoreLab "+u.status;
 document.querySelectorAll("[data-u]").forEach(function(e){e.textContent=u[e.dataset.u]});
-function lv(ms){return ms<200?"ok":ms<500?"warn":"down"}
-var botS=(!E&&d.bot==="online")?"ok":"down",R=[];
-R.push([E?"unk":botS,u.sBot,E?D:(botS==="ok"?u.online:u.offline),"bot"]);
-if(!E&&d.db_ms!=null)R.push([lv(d.db_ms),u.sDb,d.db_ms+" ms","database"]);
-var disS=E?"unk":d.discord==="ok"?"ok":d.discord==="degraded"?"warn":"down";
-R.push([disS,u.sDis,E?D:(disS==="ok"?u.ok:disS==="warn"?u.degraded:u.dn),"api"]);
-R.push([E?"unk":lv(d.latency_ms),u.sLat,E?D:d.latency_ms+" ms","performance"]);
-R.push([E?"unk":botS,u.sUp,E?D:up(d.uptime_s),"system"]);
-R.push([E?"unk":botS,u.sSrv,E?D:nf(d.servers),"bot"]);
-var h="";R.forEach(function(r){h+='<div class="row"><i class="dot '+(r[0]==="ok"?"":r[0]==="unk"?"down":r[0])+'"></i><span class="n">'+r[1]+'</span><span class="v">'+r[2]+'</span><span class="t">'+r[3]+(E?"":" · "+now)+'</span></div>'});
-document.getElementById("rows").innerHTML=h;
-var st=R.map(function(r){return r[0]}),all=st.every(function(x){return x==="ok"});
-document.getElementById("odot").className="dot"+(all?"":(E||botS==="down")?" down":" warn");
-document.getElementById("otxt").textContent=E?u.wait:all?u.all:botS==="down"?u.down:u.some;
-function bar(t,s,p){return '<div class="card"><h3>'+t+'</h3><div class="big">'+(p==null?D:p.toFixed(1)+"%")+'</div><div class="bar"><i style="width:'+(p||0)+'%"></i></div><div class="sm">'+s+'</div></div>'}
-document.getElementById("sys").innerHTML=E?bar(u.cpu,D,null)+bar(u.mem,D,null)+bar(u.sto,D,null):
-bar(u.cpu,d.cpu.cores+" "+u.cores,d.cpu.percent)+
-bar(u.mem,bytes(d.memory.used)+" / "+bytes(d.memory.total)+" "+u.used,pct(d.memory.used,d.memory.total))+
-bar(u.sto,bytes(d.storage.used)+" / "+bytes(d.storage.total)+" "+u.used,pct(d.storage.used,d.storage.total));
-function tile(v,l){return '<div class="tile"><b>'+v+'</b><span>'+l+'</span></div>'}
-document.getElementById("tiles").innerHTML=tile(E?D:nf(d.servers),u.tS)+tile(E?D:nf(d.users),u.tU)+tile(E?D:nf(d.commands),u.tC)+tile(E?D:(botS==="ok"?u.online:u.offline),u.tSt);
-renderHist(u,d,E);
-var dm=document.getElementById("demo");dm.hidden=!isDemo;dm.textContent=u.demo;
-document.getElementById("upd").textContent=E?"":u.upd+now;
 document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===L)});
+var botUp=ok&&d.bot==="online"&&d.discord==="ok",svcUp=ok&&!openInc("service"),dbUp=ok&&!openInc("storage");
+var st=!ok?"wait":(!botUp||!svcUp)?"down":!dbUp?"warn":"ok";
+var bn=document.getElementById("banner");bn.className="banner "+st;
+document.getElementById("otxt").textContent=st==="wait"?(FAIL?u.nodata:u.wait):st==="ok"?u.all:st==="down"?u.down:u.some;
+document.getElementById("osub").textContent=LAST?u.upd+now:"";
+document.getElementById("upd").textContent=LAST?u.upd+now:"";
+/* composants */
+var C=(ok&&d.components)||{},bm=series(C.bot&&C.bot.length?C.bot:(ok?d.history:[]));
+var av30=(function(){var b=bars(bm,u);return b.pct})();
+function kp(icon,l,v){return '<div class="kp"><div class="kl">'+IC[icon]+'<span>'+l+'</span></div><b>'+v+'</b></div>'}
+document.getElementById("kpis").innerHTML=kp("lat",u.kLat,ok?Math.max(0,d.latency_ms)+" ms":"—")+kp("clock",u.kUp,ok?dur(d.uptime_s):"—")+kp("srv",u.kSrv,ok?nf(d.servers):"—")+kp("chk",u.kAv,av30==null?"—":pf(av30)+" %");
+var h=comp("bolt",u.cBot,u.cBotD,botUp||!ok,bars(bm,u));
+if(ok&&C.service&&C.service.length)h+=comp("srv",u.cSvc,u.cSvcD,svcUp,bars(series(C.service),u));
+if(ok&&C.storage&&C.storage.length)h+=comp("db",u.cDb,u.cDbD,dbUp,bars(series(C.storage),u));
+document.getElementById("comps").innerHTML=h;
+/* incidents */
+var inc=ok?(d.incidents||[]):[],ih="";
+inc.forEach(function(i){var c=i.c,k=c.indexOf("service")>-1?"Svc":c.indexOf("bot")>-1?"Bot":"Db",names=[];
+if(c.indexOf("service")>-1)names.push(u.cSvc);if(c.indexOf("bot")>-1)names.push(u.cBot);if(c.indexOf("storage")>-1)names.push(u.cDb);
+var end=i.b||Date.now(),m=Math.max(1,Math.round((end-i.a)/60000));
+ih+='<div class="inc"><div class="ih"><b>'+u["i"+k]+'</b><span class="pill'+(i.b?"":" bad")+'"><i></i>'+(i.b?u.res:u.ong)+'</span></div><p>'+u["i"+k+"D"]+'</p><small>'+dt(i.a)+' → '+(i.b?dt(i.b):"…")+' · '+mins(m)+' · '+names.join(", ")+'</small></div>'});
+document.getElementById("incs").innerHTML=ih||'<div class="inc none">'+(ok?u.none:"—")+'</div>';
+var since=ok&&d.since?new Date(d.since).toLocaleDateString(L==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Paris"}):"";
+document.getElementById("note").textContent=u.n1+(since?u.n2+since+".":"");
+drawChart();
 try{localStorage.setItem("cs_lang",L)}catch(e){}
 }
-var lastN=0;
-function HN(){return window.innerWidth<560?45:90}
-function pf(p){p=p>=100?100:Math.floor(p*100)/100;return p.toLocaleString(L==="fr"?"fr-FR":"en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function dur(m,u){return m<60?m+" "+u.hMin:Math.floor(m/60)+"h "+(m%60)+" "+u.hMin}
-function hideTip(){document.getElementById("tip").style.opacity=0}
-function showTip(el){var t=document.getElementById("tip"),r=el.getBoundingClientRect();t.innerHTML=el.dataset.tip;t.style.opacity=1;var w=t.offsetWidth;t.style.left=Math.max(8,Math.min(window.innerWidth-w-8,r.left+r.width/2-w/2))+"px";t.style.top=Math.max(8,r.top-t.offsetHeight-10)+"px"}
-function renderHist(u,d,E){
-hideTip();var N=HN();lastN=N;
-var hs=(!E&&Array.isArray(d.history))?d.history:null;
-if(!hs){try{hs=JSON.parse(localStorage.getItem("cs_hist")||"null")}catch(e){hs=null}}
-var map={};
-(Array.isArray(hs)?hs:[]).forEach(function(x){
-if(!x||!/^\d{4}-\d\d-\d\d$/.test(x.d))return;
-var t=+x.t,p=Math.min(+x.u,t);
-if(isFinite(t)&&t>0&&isFinite(p)&&p>=0)map[x.d]={u:p,t:t}});
-var loc=L==="fr"?"fr-FR":"en-GB",cells="",SU=0,ST=0;
-for(var i=N-1;i>=0;i--){
-var k=new Date(Date.now()-i*864e5).toISOString().slice(0,10),x=map[k],
-dt=new Date(k+"T00:00:00Z").toLocaleDateString(loc,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
-if(!x){cells+='<i class="none" data-tip="<b>'+dt+'</b><br>'+u.hNoData+'"></i>';continue}
-var p=x.u/x.t*100,c=p>=99.9?"":p>=95?"warn":"down";
-SU+=x.u;ST+=x.t;
-cells+='<i class="'+c+'" tabindex="0" data-tip="<b>'+dt+'</b><br>'+pf(p)+' % '+u.hU+'<br>'+(x.t-x.u>0?dur(x.t-x.u,u)+' '+u.hDown:u.hNone)+'"></i>'}
-document.getElementById("hist").innerHTML=
-'<div class="hh"><b>'+(ST?pf(SU/ST*100)+' % '+u.hU:u.hWait)+'</b><span>'+u.hN.replace("{n}",N)+'</span></div>'+
-'<div class="hbars">'+cells+'</div>'+
-'<div class="hl"><span>'+u.hAgo.replace("{n}",N)+'</span><span>'+u.hToday+'</span></div>'+
-'<div class="lg"><span><i></i>'+u.ok+'</span><span><i class="warn"></i>'+u.degraded+'</span><span><i class="down"></i>'+u.dn+'</span></div>'}
-(function(){var H=document.getElementById("hist");
-function on(e){var t=e.target;if(t&&t.dataset&&t.dataset.tip)showTip(t)}
-H.addEventListener("mouseover",on);H.addEventListener("focusin",on);H.addEventListener("click",on);
-H.addEventListener("mouseout",hideTip);H.addEventListener("focusout",hideTip);
-document.addEventListener("click",function(e){if(!H.contains(e.target))hideTip()});
-window.addEventListener("resize",function(){if(HN()!==lastN)render()})})();
+
+/* ---- latence 24 h ---- */
+var PTS=[],GEO=null;
+function drawChart(){var u=U[L],box=document.getElementById("chart"),sec=document.getElementById("latsec"),
+raw=(data&&Array.isArray(data.latency))?data.latency:[];
+if(!data||!data.latency){sec.hidden=true;return}
+sec.hidden=false;hideTip();
+var t1=Date.now(),t0=t1-864e5;
+var pts=raw.filter(function(p){return p&&p[0]>=t0&&isFinite(p[1])}).sort(function(a,b){return a[0]-b[0]});PTS=pts;
+if(pts.length<2){box.innerHTML='<div class="cw">'+u.latWait+'</div>';GEO=null;return}
+var W=Math.max(280,box.clientWidth-2),H=210,pl=58,pr=18,pt=16,pb=34,iw=W-pl-pr,ih=H-pt-pb;
+var vs=pts.map(function(p){return p[1]}),mx=Math.max.apply(null,vs),mn=Math.min.apply(null,vs),av=Math.round(vs.reduce(function(a,b){return a+b},0)/vs.length);
+var top=Math.max(200,Math.ceil(mx*1.15/100)*100),step=top/2;
+function X(t){return pl+(t-t0)/864e5*iw}function Y(v){return pt+ih-(v/top)*ih}
+var s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+u.lat+'"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8510d" stop-opacity=".38"/><stop offset="1" stop-color="#e8510d" stop-opacity="0"/></linearGradient></defs>';
+[step,top].forEach(function(v){var y=Y(v);s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" class="gl"/><text x="0" y="'+(y+4)+'" class="ax">'+v+' ms</text>'});
+var seg=[],cur=[];pts.forEach(function(p,i){if(i&&p[0]-pts[i-1][0]>20*60*1000){seg.push(cur);cur=[]}cur.push(p)});seg.push(cur);
+seg.forEach(function(g){if(g.length<2){if(g.length===1)s+='<circle cx="'+X(g[0][0])+'" cy="'+Y(g[0][1])+'" r="2" fill="#e8510d"/>';return}
+var l=g.map(function(p,i){return (i?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)}).join(" ");
+s+='<path d="'+l+' L'+X(g[g.length-1][0]).toFixed(1)+" "+(pt+ih)+" L"+X(g[0][0]).toFixed(1)+" "+(pt+ih)+' Z" fill="url(#lg)"/><path d="'+l+'" class="ln" fill="none"/>'});
+var fh=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hourCycle:"h23",timeZone:"Europe/Paris"});
+for(var t=Math.ceil(t0/36e5)*36e5;t<=t1;t+=36e5){var pp=fh.formatToParts(new Date(t)),H2=pp.filter(function(x){return x.type==="hour"})[0].value,M2=pp.filter(function(x){return x.type==="minute"})[0].value;
+if(M2==="00"&&+H2%6===0)s+='<text x="'+X(t)+'" y="'+(H-10)+'" class="ax" text-anchor="middle">'+H2+':00</text>'}
+s+='<line id="cx" class="cx" y1="'+pt+'" y2="'+(pt+ih)+'" x1="0" x2="0" style="opacity:0"/><circle id="cd" r="4" class="cdot" style="opacity:0"/></svg>';
+s+='<div class="cst"><span>'+u.avg+' <b>'+av+' ms</b></span><span>'+u.min+' <b>'+mn+' ms</b></span><span>'+u.max+' <b>'+mx+' ms</b></span></div>';
+box.innerHTML=s;GEO={t0:t0,pl:pl,iw:iw,pt:pt,ih:ih,top:top}}
+(function(){var box=document.getElementById("chart");
+box.addEventListener("mousemove",function(e){if(!GEO||!PTS.length)return;var svg=box.querySelector("svg");if(!svg)return;var r=svg.getBoundingClientRect(),x=e.clientX-r.left,
+t=GEO.t0+(x-GEO.pl)/GEO.iw*864e5,b=null,bd=1/0;PTS.forEach(function(p){var dd=Math.abs(p[0]-t);if(dd<bd){bd=dd;b=p}});
+if(!b||bd>15*60*1000){hideTip();svg.querySelector("#cx").style.opacity=0;svg.querySelector("#cd").style.opacity=0;return}
+var px=GEO.pl+(b[0]-GEO.t0)/864e5*GEO.iw,py=GEO.pt+GEO.ih-(b[1]/GEO.top)*GEO.ih,cx=svg.querySelector("#cx"),cd=svg.querySelector("#cd");
+cx.setAttribute("x1",px);cx.setAttribute("x2",px);cx.style.opacity=1;cd.setAttribute("cx",px);cd.setAttribute("cy",py);cd.style.opacity=1;
+showTip("<b>"+hm(b[0])+"</b><br>"+b[1]+" ms",r.left+px,r.top+py)});
+box.addEventListener("mouseleave",function(){hideTip();var svg=box.querySelector("svg");if(svg){svg.querySelector("#cx").style.opacity=0;svg.querySelector("#cd").style.opacity=0}})})();
+(function(){var C=document.getElementById("comps");
+function on(e){var t=e.target;if(t&&t.dataset&&t.dataset.tip){var r=t.getBoundingClientRect();showTip(t.dataset.tip,r.left+r.width/2,r.top)}}
+C.addEventListener("mouseover",on);C.addEventListener("focusin",on);C.addEventListener("click",on);
+C.addEventListener("mouseout",hideTip);C.addEventListener("focusout",hideTip);
+document.addEventListener("click",function(e){if(!C.contains(e.target))hideTip()});
+var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(drawChart,150)})})();
 function load(){
-if(!API_URL){render();return}
-fetch(API_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){data=j;isDemo=false;try{localStorage.setItem("cs_hist",JSON.stringify(j.history||[]))}catch(e){}render()}).catch(function(){data={};isDemo=true;render()});
+fetch(API_URL,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){data=j;LAST=Date.now();FAIL=false;render()}).catch(function(){FAIL=true;render()});
 }
 document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){L=b.dataset.l;render()})});
-load();setInterval(load,30000);reveal();
+render();load();setInterval(load,30000);reveal();
 </script>
 <script src="fx.js" defer></script>
 </body>
