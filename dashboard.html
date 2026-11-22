@@ -2565,7 +2565,7 @@ var AM_BASE=[
 {id:"phishing",name:"Phishing et faux Nitro",desc:"Supprime les faux cadeaux Nitro, faux liens Steam et domaines imitant Discord.",ic:"shield",enabled:true,action:"delete",heat:3}];
 var AM_TEST={
 scam_image:function(t){return /(casino|bonus de bienvenue|free\s*(btc|eth|crypto)|giveaway|cadeau\s*crypto|airdrop|gagne[rz]?\s+\d+\s*(€|\$|eur|usd)|faux concours)/i.test(t)},
-insults:function(t){return /\b(connard|connasse|salope|enfoir[ée]|pute|fdp|ntm|encul[ée]|abruti|d[ée]bile|idiot|merde)\b/i.test(t)},
+insults:function(t){return /(?<![\p{L}\p{N}])(?:connard|connasse|salope|enfoir[ée]|pute|fdp|ntm|encul[ée]|abruti|d[ée]bile|idiot|merde)s?(?![\p{L}\p{N}])/iu.test(t)},
 spam:function(t){if(/(.)\1{9,}/.test(t))return true;var w=t.toLowerCase().split(/\s+/).filter(Boolean),m={},k;for(var i=0;i<w.length;i++){k=w[i];m[k]=(m[k]||0)+1;if(m[k]>=6&&w.length>=6)return true}var l=t.split("\n").filter(Boolean);return l.length>=5&&l.every(function(x){return x===l[0]})},
 caps:function(t){var l=t.replace(/[^A-Za-zÀ-ÿ]/g,"");if(l.length<10)return false;var u=l.replace(/[^A-ZÀ-Ý]/g,"").length;return u/l.length>0.7},
 mentions:function(t){return /@(everyone|here)/.test(t)||(t.match(/<@!?&?\d+>|@\w+/g)||[]).length>=5},
@@ -2581,7 +2581,7 @@ var V={rules:AM_BASE.map(function(r){return Object.assign({ex_channels:[],ex_rol
 smart:{enabled:false,level:"medium",cats:{toxicity:true,harassment:true,spam:true,nsfw:false},channel:"",action:"alert"},
 links:{enabled:false,mode:"blacklist",domains:"",block_invites:true,block_shorteners:false,action:"delete"},
 newm:{enabled:false,min_age_days:7,restrict_hours:24,restrict:"links",action:"alert",channel:""},
-rate:{enabled:false,max:5,window:5,action:"timeout",timeout_min:10}};
+rate:{enabled:false,max:5,window:5,action:"timeout",timeout_min:10},staff:false};
 var ico=h("div",{class:"net-ico"});ico.innerHTML=svg24(AM_IC.list);c.appendChild(ico);
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Automodération"}));
 c.appendChild(h("p",{class:"lead",text:"Automodération : types de règles, groupes, exclusions, sanctions et heat."}));
@@ -2589,7 +2589,7 @@ var tabs=h("div",{class:"stabs",role:"tablist"}),body=h("div",{style:"margin-top
 var TABS=[["rules","list","Règles"],["smart","shield","Automod intelligent"],["links","link","Filtre de liens"],["newm","userplus","Nouveaux membres"],["rate","gauge","Limite de publication"]];
 function drawTabs(){tabs.innerHTML="";TABS.forEach(function(t){var b=h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",onclick:function(){tab=t[0];creating=false;draw()}});var s=h("span");s.innerHTML=svg24(AM_IC[t[1]]);b.appendChild(s.firstChild);b.appendChild(document.createTextNode(t[2]));tabs.appendChild(b)})}
 function slim(r){var o={id:r.id,name:r.name,desc:r.desc,enabled:!!r.enabled,action:r.action,heat:r.heat,ex_channels:r.ex_channels,ex_roles:r.ex_roles};if(r.custom){o.custom=true;o.type=r.type;o.pattern=r.pattern}return o}
-function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].automod={label:"Automodération",body:{automod_rules:V.rules.map(slim),automod_smart:V.smart,automod_links:V.links,automod_newmembers:V.newm,automod_ratelimit:V.rate}};updateGBar()}
+function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].automod={label:"Automodération",body:{automod_rules:V.rules.map(slim),automod_smart:V.smart,automod_links:V.links,automod_newmembers:V.newm,automod_ratelimit:V.rate,automod_apply_staff:V.staff}};updateGBar()}
 function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
 function row(title,desc,input){return h("div",{class:"td-hd rp-row"},[h("div",{class:"in"},[h("b",{text:title}),desc?h("span",{class:"d",text:desc}):null]),input])}
 function sel(opts,val,fn,label){var s=h("select",{"aria-label":label||""});opts.forEach(function(o){s.appendChild(opt(o[0],o[1]))});s.value=String(val);s.addEventListener("change",function(){fn(s.value)});return s}
@@ -2655,6 +2655,7 @@ creating=false;dirty();draw()}}),
 h("button",{class:"btn ghost",type:"button",text:"Annuler",onclick:function(){creating=false;draw()}})]));
 return cd}
 function drawRules(){
+var sc=card([row("Appliquer aussi aux administrateurs et modérateurs","Par défaut, les membres qui ont « Administrateur » ou « Gérer les messages » sont ignorés (insultes, majuscules, invitations, règles perso, liens, nouveaux membres, limite). Active cette option pour tester avec ton propre compte.",sw(V.staff,function(v){V.staff=v;dirty()}))]);sc.style.marginBottom="14px";body.appendChild(sc);
 var s=h("input",{class:"find",type:"search",placeholder:"Rechercher une règle","aria-label":"Rechercher une règle"});s.value=q;
 s.addEventListener("input",function(){q=s.value;drawList()});body.appendChild(h("div",{class:"tb"},[s]));
 var list=h("div",{class:"am-list"});body.appendChild(list);
@@ -2712,7 +2713,7 @@ if(r)Object.assign(r,{enabled:!!s.enabled,action:s.action||r.action,heat:s.heat!
 else if(s.custom)V.rules.push(Object.assign({ic:"slash",hits:0,last:null,ex_channels:[],ex_roles:[]},s))})}
 var st=v.automod_stats;if(st&&typeof st==="object")V.rules.forEach(function(r){var x=st[r.id];if(x){r.hits=x.count||0;r.last=x.last||null}});
 if(v.automod_smart)Object.assign(V.smart,v.automod_smart,{cats:Object.assign(V.smart.cats,(v.automod_smart||{}).cats||{})});
-if(v.automod_links)Object.assign(V.links,v.automod_links);if(v.automod_newmembers)Object.assign(V.newm,v.automod_newmembers);if(v.automod_ratelimit)Object.assign(V.rate,v.automod_ratelimit)}
+if(typeof v.automod_apply_staff==="boolean")V.staff=v.automod_apply_staff;if(v.automod_links)Object.assign(V.links,v.automod_links);if(v.automod_newmembers)Object.assign(V.newm,v.automod_newmembers);if(v.automod_ratelimit)Object.assign(V.rate,v.automod_ratelimit)}
 draw();
 api("/api/guilds/"+G.id+"/modules/automod").then(function(d){merge(d&&d.values)}).catch(function(e){if(e&&e.message==="auth")return;loadErr=true})
 .then(function(){var pm=(PEND[G.id]||{}).automod;if(pm){var keep=(pm.body.automod_rules||[]).map(function(x){return x.id});V.rules=V.rules.filter(function(r){return !r.custom||keep.indexOf(r.id)>-1});merge(pm.body)}if(body.isConnected)draw()})}
