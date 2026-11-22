@@ -854,7 +854,7 @@ side.appendChild(h("a",{class:"gh",href:"#/servers"},[gi,h("div",{class:"ghx"},[
 var nav=h("nav");
 function item(href,id,txt,p){var a=h("a",{href:href,class:"sv"+(active===id?" on":"")}),ic=svgIc(p);ic.appendChild(h("span",{text:txt}));a.appendChild(ic);return a}
 nav.appendChild(h("div",{class:"hm-lab",text:"Votre espace"}));
-nav.appendChild(item("#/","home","Dashboard",P_GRID));nav.appendChild(item("#/servers","servers","Serveurs",P_SRV));nav.appendChild(item("#/account","account","Mon compte",P_ACC));
+nav.appendChild(item("#/","home","Accueil",P_GRID));nav.appendChild(item("#/servers","servers","Serveurs",P_SRV));nav.appendChild(item("#/account","account","Mon compte",P_ACC));
 var rec=getRecents();
 if(rec.length){nav.appendChild(h("div",{class:"hm-lab",text:"Récents"}));
 rec.forEach(function(g){nav.appendChild(h("a",{href:g.botIn?"#/g/"+g.id:"#/servers",class:"sv"},h("span",{class:"ic"},[icon(g.id,g.icon,g.name,22),h("span",{text:g.name})])))})}
