@@ -184,6 +184,11 @@ h2{font-size:clamp(30px,4.6vw,52px);line-height:1.05;letter-spacing:-.035em;font
 .dcs figcaption{margin-top:12px;color:var(--mu);font-size:14px}
 
 /* stats */
+.kp{display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;gap:18px;margin:0 0 70px}
+.kpi{min-width:190px;padding:30px 28px;text-align:center;background:linear-gradient(180deg,#141416,#0e0e10);border:1px solid var(--ln);border-radius:18px}
+.kpi b{display:block;font-size:clamp(34px,4.4vw,48px);line-height:1;letter-spacing:-.04em;font-weight:800;color:var(--ac2);font-variant-numeric:tabular-nums}
+.kpi span{display:block;margin-top:14px;color:var(--mu);font-size:14.5px;font-weight:600}
+@media(max-width:900px){.kp{grid-template-columns:1fr 1fr;justify-content:stretch}.kpi{min-width:0}}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--ln);border-radius:24px;background:var(--ln);overflow:hidden}
 .stat{padding:34px 18px;text-align:center;background:var(--s1)}
 
@@ -467,6 +472,12 @@ header nav{position:relative}
 <!-- FONCTIONS -->
 <section class="pad" id="fonctions">
 <div class="wrap">
+<div class="kp rv">
+<div class="kpi"><b data-c="uptime90" data-f="pct">—</b><span data-t="kp1"></span></div>
+<div class="kpi"><b data-c="users" data-f="cmp">—</b><span data-t="kp2"></span></div>
+<div class="kpi"><b data-c="servers">—</b><span data-t="kp3"></span></div>
+<div class="kpi"><b data-c="threats_blocked" data-f="cmp">—</b><span data-t="kp4"></span></div>
+</div>
 <div class="head rv"><h2 data-t="h2a"></h2><p class="lead" data-t="leadf"></p></div>
 <div class="grid" id="grid"></div>
 </div>
@@ -554,6 +565,7 @@ i3h:["Vous gardez la main.","You stay in control."],i3p:["Aucune mention n’est
 n1t:["🌐 Interserveur","🌐 Interserver"],n1d:["Ce salon est relié au réseau Chell.","This channel is linked to the Chell network."],n1s:["État","Status"],n1sv:["Activé","Enabled"],n1c:["Salon","Channel"],n1n:["Serveurs connectés","Connected servers"],n1a:["Liaison active","Link active"],n1b:["Couper la liaison","Cut the link"],
 n2m1:["Quelqu’un a un bon tuto pour les LED ?","Anyone got a good LED tutorial?"],n2m2:["Oui ! Je te l’envoie dans une minute.","Yes! I’ll send it in a minute."],n2m3:["Salut le réseau, on vient d’arriver 👋","Hi network, we just joined 👋"],
 n3t:["🛡️ Sécurité du réseau","🛡️ Network safety"],n3d:["Des règles simples pour garder un réseau agréable.","Simple rules to keep the network pleasant."],n3a:["Mentions","Mentions"],n3av:["Bloquées","Blocked"],n3b:["Invitations","Invites"],n3bv:["Refusées","Refused"],n3c:["Cadence","Rate"],n3cv:["1 msg / 2 s","1 msg / 2 s"],n3e:["Blocage de membres","Member blocking"],n3f:["Liaison coupable","Can be cut"],
+kp1:["Temps de disponibilité","Uptime"],kp2:["Utilisateurs protégés","Protected users"],kp3:["Serveurs protégés","Protected servers"],kp4:["Menaces bloquées","Threats blocked"],
 h2a:["Tout ce dont votre serveur <em>a besoin</em>","Everything your server <em>needs</em>"],leadf:["Quatorze modules, tous configurables depuis Discord.","Fourteen modules, all configurable from Discord."],
 h2e:["À quoi ça ressemble <em>sur Discord</em>","What it looks like <em>on Discord</em>"],
 p1t:["🎫 Support","🎫 Support"],p1d:["Cliquez sur le bouton ci-dessous pour ouvrir un ticket. Le staff vous répondra rapidement.","Click the button below to open a ticket. The staff will reply shortly."],p1b:["Ouvrir un ticket","Open a ticket"],p1c:["Tickets avec formulaire personnalisable","Tickets with a customizable form"],
@@ -628,12 +640,14 @@ chat(0,true)}
 /* ---------- stats ---------- */
 var STATS_URL="https://corelab-bot.onrender.com/statut",LAST=0,FAIL=false;
 function fmt(n,d){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US",d?{minimumFractionDigits:d,maximumFractionDigits:d}:{})}
+function fmtCmp(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"en-US",{notation:"compact",maximumFractionDigits:1})}
 function fmtDur(s){s=Math.max(0,Math.floor(s));var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),u=L==="fr"?["j","h","min"]:["d","h","min"];
 return d>0?d+u[0]+" "+h+u[1]:h>0?h+u[1]+" "+m+u[2]:m+u[2]}
 function count(el,to,dec){var from=parseFloat(el.dataset.v);if(isNaN(from))from=0;var t0=null,suf=dec?" %":"";el.dataset.v=to;
 if(from>0&&from!==to&&!reduce){el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
-if(reduce||from===to){el.textContent=fmt(to,dec)+suf;return}
-(function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900),v=from+(to-from)*(1-Math.pow(1-k,3));el.textContent=fmt(dec?v:Math.round(v),dec)+suf;if(k<1)requestAnimationFrame(st)})(performance.now())}
+var F=el.dataset.f==="cmp"?function(x){return fmtCmp(x)}:fmt;
+if(reduce||from===to){el.textContent=F(to,dec)+suf;return}
+(function st(t){if(t0===null)t0=t;var k=Math.min(1,(t-t0)/900),v=from+(to-from)*(1-Math.pow(1-k,3));el.textContent=F(dec?v:Math.round(v),dec)+suf;if(k<1)requestAnimationFrame(st)})(performance.now())}
 function paint(){$$("[data-c]").forEach(function(e){var v=SV[e.dataset.c],f=e.dataset.f,box=e.parentNode;
 if(typeof v!=="number"||isNaN(v)){if(box.hasAttribute("data-opt"))box.hidden=true;else e.textContent="—";return}
 box.hidden=false;
@@ -650,6 +664,7 @@ j=j||{};var h=j.history,u=0,t=0,c=j.counters||{};
 if(h&&h.length){h.forEach(function(x){u+=x.u;t+=x.t});if(t>0)j.uptime90=u/t*100}
 if(typeof c.messages==="number")j.messages=c.messages;
 if(typeof c.commands_run==="number")j.commands_run=c.commands_run;
+if(typeof c.threats_blocked==="number")j.threats_blocked=c.threats_blocked;
 SV=j;LAST=Date.now();FAIL=false;live();paint()}).catch(function(){FAIL=true;live();paint()})}
 document.addEventListener("visibilitychange",function(){if(!document.hidden)loadStats()});
 
