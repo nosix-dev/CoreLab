@@ -484,6 +484,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;margin:0 0 10px;font-size:13.5px}
 .tr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tr em{font-style:normal;color:var(--mu);font-variant-numeric:tabular-nums}
 .tr div{grid-column:1/-1;height:5px;border-radius:99px;background:var(--s2);overflow:hidden}.tr div i{display:block;height:100%;border-radius:99px;background:var(--ac)}
+.rp-act{margin:-4px 0 12px;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--s2)}.rp-act h4{margin:0 0 8px;font-size:13px;color:var(--mu);font-weight:600}.rp-act .ev{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--ln);font-size:13.5px}.rp-act .ev:first-of-type{border-top:0}.rp-act .tm{flex:none;width:62px;color:var(--mu);font-variant-numeric:tabular-nums}.rp-act .ty{flex:none;min-width:84px}.rp-act .tx{flex:1;min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}.rp-act .tx .mu{color:var(--mu)}.rp-act .tx s{color:var(--mu)}
 .arow{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;margin:0 0 10px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}.arow .ati{flex:1;min-width:0}.arow .ati b{display:block;margin-bottom:4px;overflow-wrap:anywhere}.arow .ad{display:block;color:var(--mu);font-size:13px;overflow-wrap:anywhere;margin-top:2px}
 .empty{padding:26px;border:1px dashed var(--ln);border-radius:var(--r);color:var(--mu);text-align:center;font-size:14.5px}
 @media(max-width:900px){
@@ -2610,6 +2611,20 @@ function avatar(m){return m.avatar?h("img",{class:"rp-av",src:m.avatar,alt:"",wi
 function trustPill(t){if(!t)return null;return h("span",{class:"pill"+(t.level==="high"?" on":t.level==="low"?" bad":""),style:"margin-left:8px",title:"Traités : "+t.resolved+" · Ignorés : "+t.dismissed,text:t.level==="new"?"NOUVEAU SIGNALEUR":"CONFIANCE "+t.pct+" %"})}
 function act(ids,action,label,conf){if(conf&&!confirm(conf))return;
 api(base+"/batch",jsonOpt("POST",{ids:ids,action:action})).then(function(){toast(label+" ✓");load()}).catch(fail)}
+var RP_EV={msg:["Message",""],edit:["Modifié","pr"],"delete":["Supprimé","bad"],voice:["Vocal",""],nick:["Pseudo",""],react:["Réaction",""]};
+function hms(ts){try{return new Date(ts).toLocaleTimeString("fr-FR",{timeZone:"Europe/Paris",hour:"2-digit",minute:"2-digit",second:"2-digit"})}catch(x){return ""}}
+function evText(e){var ch=e.channel?" #"+e.channel:"";
+if(e.t==="msg")return[h("span",{text:e.text||"(sans texte)"}),e.files?h("span",{class:"mu",text:" · "+e.files+" pièce"+(e.files>1?"s":"")+" jointe"+(e.files>1?"s":"")}):null,h("span",{class:"mu",text:ch?" ·"+ch:""})];
+if(e.t==="edit")return[e.before!=null?h("s",{text:e.before}):h("span",{class:"mu",text:"(texte d’origine inconnu)"}),h("span",{class:"mu",text:" → "}),h("span",{text:e.text||""}),h("span",{class:"mu",text:ch?" ·"+ch:""})];
+if(e.t==="delete")return[h("span",{text:e.text||"(contenu inconnu)"}),h("span",{class:"mu",text:ch?" ·"+ch:""})];
+if(e.t==="voice")return[h("span",{text:e.action==="join"?"A rejoint "+(e.channel||"un salon vocal"):e.action==="leave"?"A quitté "+(e.channel||"un salon vocal"):"Est passé de "+(e.from||"?")+" à "+(e.channel||"?")})];
+if(e.t==="nick")return[h("span",{text:(e.before||"?")+" → "+(e.text||"?")})];
+if(e.t==="react")return[h("span",{text:"A réagi avec "+(e.text||"?")}),h("span",{class:"mu",text:ch?" ·"+ch:""})];
+return[h("span",{text:e.text||""})]}
+function actBox(list){var box=h("div",{class:"rp-act"});box.appendChild(h("h4",{text:"Activité du membre dans les 5 minutes avant le signalement"}));
+if(!list.length){box.appendChild(h("span",{class:"ad",text:"Rien n’a été enregistré sur cette période."}));return box}
+list.forEach(function(e){var t=RP_EV[e.t]||[e.t,""];box.appendChild(h("div",{class:"ev"},[h("span",{class:"tm",text:hms(e.ts)}),h("span",{class:"ty"},[h("span",{class:"pill"+(t[1]==="bad"?" bad":""),text:t[0].toUpperCase()})]),h("span",{class:"tx"},evText(e))]))});
+return box}
 function card(d){var key=d.member.id,isOpen=!!opened[key],chev=h("span",{class:"td-chev"+(isOpen?" open":"")});chev.innerHTML=svg24('<path d="m6 9 6 6 6-6"/>');
 var sum=[d.open+" ouvert"+(d.open>1?"s":""),d.total+" au total",d.reporters+" signaleur"+(d.reporters>1?"s":""),"dernier : "+secDT(d.lastTs)];
 var cd=h("div",{class:"td-card"},[h("button",{type:"button",class:"rp-hd",onclick:function(){opened[key]=!opened[key];draw()}},[avatar(d.member),
@@ -2619,10 +2634,13 @@ if(isOpen){var b=h("div",{class:"rp-body"}),ops=d.reports.filter(function(r){ret
 if(ops.length>1)b.appendChild(h("div",{class:"rp-bulk"},[h("button",{class:"btn sm",type:"button",text:"Tout traiter ("+ops.length+")",onclick:function(){act(ops,"resolve","Dossier traité")}}),h("button",{class:"btn sm ghost",type:"button",text:"Tout ignorer",onclick:function(){act(ops,"dismiss","Dossier ignoré","Ignorer tous les signalements ouverts de ce membre ?")}})]));
 d.reports.forEach(function(r){var st=RP_ST[r.status]||["",""],det=["Motif : "+(r.reason||"—")];
 det.push(secDT(r.ts)+(r.channel?" · #"+r.channel:"")+(r.decidedBy?" · par "+r.decidedBy:""));
+var hasAct=Array.isArray(r.activity),akey="a"+r.id;
 var btns=r.status==="open"?[h("button",{class:"btn sm",type:"button",text:"Traiter",onclick:function(){act([r.id],"resolve","Traité")}}),h("button",{class:"btn sm ghost",type:"button",text:"Ignorer",onclick:function(){act([r.id],"dismiss","Ignoré","Ignorer ce signalement ?")}})]:[];
+if(hasAct)btns.unshift(h("button",{class:"btn sm ghost",type:"button",text:(opened[akey]?"Masquer":"Activité")+" ("+r.activity.length+")",onclick:function(){opened[akey]=!opened[akey];draw()}}));
 b.appendChild(h("div",{class:"arow",style:r.status==="open"?"":"opacity:.65"},[avatar(r.reporter),
 h("div",{class:"ati"},[h("b",{},[r.reporter.name||r.reporter.id,trustPill(r.reporter.trust),h("span",{class:"pill"+(st[1]?" "+st[1]:""),style:"margin-left:8px",text:st[0].toUpperCase()})])].concat(det.map(function(t){return h("span",{class:"ad",text:t})}))),
-h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]))});
+h("div",{style:"display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"},btns)]));
+if(hasAct&&opened[akey])b.appendChild(actBox(r.activity))});
 cd.appendChild(b)}
 return cd}
 function drawInc(){var st=D.stats||{},sel=h("select",{"aria-label":"Statut"});
