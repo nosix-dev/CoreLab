@@ -484,6 +484,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;margin:0 0 10px;font-size:13.5px}
 .tr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tr em{font-style:normal;color:var(--mu);font-variant-numeric:tabular-nums}
 .tr div{grid-column:1/-1;height:5px;border-radius:99px;background:var(--s2);overflow:hidden}.tr div i{display:block;height:100%;border-radius:99px;background:var(--ac)}
+.rp-pun{margin:0 0 12px;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--s2);display:grid;gap:12px}.rp-pun .fld{margin:0}.rp-pun label.l{display:block;margin:0 0 6px;font-size:13px;color:var(--mu);font-weight:600}.rp-pun .chk{display:flex;gap:10px;align-items:center;font-size:13.5px}.rp-pun .acts{display:flex;gap:8px;flex-wrap:wrap}.btn.dng{background:#c0392b;border-color:#c0392b;color:#fff}
 .rp-act{margin:-4px 0 12px;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--s2)}.rp-act h4{margin:0 0 8px;font-size:13px;color:var(--mu);font-weight:600}.rp-act .ev{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--ln);font-size:13.5px}.rp-act .ev:first-of-type{border-top:0}.rp-act .tm{flex:none;width:62px;color:var(--mu);font-variant-numeric:tabular-nums}.rp-act .ty{flex:none;min-width:84px}.rp-act .tx{flex:1;min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}.rp-act .tx .mu{color:var(--mu)}.rp-act .tx s{color:var(--mu)}
 .arow{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;margin:0 0 10px;border:1px solid var(--ln);border-radius:12px;background:var(--s1)}.arow .ati{flex:1;min-width:0}.arow .ati b{display:block;margin-bottom:4px;overflow-wrap:anywhere}.arow .ad{display:block;color:var(--mu);font-size:13px;overflow-wrap:anywhere;margin-top:2px}
 .empty{padding:26px;border:1px dashed var(--ln);border-radius:var(--r);color:var(--mu);text-align:center;font-size:14.5px}
@@ -2625,12 +2626,43 @@ function actBox(list){var box=h("div",{class:"rp-act"});box.appendChild(h("h4",{
 if(!list.length){box.appendChild(h("span",{class:"ad",text:"Rien n’a été enregistré sur cette période."}));return box}
 list.forEach(function(e){var t=RP_EV[e.t]||[e.t,""];box.appendChild(h("div",{class:"ev"},[h("span",{class:"tm",text:hms(e.ts)}),h("span",{class:"ty"},[h("span",{class:"pill"+(t[1]==="bad"?" bad":""),text:t[0].toUpperCase()})]),h("span",{class:"tx"},evText(e))]))});
 return box}
+var PUN={},PUN_AC=[["warn","Avertir"],["timeout","Timeout"],["mute","Mute"],["kick","Expulser"],["ban","Bannir"]],
+PUN_DUR=[[1,"1 minute"],[5,"5 minutes"],[10,"10 minutes"],[60,"1 heure"],[360,"6 heures"],[1440,"1 jour"],[10080,"7 jours"],[40320,"28 jours"]],
+PUN_DEL=[[0,"Ne rien supprimer"],[3600,"Dernière heure"],[86400,"Dernières 24 h"],[604800,"7 derniers jours"]],
+PUN_LB={warn:"Avertissement",timeout:"Timeout",mute:"Mute",kick:"Expulsion",ban:"Bannissement"};
+function punPanel(d){var id=d.member.id,F=PUN[id]||(PUN[id]={action:"warn",reason:"",minutes:60,del:0,resolve:d.open>0});
+var box=h("div",{class:"rp-pun"}),selA=h("select",{"aria-label":"Sanction"}),selD=h("select",{"aria-label":"Durée"}),selX=h("select",{"aria-label":"Messages à supprimer"}),
+rs=h("input",{type:"text",maxlength:"400",placeholder:"Raison (visible dans l’historique et le journal d’audit)","aria-label":"Raison"}),
+cb=h("input",{type:"checkbox"});
+PUN_AC.forEach(function(o){selA.appendChild(opt(o[0],o[1]))});selA.value=F.action;
+PUN_DUR.forEach(function(o){selD.appendChild(opt(o[0],o[1]))});selD.value=F.minutes;
+PUN_DEL.forEach(function(o){selX.appendChild(opt(o[0],o[1]))});selX.value=F.del;
+rs.value=F.reason;cb.checked=!!F.resolve;
+var fd=h("div",{class:"fld"},[h("label",{class:"l",text:"Durée du timeout"}),selD]),fx=h("div",{class:"fld"},[h("label",{class:"l",text:"Messages à supprimer"}),selX]);
+function vis(){fd.style.display=F.action==="timeout"?"":"none";fx.style.display=F.action==="ban"?"":"none"}vis();
+selA.addEventListener("change",function(){F.action=selA.value;vis()});selD.addEventListener("change",function(){F.minutes=Number(selD.value)});selX.addEventListener("change",function(){F.del=Number(selX.value)});
+rs.addEventListener("input",function(){F.reason=rs.value});cb.addEventListener("change",function(){F.resolve=cb.checked});
+var go=h("button",{class:"btn",type:"button",text:"Appliquer la sanction",onclick:function(){
+var nm=d.member.name||id,lb=PUN_LB[F.action];
+if((F.action==="kick"||F.action==="ban")&&!confirm(lb+" : "+nm+" ?"))return;
+go.disabled=true;
+api("/api/guilds/"+G.id+"/mod/punish",jsonOpt("POST",{member:id,action:F.action,reason:F.reason,minutes:F.minutes,deleteSeconds:F.del,resolve:F.resolve})).then(function(r){
+toast(lb+" appliqué"+(r&&r.resolved?" · "+r.resolved+" signalement"+(r.resolved>1?"s":"")+" traité"+(r.resolved>1?"s":""):"")+" ✓");PUN[id]=null;opened["p"+id]=false;load()}).catch(function(e){go.disabled=false;fail(e)})}});
+box.appendChild(h("div",{class:"fld"},[h("label",{class:"l",text:"Sanction"}),selA]));
+box.appendChild(fd);box.appendChild(fx);
+box.appendChild(h("div",{class:"fld"},[h("label",{class:"l",text:"Raison"}),rs]));
+box.appendChild(h("label",{class:"chk"},[cb,h("span",{text:"Marquer les signalements ouverts de ce membre comme traités (et prévenir les signaleurs)"})]));
+box.appendChild(h("div",{class:"acts"},[go,h("button",{class:"btn ghost",type:"button",text:"Annuler",onclick:function(){opened["p"+id]=false;draw()}})]));
+return box}
 function card(d){var key=d.member.id,isOpen=!!opened[key],chev=h("span",{class:"td-chev"+(isOpen?" open":"")});chev.innerHTML=svg24('<path d="m6 9 6 6 6-6"/>');
 var sum=[d.open+" ouvert"+(d.open>1?"s":""),d.total+" au total",d.reporters+" signaleur"+(d.reporters>1?"s":""),"dernier : "+secDT(d.lastTs)];
 var cd=h("div",{class:"td-card"},[h("button",{type:"button",class:"rp-hd",onclick:function(){opened[key]=!opened[key];draw()}},[avatar(d.member),
 h("div",{class:"in"},[h("b",{},[d.member.name||d.member.id,d.priority?h("span",{class:"pill bad",style:"margin-left:8px",text:"PRIORITÉ"}):null]),h("span",{class:"d",text:sum.join(" · ")})]),chev])]);
 if(d.priority)cd.appendChild(h("p",{class:"rp-note",text:d.cluster+" signaleurs distincts en "+S.group_window_hours+" h : à examiner en priorité."}));
 if(isOpen){var b=h("div",{class:"rp-body"}),ops=d.reports.filter(function(r){return r.status==="open"}).map(function(r){return r.id});
+var pk="p"+d.member.id;
+b.appendChild(h("div",{class:"rp-bulk",style:"margin:0 0 12px"},[h("button",{class:"btn sm dng",type:"button",text:opened[pk]?"Fermer la sanction":"Sanctionner ce membre",onclick:function(){opened[pk]=!opened[pk];draw()}})]));
+if(opened[pk])b.appendChild(punPanel(d));
 if(ops.length>1)b.appendChild(h("div",{class:"rp-bulk"},[h("button",{class:"btn sm",type:"button",text:"Tout traiter ("+ops.length+")",onclick:function(){act(ops,"resolve","Dossier traité")}}),h("button",{class:"btn sm ghost",type:"button",text:"Tout ignorer",onclick:function(){act(ops,"dismiss","Dossier ignoré","Ignorer tous les signalements ouverts de ce membre ?")}})]));
 d.reports.forEach(function(r){var st=RP_ST[r.status]||["",""],det=["Motif : "+(r.reason||"—")];
 det.push(secDT(r.ts)+(r.channel?" · #"+r.channel:"")+(r.decidedBy?" · par "+r.decidedBy:""));
