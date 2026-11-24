@@ -1244,6 +1244,18 @@ box.appendChild(h("div",{class:"row nm-sched"},[lab("Salon",cs),lab("Ouvre à",t
 box.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"Ajouter un horaire",disabled:rows.length>=max,onclick:function(){rows.push({channelId:"",open:"08:00",close:"22:00",days:[0,1,2,3,4,5,6]});draw();onc()}}))}
 draw();return{el:box,get:function(){return rows.map(function(r){return Object.assign({},r)})}}}
 
+/* Boutons avec lien (bienvenue / au revoir) : jusqu'a 5 lignes texte + lien + description facultative */
+function linkButtonsField(f,val,onc){
+var rows=(Array.isArray(val)?val:[]).slice(0,5).map(function(b){return{label:b.label||"",url:b.url||"",description:b.description||""}}),box=h("div",{class:"rows"});
+function draw(){box.innerHTML="";
+rows.forEach(function(r,idx){
+function inp(key,ph,max){var i=h("input",{type:"text",placeholder:ph,maxlength:max,"aria-label":ph});i.value=r[key];i.addEventListener("input",function(){r[key]=i.value;onc()});return i}
+var del=h("button",{class:"btn ghost sm",type:"button","aria-label":"Supprimer le bouton "+(idx+1),text:"✕",onclick:function(){rows.splice(idx,1);draw();onc()}});
+box.appendChild(h("div",{class:"row"},[inp("label","Texte du bouton",80),inp("url","https://lien",512),inp("description","Description à gauche (facultatif)",200),del]))});
+box.appendChild(h("button",{class:"btn ghost sm",type:"button",text:"Ajouter un bouton",disabled:rows.length>=5,onclick:function(){rows.push({label:"",url:"",description:""});draw();onc()}}))}
+draw();
+return{el:box,get:function(){return rows.filter(function(r){return r.label.trim()||r.url.trim()||r.description.trim()}).map(function(r){return{label:r.label.trim(),url:r.url.trim(),description:r.description.trim()}})}}}
+
 function buildField(f,val,meta,premium,onc){
 var locked=f.premium&&!premium,wrap=h("div",{class:"fld"+(locked?" lock":"")}),get,id="f_"+f.key.replace(/\./g,"_");
 function label(){return h("label",{class:"l",for:id},[f.label,f.premium?h("span",{class:"pill pr",text:"PREMIUM"}):null])}
@@ -1275,6 +1287,7 @@ else if(f.type==="time"){el=h("input",{type:"time",id:id});el.value=val||f.def||
 else if(f.type==="days"){var dm=daysField(val,onc);wrap.appendChild(dm.el);get=dm.get;el=null}
 else if(f.type==="schedules"){var sm=schedField(f,val,meta,onc);wrap.appendChild(sm.el);get=sm.get;el=null}
 else if(f.type==="ranks"||f.type==="xproles"){var r=rowsField(f,val,meta,onc);wrap.appendChild(r.el);get=r.get;el=null}
+else if(f.type==="linkbuttons"){var lb=linkButtonsField(f,val,onc);wrap.appendChild(lb.el);get=lb.get;el=null}
 else{el=h("input",{type:"text",id:id,maxlength:f.max||200});el.value=val||"";get=function(){return el.value}}
 if(el){el.addEventListener("input",onc);el.addEventListener("change",onc);wrap.appendChild(el)}}
 var hint=f.hint||"";if(locked)hint=(hint?hint+" ":"")+"Réservé aux abonnés Premium (personnalisation).";
