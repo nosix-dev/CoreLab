@@ -2790,7 +2790,7 @@ function draw(){body.innerHTML="";drawHead();drawTabs();if(tab==="watch")drawWat
 draw();loadW();loadC()}
 
 /* ---- Automodération : Règles · Automod intelligent · Filtre de liens · Nouveaux membres · Limite de publication ---- */
-var AM_IC={list:'<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>',gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',flask:'<path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',down:'<path d="m6 9 6 6 6-6"/>',imgoff:'<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/><line x1="13.5" x2="6" y1="13.5" y2="21"/><line x1="18" x2="21" y1="12" y2="15"/><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/><path d="M21 15V5a2 2 0 0 0-2-2H9"/>',chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',type:'<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',at:'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>',slash:'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>'};
+var AM_IC={list:'<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>',gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',flask:'<path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',down:'<path d="m6 9 6 6 6-6"/>',imgoff:'<line x1="2" x2="22" y1="2" y2="22"/><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/><line x1="13.5" x2="6" y1="13.5" y2="21"/><line x1="18" x2="21" y1="12" y2="15"/><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/><path d="M21 15V5a2 2 0 0 0-2-2H9"/>',chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',type:'<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',at:'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>',slash:'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>',key:'<path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>',filewarn:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 9v4"/><path d="M12 17h.01"/>',userx:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/>'};
 var AM_ACT=[["delete","Supprimer le message"],["warn","Supprimer et avertir"],["timeout","Supprimer et exclure temporairement"],["alert","Alerter le staff seulement"]];
 var AM_ACT_L={delete:"supprimerait le message",warn:"supprimerait le message et avertirait le membre",timeout:"supprimerait le message et exclurait le membre temporairement",alert:"alerterait le staff sans supprimer"};
 var AM_BASE=[
@@ -2809,6 +2809,20 @@ caps:function(t){var l=t.replace(/[^A-Za-zÀ-ÿ]/g,"");if(l.length<10)return fal
 mentions:function(t){return /@(everyone|here)/.test(t)||(t.match(/<@!?&?\d+>|@\w+/g)||[]).length>=5},
 invites:function(t){return /(discord\.gg|discord(app)?\.com\/invite)\/\w+/i.test(t)},
 phishing:function(t){return /(nitro\s+gratuit|free\s+nitro|steam\s*gift|dlscord|discorcl|disc0rd|steamcommunnity)/i.test(t)}};
+/* ---- Nouvelles protections CoreLab (5.5.44) : définitions + tests locaux ---- */
+var AM_PROT=[
+{k:"anti_token_enabled",ic:"key",name:"Anti-token / anti-secret",desc:"Supprime les messages qui contiennent un token Discord, un webhook, une clé API (GitHub, AWS, Google, Stripe, Slack, OpenAI), une clé privée ou une URL de base de données.",
+pts:["Le membre est prévenu qu’il doit régénérer son secret, sans sanction : c’est une fuite, pas une attaque.","Le secret n’apparaît jamais en entier : il est masqué dans l’alerte et n’est pas copié dans les logs de messages.","Les messages modifiés après coup pour y glisser un secret sont aussi supprimés."]},
+{k:"dangerous_files_enabled",ic:"filewarn",name:"Fichiers dangereux",desc:"Supprime les pièces jointes dangereuses : .exe, .scr, .bat, .cmd, .msi, .ps1, .vbs, .js, .jar, .lnk, .dll, .apk, macros Office (.docm, .xlsm…) et plus.",
+pts:["Détecte les faux noms de fichier (caractère RLO) et les types exécutables, même sans extension.","Le membre reçoit un strike pris en compte par les paliers de sanctions.","Les membres du staff ne sont pas concernés."]},
+{k:"compromised_account_enabled",ic:"userx",name:"Compte piraté",desc:"Repère un compte qui poste le même lien ou fichier dans plusieurs salons en moins d’une minute.",
+pts:["Ses messages sont supprimés partout, le membre est exclu 24 h et reçoit un MP (changer son mot de passe, activer la double authentification, révoquer les applications).","Le staff est alerté dans le salon de logs de protection avec le détail des actions.","Un compte du staff n’est jamais sanctionné automatiquement : alerte seule, pour éviter les faux positifs."]}];
+var AM_SECRETS=[["Token Discord",/[MNO][A-Za-z\d_-]{23,25}\.[A-Za-z\d_-]{6}\.[A-Za-z\d_-]{27,38}/],["Webhook Discord",/discord(?:app)?\.com\/api\/webhooks\/\d+\/[\w-]+/i],["Clé GitHub",/\bgh[pousr]_[A-Za-z0-9]{30,}\b/],["Clé AWS",/\bAKIA[0-9A-Z]{16}\b/],["Clé Google",/\bAIza[0-9A-Za-z_-]{35}\b/],["Clé Stripe",/\b[sr]k_live_[0-9a-zA-Z]{16,}\b/],["Clé Slack",/\bxox[abprs]-[0-9A-Za-z-]{10,}\b/],["Clé OpenAI",/\bsk-[A-Za-z0-9_-]{20,}\b/],["Clé privée",/-----BEGIN [A-Z ]*PRIVATE KEY-----/],["URL de base de données",/\b(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis):\/\/[^\s:@]+:[^\s@]+@\S+/i]];
+function amSecretHit(t){for(var i=0;i<AM_SECRETS.length;i++){var m=AM_SECRETS[i][1].exec(t);if(m)return{type:AM_SECRETS[i][0],mask:m[0].slice(0,4)+"…"+"•".repeat(8)}}return null}
+var AM_BADEXT="exe scr bat cmd msi ps1 vbs vbe js jse jar lnk dll apk com pif hta reg wsf docm xlsm pptm dotm xlam".split(" ");
+function amFileHit(n){n=String(n||"").trim();if(!n)return null;
+if(/[\u202e\u202d]/.test(n))return"faux nom de fichier (caractère RLO)";
+var m=/\.([A-Za-z0-9]+)$/.exec(n);if(m&&AM_BADEXT.indexOf(m[1].toLowerCase())>-1)return"extension dangereuse (."+m[1].toLowerCase()+")";return null}
 function amCustomHit(r,t){var p=String(r.pattern||"");if(!p.trim())return false;
 if(r.type==="regex"){try{return new RegExp(p,"i").test(t)}catch(e){return false}}
 return p.split(/[\n,]+/).map(function(x){return x.trim().toLowerCase()}).filter(Boolean).some(function(w){return t.toLowerCase().indexOf(w)>-1})}
@@ -2819,15 +2833,16 @@ var V={rules:AM_BASE.map(function(r){return Object.assign({ex_channels:[],ex_rol
 smart:{enabled:false,level:"medium",cats:{toxicity:true,harassment:true,spam:true,nsfw:false},channel:"",action:"alert"},
 links:{enabled:false,mode:"blacklist",domains:"",block_invites:true,block_shorteners:false,action:"delete"},
 newm:{enabled:false,min_age_days:7,restrict_hours:24,restrict:"links",action:"alert",channel:""},
-rate:{enabled:false,max:5,window:5,action:"timeout",timeout_min:10},staff:false};
+rate:{enabled:false,max:5,window:5,action:"timeout",timeout_min:10},staff:false,
+prot:{anti_token_enabled:false,dangerous_files_enabled:false,compromised_account_enabled:false}};
 var ico=h("div",{class:"net-ico"});ico.innerHTML=svg24(AM_IC.list);c.appendChild(ico);
 c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Automodération"}));
-c.appendChild(h("p",{class:"lead",text:"Automodération : types de règles, groupes, exclusions, sanctions et heat."}));
+c.appendChild(h("p",{class:"lead",text:"Automodération : règles, protections CoreLab (tokens, fichiers dangereux, comptes piratés), exclusions, sanctions et heat."}));
 var tabs=h("div",{class:"stabs",role:"tablist"}),body=h("div",{style:"margin-top:26px"});c.appendChild(tabs);c.appendChild(body);
-var TABS=[["rules","list","Règles"],["smart","shield","Automod intelligent"],["links","link","Filtre de liens"],["newm","userplus","Nouveaux membres"],["rate","gauge","Limite de publication"]];
+var TABS=[["rules","list","Règles"],["prot","shield","Protections CoreLab"],["smart","shield","Automod intelligent"],["links","link","Filtre de liens"],["newm","userplus","Nouveaux membres"],["rate","gauge","Limite de publication"]];
 function drawTabs(){tabs.innerHTML="";TABS.forEach(function(t){var b=h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",onclick:function(){tab=t[0];creating=false;draw()}});var s=h("span");s.innerHTML=svg24(AM_IC[t[1]]);b.appendChild(s.firstChild);b.appendChild(document.createTextNode(t[2]));tabs.appendChild(b)})}
 function slim(r){var o={id:r.id,name:r.name,desc:r.desc,enabled:!!r.enabled,action:r.action,heat:r.heat,ex_channels:r.ex_channels,ex_roles:r.ex_roles};if(r.custom){o.custom=true;o.type=r.type;o.pattern=r.pattern}return o}
-function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].automod={label:"Automodération",body:{automod_rules:V.rules.map(slim),automod_smart:V.smart,automod_links:V.links,automod_newmembers:V.newm,automod_ratelimit:V.rate,automod_apply_staff:V.staff}};updateGBar()}
+function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].automod={label:"Automodération",body:{automod_rules:V.rules.map(slim),automod_smart:V.smart,automod_links:V.links,automod_newmembers:V.newm,automod_ratelimit:V.rate,automod_apply_staff:V.staff,anti_token_enabled:V.prot.anti_token_enabled,dangerous_files_enabled:V.prot.dangerous_files_enabled,compromised_account_enabled:V.prot.compromised_account_enabled}};updateGBar()}
 function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
 function row(title,desc,input){return h("div",{class:"td-hd rp-row"},[h("div",{class:"in"},[h("b",{text:title}),desc?h("span",{class:"d",text:desc}):null]),input])}
 function sel(opts,val,fn,label){var s=h("select",{"aria-label":label||""});opts.forEach(function(o){s.appendChild(opt(o[0],o[1]))});s.value=String(val);s.addEventListener("change",function(){fn(s.value)});return s}
@@ -2904,6 +2919,31 @@ drawList();
 body.appendChild(drawTester());
 if(creating)body.appendChild(drawCreate());
 else{var add=h("button",{class:"am-add",type:"button",onclick:function(){creating=true;draw();var e=body.lastChild;if(e&&e.scrollIntoView)e.scrollIntoView({block:"center",behavior:"smooth"})}});add.innerHTML=svg24(AM_IC.plus);add.appendChild(document.createTextNode("Créer une nouvelle règle"));body.appendChild(add)}}
+function drawProt(){
+var intro=card([h("div",{class:"td-hd"},[ic("shield"),h("div",{class:"in"},[h("b",{text:"Nouvelles protections CoreLab"}),h("span",{class:"d",text:"Trois protections contre les fuites et les attaques. Elles s’appliquent aussi dans /protect-settings et dans la configuration recommandée."})])])]);body.appendChild(intro);
+var list=h("div",{class:"am-list"});body.appendChild(list);
+AM_PROT.forEach(function(P){var on=!!V.prot[P.k];
+var pill=h("span",{class:"pill"+(on?" on":""),style:"margin-left:10px",text:on?"● ACTIVE":"● DÉSACTIVÉE"});
+var cd=card([h("div",{class:"td-hd"},[ic(P.ic),h("div",{class:"in"},[h("b",{},[P.name,pill]),h("span",{class:"d",text:P.desc})]),sw(on,function(v){V.prot[P.k]=v;dirty();draw()})])]);
+P.pts.forEach(function(t){cd.appendChild(h("p",{class:"muted",style:"margin:10px 0 0;font-size:13.5px",text:"• "+t}))});
+list.appendChild(cd)});
+var box=card([]);
+box.appendChild(h("div",{class:"td-hd"},[ic("flask"),h("div",{class:"in"},[h("b",{text:"Tester un secret ou un nom de fichier"})])]));
+box.appendChild(h("p",{class:"muted",style:"margin:12px 0 14px;font-size:13.5px",text:"Simulation locale avec les réglages en cours : rien n’est envoyé et le secret est masqué dans le résultat."}));
+var ta=h("textarea",{maxlength:2000,placeholder:"Par exemple : voici mon token ghp_…","aria-label":"Message"});
+var fn=h("textarea",{maxlength:1000,placeholder:"facture.pdf.exe\nphoto.png\nrapport.docm","aria-label":"Noms de fichiers"});
+var out=h("div",{style:"margin-top:16px"});
+function line(name,state,txt){return h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[name,h("span",{class:"pill "+state[1],style:"margin-left:8px",text:state[0]})]),txt?h("span",{class:"ad",text:txt}):null])])}
+var go=h("button",{class:"btn ghost",type:"button",text:"Tester",onclick:function(){out.innerHTML="";
+var t=ta.value,files=fn.value.split("\n").map(function(x){return x.trim()}).filter(Boolean);
+if(!t.trim()&&!files.length){out.appendChild(h("p",{class:"err",text:"Écrivez un message ou des noms de fichiers à tester."}));return}
+var l=h("div",{class:"trl"}),sec=amSecretHit(t);
+if(t.trim()){l.appendChild(!V.prot.anti_token_enabled?line("Anti-token / anti-secret",["DÉSACTIVÉE",""],sec?"Un secret serait repéré ("+sec.type+") mais la protection est coupée.":""):sec?line("Anti-token / anti-secret",["DÉCLENCHÉE","bad"],"Le message serait supprimé ("+sec.type+" : "+sec.mask+"). Le membre serait prévenu de régénérer son secret, sans sanction."):line("Anti-token / anti-secret",["OK","on"],"Aucun secret repéré."))}
+files.forEach(function(f){var r=amFileHit(f);
+l.appendChild(!V.prot.dangerous_files_enabled?line("Fichier : "+f,["DÉSACTIVÉE",""],r?"Il serait repéré ("+r+") mais la protection est coupée.":""):r?line("Fichier : "+f,["DÉCLENCHÉE","bad"],"La pièce jointe serait supprimée ("+r+") et le membre recevrait un strike."):line("Fichier : "+f,["OK","on"],"Aucun danger repéré."))});
+out.appendChild(l)}});
+box.appendChild(fld("Message",ta));box.appendChild(h("div",{style:"margin-top:14px"},[fld("Noms de fichiers (un par ligne)",fn)]));box.appendChild(h("div",{style:"margin-top:14px"},[go]));box.appendChild(out);
+body.appendChild(box)}
 function drawSmart(){var S=V.smart,cd=card([]);
 cd.appendChild(row("Activer l’automod intelligent","Analyse le sens des messages (toxicité, harcèlement, spam, contenu sexuel) au lieu de chercher des mots précis.",sw(S.enabled,function(v){S.enabled=v;dirty()})));
 cd.appendChild(h("hr",{class:"td-sep"}));
@@ -2944,14 +2984,14 @@ cd.appendChild(h("p",{class:"muted",style:"margin:14px 0 0;font-size:13.5px",tex
 body.appendChild(cd)}
 function draw(){body.innerHTML="";drawTabs();
 if(loadErr)body.appendChild(h("p",{class:"net-note",style:"margin:0 0 16px;padding-top:0;border:0",text:"Aperçu avec les réglages par défaut : le module d’automodération n’est pas encore actif côté bot. Mettez le bot à jour pour pouvoir enregistrer."}));
-if(tab==="rules")drawRules();else if(tab==="smart")drawSmart();else if(tab==="links")drawLinks();else if(tab==="newm")drawNewm();else drawRate()}
+if(tab==="rules")drawRules();else if(tab==="prot")drawProt();else if(tab==="smart")drawSmart();else if(tab==="links")drawLinks();else if(tab==="newm")drawNewm();else drawRate()}
 function merge(v){if(!v)return;
 if(Array.isArray(v.automod_rules)){v.automod_rules.forEach(function(s){var r=V.rules.filter(function(x){return x.id===s.id})[0];
 if(r)Object.assign(r,{enabled:!!s.enabled,action:s.action||r.action,heat:s.heat!=null?s.heat:r.heat,ex_channels:s.ex_channels||[],ex_roles:s.ex_roles||[]});
 else if(s.custom)V.rules.push(Object.assign({ic:"slash",hits:0,last:null,ex_channels:[],ex_roles:[]},s))})}
 var st=v.automod_stats;if(st&&typeof st==="object")V.rules.forEach(function(r){var x=st[r.id];if(x){r.hits=x.count||0;r.last=x.last||null}});
 if(v.automod_smart)Object.assign(V.smart,v.automod_smart,{cats:Object.assign(V.smart.cats,(v.automod_smart||{}).cats||{})});
-if(typeof v.automod_apply_staff==="boolean")V.staff=v.automod_apply_staff;if(v.automod_links)Object.assign(V.links,v.automod_links);if(v.automod_newmembers)Object.assign(V.newm,v.automod_newmembers);if(v.automod_ratelimit)Object.assign(V.rate,v.automod_ratelimit)}
+if(typeof v.automod_apply_staff==="boolean")V.staff=v.automod_apply_staff;["anti_token_enabled","dangerous_files_enabled","compromised_account_enabled"].forEach(function(k){if(typeof v[k]==="boolean")V.prot[k]=v[k]});if(v.automod_links)Object.assign(V.links,v.automod_links);if(v.automod_newmembers)Object.assign(V.newm,v.automod_newmembers);if(v.automod_ratelimit)Object.assign(V.rate,v.automod_ratelimit)}
 draw();
 api("/api/guilds/"+G.id+"/modules/automod").then(function(d){merge(d&&d.values)}).catch(function(e){if(e&&e.message==="auth")return;loadErr=true})
 .then(function(){var pm=(PEND[G.id]||{}).automod;if(pm){var keep=(pm.body.automod_rules||[]).map(function(x){return x.id});V.rules=V.rules.filter(function(r){return !r.custom||keep.indexOf(r.id)>-1});merge(pm.body)}if(body.isConnected)draw()})}
