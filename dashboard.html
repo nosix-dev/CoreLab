@@ -1054,8 +1054,7 @@ var gen=catBox("GÉNÉRAL",true);
 gen.list.appendChild(navA("#/g/"+G.id,!r.m,"vue d’ensemble",ICO_HOME,"Vue d’ensemble"));
 gen.list.appendChild(navA("#/g/"+G.id+"/antiscam_test",r.m==="antiscam_test","test anti-scam",ICO_TEST,"Test anti-scam"));
 gen.list.appendChild(navA("#/g/"+G.id+"/commands",r.m==="commands","commandes personnalisation noms descriptions slash",ICO_CMD,"Commandes"));
-gen.list.appendChild(navA("#/g/"+G.id+"/embeds",r.m==="embeds","createur embeds messages boutons annonces",ICO_EMBED,"Créateur d’embeds"));
-gen.count(4);
+gen.count(3);
 var sui=catBox("SUIVI",SUIVI.some(function(m){return m.id===r.m}));
 SUIVI.forEach(function(m){var ic=h("span",{class:"ic"});ic.innerHTML=m.svg;ic.appendChild(h("span",{text:m.name}));
 sui.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:"sv"+(r.m===m.id?" on":""),"data-n":m.name.toLowerCase()+" "+m.kw},ic))});
@@ -1074,10 +1073,10 @@ extra.forEach(function(m){box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m
 box.count(mine.length+extra.length)});
 order.forEach(function(k){
 if(SEC.some(function(sg){return nz(sg.group)===nz(k)}))return;
-var open=!!(r.m&&(by[k].some(function(m){return m.id===r.m})||(k.toLowerCase()==="serveur"&&(r.m==="notifs"||r.m==="announcements"))));
+var open=!!(r.m&&(by[k].some(function(m){return m.id===r.m})||(k.toLowerCase()==="serveur"&&(r.m==="notifs"||r.m==="announcements"||r.m==="embeds"))));
 var box=catBox(k.toUpperCase(),open),n=by[k].length;
 by[k].forEach(function(m){box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m.id,m.name.toLowerCase(),ICO_MOD,cleanName(m.name),h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})))});
-if(k.toLowerCase()==="serveur"){box.list.appendChild(navA("#/g/"+G.id+"/notifs",r.m==="notifs","notifications youtube twitch tiktok instagram medal",ICO_BELL,"Notifications"));box.list.appendChild(navA("#/g/"+G.id+"/announcements",r.m==="announcements","annonces messages programmes planifies calendrier",ICO_CAL,"Annonces"));n+=2}
+if(k.toLowerCase()==="serveur"){box.list.appendChild(navA("#/g/"+G.id+"/notifs",r.m==="notifs","notifications youtube twitch tiktok instagram medal",ICO_BELL,"Notifications"));box.list.appendChild(navA("#/g/"+G.id+"/announcements",r.m==="announcements","annonces messages programmes planifies calendrier",ICO_CAL,"Annonces"));box.list.appendChild(navA("#/g/"+G.id+"/embeds",r.m==="embeds","createur embeds messages boutons annonces",ICO_EMBED,"Créateur d’embeds"));n+=3}
 box.count(n)});
 find.addEventListener("input",function(){var q=find.value.trim().toLowerCase();
 [].forEach.call(nav.querySelectorAll(".ng"),function(box){var any=false;
