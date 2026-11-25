@@ -157,3 +157,6 @@ html:has(#accueil) .heroTxt>:nth-child(5){animation-delay:2.3s}
 html:has(#accueil) .heroTxt>:nth-child(6){animation-delay:2.4s}
 html:has(#accueil) .heroTxt>:nth-child(n+7){animation-delay:2.5s}
 @media(prefers-reduced-motion:reduce){body:has(#accueil)::after{display:none!important}}
+
+/* plus de rond qui s'ouvre à l'arrivée sur une page (la fermeture au clic reste) */
+html:not(.fxout)::before,html:not(.fxout)::after{animation:none!important;visibility:hidden!important}
