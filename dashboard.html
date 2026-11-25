@@ -1249,14 +1249,14 @@ var user=m.username||m.user||m.tag||"",name=m.display_name||m.displayName||m.nic
 if(av&&!/^(https?:|data:)/i.test(av))av="https://cdn.discordapp.com/avatars/"+id+"/"+av+".png?size=64";
 return{id:id,name:String(name),user:String(user),avatar:av,bot:!!m.bot}}
 function memList(d){var a=Array.isArray(d)?d:((d&&(d.members||d.items||d.users))||[]);return a.map(memNorm).filter(Boolean)}
-function memSearch(gid,q){
+function memSearch(gid,q,bots){
 var meta=META[gid]||{};
 if(Array.isArray(meta.members)&&meta.members.length){var s=q.toLowerCase().replace(/^@/,"");
 return Promise.resolve(meta.members.map(memNorm).filter(function(m){return m&&(!s||m.name.toLowerCase().indexOf(s)>-1||m.user.toLowerCase().indexOf(s)>-1||m.id.indexOf(s)>-1)}).slice(0,25))}
 var st=MEMS[gid]||(MEMS[gid]={off:0,cache:{}});
 if(st.off&&Date.now()-st.off<60000)return Promise.reject({error:"not_found"});
-var key=q.toLowerCase();if(st.cache[key])return Promise.resolve(st.cache[key]);
-return api("/api/guilds/"+gid+"/members?limit=25&q="+encodeURIComponent(q)).then(function(d){var l=memList(d).slice(0,25);st.off=0;st.cache[key]=l;return l})
+var key=(bots?"b:":"")+q.toLowerCase();if(st.cache[key])return Promise.resolve(st.cache[key]);
+return api("/api/guilds/"+gid+"/members?limit=25"+(bots?"&bots=1":"")+"&q="+encodeURIComponent(q)).then(function(d){var l=memList(d).slice(0,25);st.off=0;st.cache[key]=l;return l})
 .catch(function(e){if(e&&e.message==="auth")throw e;if(e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error))st.off=Date.now();throw e})}
 function memberPicker(o){o=o||{};var gid=o.guild||CUR_G,sel=null,items=[],act=-1,seq=0,tm=0,isOpen=false;
 var inp=h("input",{type:"text",maxlength:60,placeholder:o.placeholder||"Rechercher un membre…","aria-label":o.label||"Membre",autocomplete:"off",role:"combobox","aria-expanded":"false"});
@@ -1279,7 +1279,7 @@ dd.hidden=false;isOpen=true;inp.setAttribute("aria-expanded","true")}
 function pick(m){sel=m;inp.value=m.name;wrap.classList.add("ok");close();if(self.onPick)self.onPick(m);else fire()}
 function query(delay){var q=inp.value.trim().replace(/^@/,""),my=++seq;clearTimeout(tm);
 if(!items.length)paint("Chargement des membres…");
-tm=setTimeout(function(){memSearch(gid,q).then(function(l){if(my!==seq)return;items=l;act=(l.length&&q)?0:-1;
+tm=setTimeout(function(){memSearch(gid,q,!!o.bots).then(function(l){if(my!==seq)return;items=l;act=(l.length&&q)?0:-1;
 paint(l.length?"":(q?"Aucun membre trouvé. "+(o.free===false?"":"Le texte saisi sera utilisé tel quel."):"Aucun membre à afficher."))})
 .catch(function(e){if(my!==seq||(e&&e.message==="auth"))return;items=[];paint("La liste des membres n’est pas disponible côté bot pour l’instant : saisissez un pseudo ou un ID.")})},delay)}
 inp.addEventListener("focus",function(){if(!sel)query(0)});
@@ -1310,9 +1310,10 @@ function membersField(f,val,onc){
 var sel=(Array.isArray(val)?val:[]).slice(),names={},box=h("div",{class:"chips"}),add=h("button",{class:"btn ghost sm",type:"button",text:"Ajouter"});
 var pk=memberPicker({placeholder:"Pseudo ou ID du membre…",label:"Ajouter un membre",onPick:function(m){names[m.id]=m.name;push(m.id)}}),inp=pk.input;
 function draw(){box.innerHTML="";sel.forEach(function(id){box.appendChild(h("span",{class:"chip",title:id},[names[id]||id,h("button",{type:"button","aria-label":"Retirer",text:"×",onclick:function(){sel=sel.filter(function(x){return x!==id});draw();onc()}})]))})}
-function push(v){v=String(v||"").trim();pk.clear();if(!v||sel.indexOf(v)>-1||sel.length>=50)return;sel.push(v);draw();onc()}
+function resolve(){var miss=sel.filter(function(id){return !names[id]&&/^\d{17,20}$/.test(id)}).slice(0,50);if(!miss.length||!CUR_G)return;api("/api/guilds/"+CUR_G+"/members?ids="+miss.join(",")).then(function(d){memList(d).forEach(function(m){names[m.id]=m.name});draw()}).catch(function(){})}
+function push(v){v=String(v||"").trim();pk.clear();if(!v||sel.indexOf(v)>-1||sel.length>=50)return;sel.push(v);draw();onc();resolve()}
 add.addEventListener("click",function(){push(pk.get())});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();push(pk.get())}});
-draw();return{el:h("div",{},[box,h("div",{class:"nm-add"},[pk.el,add])]),get:function(){return sel.slice()}}}
+draw();resolve();return{el:h("div",{},[box,h("div",{class:"nm-add"},[pk.el,add])]),get:function(){return sel.slice()}}}
 
 function daysField(val,onc){
 var L=["L","M","M","J","V","S","D"],N=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"],sel=(Array.isArray(val)?val:[0,1,2,3,4,5,6]).slice(),box=h("div",{class:"days"});
@@ -2259,8 +2260,8 @@ var chips=h("div",{class:"fchips"}),list=h("div",{class:"jrl"}),more=h("button",
 var search=h("input",{class:"find",type:"search",placeholder:"Rechercher un mot, un salon, un message…","aria-label":"Rechercher dans le journal"});
 var auto=h("input",{type:"checkbox"}),status=h("span",{class:"h"});
 var tb=h("div",{class:"tb"},[search,h("button",{class:"btn ghost sm",type:"button",text:"Actualiser",onclick:function(){load(true)}}),h("label",{class:"live2"},[auto,"Temps réel"])]);
-var fActor=memberPicker({placeholder:"Nom ou ID",label:"Auteur",guild:G.id}),fAct=h("select",{"aria-label":"Action"},[h("option",{value:"",text:"Toutes les actions"})]),fFrom=h("input",{type:"date","aria-label":"Du"}),fTo=h("input",{type:"date","aria-label":"Au"});
-var fTarget=memberPicker({placeholder:"Nom ou ID",label:"Cible",guild:G.id}),fChan=h("select",{"aria-label":"Salon"},[opt("","Tous les salons")].concat(((META[G.id]||{}).channels||[]).map(function(x){return opt(x.id,"# "+x.name)}))),fRole=h("select",{"aria-label":"Rôle"},[opt("","Tous les rôles")].concat(((META[G.id]||{}).roles||[]).map(function(x){return opt(x.id,x.name)})));
+var fActor=memberPicker({placeholder:"Nom ou ID",label:"Auteur",guild:G.id,bots:true}),fAct=h("select",{"aria-label":"Action"},[h("option",{value:"",text:"Toutes les actions"})]),fFrom=h("input",{type:"date","aria-label":"Du"}),fTo=h("input",{type:"date","aria-label":"Au"});
+var fTarget=memberPicker({placeholder:"Nom ou ID",label:"Cible",guild:G.id,bots:true}),fChan=h("select",{"aria-label":"Salon"},[opt("","Tous les salons")].concat(((META[G.id]||{}).channels||[]).map(function(x){return opt(x.id,"# "+x.name)}))),fRole=h("select",{"aria-label":"Rôle"},[opt("","Tous les rôles")].concat(((META[G.id]||{}).roles||[]).map(function(x){return opt(x.id,x.name)})));
 var flt=h("div",{class:"jrf"},[h("label",{class:"mini"},[h("span",{text:"Auteur"}),fActor.el]),h("label",{class:"mini"},[h("span",{text:"Cible"}),fTarget.el]),h("label",{class:"mini"},[h("span",{text:"Salon"}),fChan]),h("label",{class:"mini"},[h("span",{text:"Rôle"}),fRole]),h("label",{class:"mini"},[h("span",{text:"Action"}),fAct]),h("label",{class:"mini"},[h("span",{text:"Du"}),fFrom]),h("label",{class:"mini"},[h("span",{text:"Au"}),fTo])]);
 AUD_CATS.forEach(function(k){var b=h("button",{type:"button",class:k[0]===F.cat?"on":"",text:k[1],onclick:function(){F.cat=k[0];[].forEach.call(chips.children,function(x){x.className=x===b?"on":""});load(true)}});chips.appendChild(b)});
 c.appendChild(chips);c.appendChild(tb);c.appendChild(flt);c.appendChild(list);c.appendChild(more);c.appendChild(status);
