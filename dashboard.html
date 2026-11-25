@@ -431,6 +431,19 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .an-img .b{display:flex;gap:8px;flex-wrap:wrap}
 .an-img.drag{border-color:var(--ac);background:rgba(232,81,13,.06)}
 .an-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}
+.an-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.an-chips{display:flex;gap:6px;flex-wrap:wrap}
+.an-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:rgba(88,101,242,.16);color:#aab4ff}
+.an-chip.warn{background:rgba(237,66,69,.16);color:#ff8f91}
+.an-chip i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.an-men{margin-top:8px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);overflow:hidden}
+.an-men input{width:100%;height:40px;padding:0 12px;border:0;border-bottom:1px solid var(--ln);background:transparent;color:inherit;box-sizing:border-box}
+.an-men-list{max-height:220px;overflow:auto}
+.an-men-it{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.an-men-it:hover,.an-men-it.on{background:rgba(232,81,13,.12)}
+.an-men-it b{font-weight:600}.an-men-it small{color:var(--mu);font-size:12px;margin-left:auto}
+.an-men-it i{width:10px;height:10px;border-radius:50%;flex:none;background:#99aab5}
+.an-men-empty{padding:12px;color:var(--mu);font-size:13px}
 .an-cal{padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);margin-bottom:16px}
 .an-cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .an-cal-top b{font-size:17px;text-transform:capitalize}
@@ -1522,6 +1535,23 @@ function defaultDate(day){var n=new Date(),d=new Date(day.getFullYear(),day.getM
 function chanName(id){var ch=chans.filter(function(x){return x.id===id})[0];return ch?"#"+ch.name:"(salon supprimé)"}
 function fmt(t){return new Date(t).toLocaleString("fr-FR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
 function repText(a){if(a.repeat==="custom"){var u={second:"seconde(s)",day:"jour(s)",week:"semaine(s)",month:"mois"};return a.intervalValue?"Tous les "+a.intervalValue+" "+(u[a.intervalUnit]||""):"En boucle"}return REP[a.repeat]||a.repeat}
+/* Mentions : <@&id> → @Nom, et détection des mentions d'un texte */
+var rolesL=meta.roles||[];
+function roleOf(id){return rolesL.filter(function(r){return r.id===id})[0]}
+function pretty(t){return String(t).replace(/<@&(\d+)>/g,function(m,id){var r=roleOf(id);return r?"@"+r.name:"@rôle supprimé"})}
+function mentionsOf(t){t=String(t);var ids=[],re=/<@&(\d+)>/g,m;while((m=re.exec(t)))if(ids.indexOf(m[1])<0)ids.push(m[1]);
+return{everyone:/(^|\s)@everyone(?=\s|$|[.,!?;:])/.test(t),here:/(^|\s)@here(?=\s|$|[.,!?;:])/.test(t),roles:ids}}
+function roleColor(r){return r&&r.color?(typeof r.color==="number"?"#"+r.color.toString(16).padStart(6,"0"):r.color):"#99aab5"}
+function readDataUrl(f){return new Promise(function(ok,ko){var r=new FileReader();r.onload=function(){ok(r.result)};r.onerror=function(){ko({error:"read_failed"})};r.readAsDataURL(f)})}
+function sendErr(e){return e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error)?"L’envoi immédiat n’est pas encore présent sur le bot déployé. Redémarre CoreLab avec la dernière version.":e.error==="missing_permissions"?"Le bot n’a pas la permission d’écrire (ou de mentionner ces rôles) dans ce salon.":errText(e)}
+function confirmSend(msgText,chId){var m=mentionsOf(msgText),w="";
+if(m.everyone)w="\n\n⚠ Ce message va notifier TOUT le serveur (@everyone).";else if(m.here)w="\n\n⚠ Ce message va notifier les membres en ligne (@here).";else if(m.roles.length)w="\n\nRôles notifiés : "+m.roles.map(function(id){var r=roleOf(id);return r?"@"+r.name:"@rôle supprimé"}).join(", ");
+return confirm("Envoyer maintenant dans "+chanName(chId)+" ?"+w)}
+function sendSaved(a,btn){if(busy)return;if(!confirmSend(a.message,a.channelId))return;
+busy=true;if(btn)btn.disabled=true;
+api(url+"/"+a.id+"/send",{method:"POST"}).then(function(){toast("Annonce envoyée dans "+chanName(a.channelId)+" ✓")})
+.catch(function(e){if(e&&e.message==="auth")return;toast(sendErr(e),true)})
+.then(function(){busy=false;if(btn)btn.disabled=false})}
 /* Dates d'envoi d'une annonce entre deux instants (pour le calendrier) */
 function occurrences(a,from,to){var out=[],t=a.nextRun,guard=0;
 if(a.paused)return out;
@@ -1546,7 +1576,7 @@ for(var i=0;i<42;i++){(function(day){
 var k=day.getFullYear()+"-"+day.getMonth()+"-"+day.getDate(),past=day<today,isToday=day.getTime()===today.getTime();
 var cell=h("button",{type:"button",class:"an-day"+(day.getMonth()!==viewM?" out":"")+(past?" past":"")+(isToday?" today":""),onclick:function(){if(!past)openForm(null,defaultDate(day))}},[h("span",{class:"n",text:String(day.getDate())})]);
 (byDay[k]||[]).sort(function(x,y){return x.t-y.t}).forEach(function(o){var d=new Date(o.t);
-cell.appendChild(h("span",{class:"an-ev"+(o.a.repeat==="once"?"":" rep"),title:o.a.message,text:pad(d.getHours())+":"+pad(d.getMinutes())+" "+(o.a.hasImage?"🖼 ":"")+o.a.message,onclick:function(e){e.stopPropagation();openForm(o.a)}}))});
+cell.appendChild(h("span",{class:"an-ev"+(o.a.repeat==="once"?"":" rep"),title:pretty(o.a.message),text:pad(d.getHours())+":"+pad(d.getMinutes())+" "+(o.a.hasImage?"🖼 ":"")+pretty(o.a.message),onclick:function(e){e.stopPropagation();openForm(o.a)}}))});
 grid.appendChild(cell)})(new Date(start.getFullYear(),start.getMonth(),start.getDate()+i))}
 cal.appendChild(grid)}
 function drawList(){
@@ -1555,8 +1585,9 @@ listBox.appendChild(h("h3",{text:"Toutes les annonces"}));
 listBox.appendChild(h("p",{class:"h",text:items.length+" sur "+max+" utilisées"}));
 if(!items.length){listBox.appendChild(h("p",{class:"muted",style:"margin:0",text:"Rien de prévu pour l’instant. Clique sur un jour du calendrier pour commencer."}));return}
 items.forEach(function(a){listBox.appendChild(h("div",{class:"an-item"},[
-h("div",{},[h("p",{text:a.message}),h("small",{text:[chanName(a.channelId),(a.paused?"⏸ En pause · ":"")+"Prochain envoi : "+fmt(a.nextRun),repText(a)].join(" · ")+(a.hasImage?" · 📎 image":"")})]),
+h("div",{},[h("p",{text:pretty(a.message)}),h("small",{text:[chanName(a.channelId),(a.paused?"⏸ En pause · ":"")+"Prochain envoi : "+fmt(a.nextRun),repText(a)].join(" · ")+(a.hasImage?" · 📎 image":"")})]),
 h("div",{class:"acts"},[
+h("button",{class:"btn ghost sm",type:"button",text:"Envoyer maintenant",onclick:function(ev){sendSaved(a,ev.currentTarget)}}),
 h("button",{class:"btn ghost sm",type:"button",text:"Modifier",onclick:function(){openForm(a)}}),
 h("button",{class:"btn ghost sm",type:"button",text:a.paused?"Reprendre":"Pause",onclick:function(){togglePause(a)}}),
 h("button",{class:"btn ghost sm",type:"button",text:"Supprimer",onclick:function(){remove(a)}})])]))})}
@@ -1565,13 +1596,49 @@ function openForm(a,when){
 if(!a&&items.length>=max){toast(max+" annonces maximum.",true);return}
 editing=a;formBox.innerHTML="";
 var msg=h("textarea",{maxlength:1900,placeholder:"La soirée jeux commence dans une heure ! 🎲"});msg.value=a?a.message:"";
-var count=h("small",{class:"h"});function upd(){count.textContent=msg.value.length+"/1900 · La mise en forme Discord marche : **gras**, mentions, liens."}msg.addEventListener("input",upd);upd();
+var count=h("small",{class:"h"});function upd(){count.textContent=msg.value.length+"/1900 · Tape @ ou clique sur « Mention » pour @everyone, @here ou un rôle. La mise en forme Discord marche : **gras**, liens."}msg.addEventListener("input",upd);upd();
 var ch=h("select",{},[h("option",{value:"",text:"Choisir un salon"})].concat(chans.map(function(x){return h("option",{value:x.id,text:"# "+x.name})})));ch.value=a?a.channelId:"";
 var dt=h("input",{type:"datetime-local"});dt.value=toLocalInput(a?a.nextRun:when);dt.min=toLocalInput(Date.now());
 var rp=h("select",{},Object.keys(REP).map(function(k){return h("option",{value:k,text:REP[k]})}));
 if(a&&a.repeat==="custom")rp.appendChild(h("option",{value:"custom",text:repText(a)+" (/planifier)"}));
 rp.value=a?a.repeat:"once";
 var save=h("button",{class:"btn",type:"button",text:a?"Enregistrer":"Programmer"});
+var sendBtn=h("button",{class:"btn ghost",type:"button",text:"🚀 Envoyer maintenant",title:"Publie le message tout de suite, sans toucher à la programmation"});
+/* Mentions : bouton « ＋ Mention », autocomplétion avec @, pastilles des mentions détectées */
+var menBox=h("div",{class:"an-men",style:"display:none"}),menSearch=h("input",{type:"text",placeholder:"Chercher un rôle…","aria-label":"Chercher un rôle"}),menList=h("div",{class:"an-men-list"}),menOpen=false,menAuto=false,menSel=0,menItems=[];
+var chipBox=h("div",{class:"an-chips"});
+menBox.appendChild(menSearch);menBox.appendChild(menList);
+function allMen(){return[{label:"@everyone",ins:"@everyone",sub:"Tout le serveur",color:"#ed4245"},{label:"@here",ins:"@here",sub:"Membres en ligne",color:"#3ba55d"}].concat(rolesL.filter(function(r){return r.name!=="@everyone"}).map(function(r){return{label:"@"+r.name,ins:"<@&"+r.id+">",sub:"Rôle",color:roleColor(r)}}))}
+function menQuery(){if(menAuto){var m=/(^|\s)@([^\s@]*)$/.exec(msg.value.slice(0,msg.selectionStart==null?msg.value.length:msg.selectionStart));return m?m[2].toLowerCase():""}return menSearch.value.trim().replace(/^@/,"").toLowerCase()}
+function drawMen(){var q=menQuery();menList.innerHTML="";
+menItems=allMen().filter(function(x){return x.label.toLowerCase().indexOf(q)>=0}).slice(0,60);
+if(menSel>=menItems.length)menSel=0;
+if(!menItems.length){menList.appendChild(h("div",{class:"an-men-empty",text:"Aucun rôle trouvé."}));return}
+menItems.forEach(function(x,i){menList.appendChild(h("button",{type:"button",class:"an-men-it"+(i===menSel?" on":""),onmousedown:function(e){e.preventDefault()},onclick:function(){insertMen(x.ins)}},[h("i",{style:"background:"+x.color}),h("b",{text:x.label}),h("small",{text:x.sub})]))})}
+function openMen(auto){menOpen=true;menAuto=!!auto;menBox.style.display="block";menSearch.style.display=auto?"none":"block";if(!auto){menSearch.value="";menSel=0}drawMen();if(!auto)menSearch.focus()}
+function closeMen(){menOpen=false;menAuto=false;menBox.style.display="none"}
+function insertMen(t){var v=msg.value,s=msg.selectionStart==null?v.length:msg.selectionStart,e=msg.selectionEnd==null?s:msg.selectionEnd,before=v.slice(0,s),after=v.slice(e);
+var m=menAuto?/(^|\s)@([^\s@]*)$/.exec(before):null;if(m)before=before.slice(0,before.length-m[2].length-1);
+var needSp=before&&!/\s$/.test(before)?" ":"";
+var ins=needSp+t+" ",nv=before+ins+after;
+if(nv.length>1900){toast("Message trop long pour ajouter cette mention.",true);return}
+msg.value=nv;var pos=(before+ins).length;closeMen();msg.focus();msg.setSelectionRange(pos,pos);upd();drawChips();valid()}
+function drawChips(){chipBox.innerHTML="";var m=mentionsOf(msg.value);
+if(m.everyone)chipBox.appendChild(h("span",{class:"an-chip warn",text:"@everyone"}));
+if(m.here)chipBox.appendChild(h("span",{class:"an-chip warn",text:"@here"}));
+m.roles.forEach(function(id){var r=roleOf(id);chipBox.appendChild(h("span",{class:"an-chip"},[h("i",{style:"color:"+roleColor(r)}),r?"@"+r.name:"@rôle supprimé"]))})}
+var menBtn=h("button",{class:"btn ghost sm",type:"button",text:"＋ Mention",onclick:function(){if(menOpen&&!menAuto)closeMen();else openMen(false)}});
+menSearch.addEventListener("input",function(){menSel=0;drawMen()});
+menSearch.addEventListener("keydown",function(e){if(e.key==="Escape"){closeMen();msg.focus()}else if(e.key==="Enter"&&menItems[menSel]){e.preventDefault();insertMen(menItems[menSel].ins)}else if(e.key==="ArrowDown"){e.preventDefault();menSel=Math.min(menSel+1,menItems.length-1);drawMen()}else if(e.key==="ArrowUp"){e.preventDefault();menSel=Math.max(menSel-1,0);drawMen()}});
+msg.addEventListener("input",function(){drawChips();var before=msg.value.slice(0,msg.selectionStart==null?msg.value.length:msg.selectionStart);
+if(/(^|\s)@([^\s@]*)$/.test(before)){if(!menOpen||menAuto){menAuto=true;menOpen=true;menBox.style.display="block";menSearch.style.display="none";menSel=0;drawMen()}}else if(menAuto)closeMen()});
+msg.addEventListener("keydown",function(e){if(!(menOpen&&menAuto))return;
+if(e.key==="ArrowDown"){e.preventDefault();menSel=Math.min(menSel+1,menItems.length-1);drawMen()}
+else if(e.key==="ArrowUp"){e.preventDefault();menSel=Math.max(menSel-1,0);drawMen()}
+else if((e.key==="Enter"||e.key==="Tab")&&menItems[menSel]){e.preventDefault();insertMen(menItems[menSel].ins)}
+else if(e.key==="Escape"){e.preventDefault();closeMen()}});
+msg.addEventListener("blur",function(){if(menAuto)setTimeout(closeMen,150)});
+drawChips();
 /* Image jointe : choisie sur le PC (ou glissée), envoyée après l'enregistrement */
 var pendingFile=null,dropImage=false,previewUrl=null;
 var fileIn=h("input",{type:"file",accept:"image/png,image/jpeg,image/gif,image/webp",style:"display:none"});
@@ -1593,12 +1660,24 @@ imgBox.addEventListener("dragleave",function(){imgBox.classList.remove("drag")})
 imgBox.addEventListener("drop",function(e){e.preventDefault();imgBox.classList.remove("drag");pick(e.dataTransfer.files&&e.dataTransfer.files[0])});
 drawImg();
 if(a&&a.hasImage)fetch(API+url+"/"+a.id+"/image",{headers:{Authorization:"Bearer "+token}}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){if(!pendingFile&&!dropImage)setPreview(URL.createObjectURL(b))}).catch(function(){});
-function valid(){save.disabled=busy||!msg.value.trim()||!ch.value||!dt.value}
+function valid(){save.disabled=busy||!msg.value.trim()||!ch.value||!dt.value;sendBtn.disabled=busy||!msg.value.trim()||!ch.value}
 [msg,ch,dt,rp].forEach(function(el){el.addEventListener("input",valid);el.addEventListener("change",valid)});valid();
+sendBtn.addEventListener("click",function(){
+if(busy)return;
+if(!msg.value.trim()||!ch.value){toast("Écris un message et choisis un salon.",true);return}
+if(!confirmSend(msg.value,ch.value))return;
+busy=true;valid();sendBtn.textContent="Envoi…";
+var body={message:msg.value.trim(),channelId:ch.value,mentions:mentionsOf(msg.value)};
+var prep=pendingFile?readDataUrl(pendingFile).then(function(u){body.image=u}):Promise.resolve();
+if(!pendingFile&&a&&a.hasImage&&!dropImage)body.announcementId=a.id;
+prep.then(function(){return api(url+"/send-now",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})})
+.then(function(){toast("Message envoyé dans "+chanName(ch.value)+" ✓")})
+.catch(function(e){if(e&&e.message==="auth")return;toast(e&&e.error==="read_failed"?"Impossible de lire l’image.":sendErr(e),true)})
+.then(function(){busy=false;sendBtn.textContent="🚀 Envoyer maintenant";valid()})});
 save.addEventListener("click",function(){
 var t=new Date(dt.value).getTime();if(!(t>Date.now())){toast("Choisis une date dans le futur.",true);return}
 busy=true;valid();
-var payload={message:msg.value.trim(),channelId:ch.value,nextRun:t,repeat:rp.value,paused:a?a.paused:false};
+var payload={message:msg.value.trim(),channelId:ch.value,nextRun:t,repeat:rp.value,paused:a?a.paused:false,mentions:mentionsOf(msg.value)};
 api(a?url+"/"+a.id:url,{method:a?"PUT":"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
 .then(function(d){var x=d.announcement;
 if(pendingFile)return api(url+"/"+x.id+"/image",{method:"POST",body:pendingFile}).then(function(){x.hasImage=true;return x}).catch(function(e){if(e&&e.message==="auth")throw e;toast(e&&e.error==="too_big"?"Image trop lourde (8 Mo maximum).":e&&e.error==="invalid_image"?"Le fichier n’est pas une image valide.":"Annonce enregistrée, mais l’image n’a pas pu être envoyée.",true);return x});
@@ -1610,17 +1689,18 @@ return x})
 formBox.appendChild(h("div",{class:"an-form"},[
 h("h3",{text:a?"Modifier l’annonce":"Nouvelle annonce"}),
 h("label",{class:"ticket-field"},[h("span",{text:"Message"}),msg,count]),
+h("div",{class:"an-tools"},[menBtn,chipBox]),menBox,
 h("div",{class:"an-row"},[
 h("label",{class:"ticket-field"},[h("span",{text:"Salon"}),ch]),
 h("label",{class:"ticket-field"},[h("span",{text:a?"Prochain envoi":"Premier envoi"}),dt,h("small",{class:"h",text:"Dans ton fuseau horaire"})]),
 h("label",{class:"ticket-field"},[h("span",{text:"Répéter"}),rp])]),
 imgBox,
-h("div",{class:"an-actions"},[h("button",{class:"btn ghost",type:"button",text:"Annuler",onclick:closeForm}),save])]));
+h("div",{class:"an-actions"},[h("button",{class:"btn ghost",type:"button",text:"Annuler",onclick:closeForm}),sendBtn,save])]));
 DIRTY=true;formBox.scrollIntoView({behavior:"smooth",block:"start"});msg.focus()}
 function closeForm(){formBox.innerHTML="";editing=null;DIRTY=anyPend()}
 function sortItems(){items.sort(function(x,y){return x.nextRun-y.nextRun})}
 function togglePause(a){
-var payload={message:a.message,channelId:a.channelId,nextRun:a.nextRun,repeat:a.repeat,paused:!a.paused};
+var payload={message:a.message,channelId:a.channelId,nextRun:a.nextRun,repeat:a.repeat,paused:!a.paused,mentions:mentionsOf(a.message)};
 if(a.paused&&a.nextRun<Date.now()){toast("La date de cette annonce est passée : modifie-la pour la reprendre.",true);return}
 api(url+"/"+a.id,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
 .then(function(d){var i=items.findIndex(function(o){return o.id===a.id});items[i]=d.announcement;draw();toast(d.announcement.paused?"Annonce en pause":"Annonce reprise ✓")})
