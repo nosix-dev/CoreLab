@@ -2,15 +2,15 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 :root,:root[data-theme="dark"]{
-  --bg:#0f1319;--s1:#151a22;--s2:#1b212b;--ln:#262e3a;--tx:#e8ecf2;--mu:#96a0b0;
+  --bg:#1e1f22;--s1:#2b2d31;--s2:#313338;--ln:#3f4147;--tx:#f2f3f5;--mu:#b5bac1;
   --ac:#e8510d;--ac2:#ff7a3d;--r:8px;--nav:60px;
-  --fg:#e8ecf2;--mut:#96a0b0;--card:#151a22;--bd:#262e3a;
+  --fg:#f2f3f5;--mut:#b5bac1;--card:#2b2d31;--bd:#3f4147;
   --f:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;--m:var(--mono);
 }
 :root[data-theme="light"]{
-  --bg:#f5f6f8;--s1:#ffffff;--s2:#eef0f4;--ln:#dfe3ea;--tx:#12161d;--mu:#5b6574;
-  --ac:#d9480f;--ac2:#d9480f;--fg:#12161d;--mut:#5b6574;--card:#ffffff;--bd:#dfe3ea;
+  --bg:#f5f6f8;--s1:#ffffff;--s2:#eef0f4;--ln:#dfe3ea;--tx:#1e1f22;--mu:#5b6574;
+  --ac:#d9480f;--ac2:#d9480f;--fg:#1e1f22;--mut:#5b6574;--card:#ffffff;--bd:#dfe3ea;
 }
 
 /* fond et texte : plus de halos */
@@ -76,7 +76,7 @@ table{border-collapse:collapse}
 th{font-weight:500;color:var(--mu)}
 
 /* ===== style cyber-protection ===== */
-:root,:root[data-theme="dark"]{--bg:#0b0f14;--s1:#10161d;--s2:#161d26;--ln:#222c38;--card:#10161d;--bd:#222c38;--ok:#2fb872}
+:root,:root[data-theme="dark"]{--bg:#1e1f22;--s1:#2b2d31;--s2:#313338;--ln:#3f4147;--card:#2b2d31;--bd:#3f4147;--ok:#2fb872}
 /* grille de fond discrète, estompée vers le bas */
 html body{background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:44px 44px;background-attachment:fixed}
 :root[data-theme="light"] body{background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px)}
@@ -142,7 +142,7 @@ h2::before{content:"";display:block;width:28px;height:2px;background:var(--ac);m
 .sfoot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(47,184,114,.2);flex:none}
 
 /* ===== animation d'entrée : initialisation de la protection (page d'accueil, à chaque chargement) ===== */
-#intro{position:fixed;inset:0;z-index:99999;pointer-events:none;padding:26px;box-sizing:border-box;display:grid;place-items:center;background-color:#0b0f14;
+#intro{position:fixed;inset:0;z-index:99999;pointer-events:none;padding:26px;box-sizing:border-box;display:grid;place-items:center;background-color:#1e1f22;
  background-image:var(--hud);background-size:26px 2px,2px 26px,26px 2px,2px 26px,26px 2px,2px 26px,26px 2px,2px 26px;
  background-position:0 0,0 0,100% 0,100% 0,0 100%,0 100%,100% 100%,100% 100%;background-origin:content-box;background-repeat:no-repeat;
  animation:clov 2.4s forwards}

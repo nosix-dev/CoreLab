@@ -62,11 +62,11 @@ h1 em,h2 em,.gl{font-style:normal;color:var(--ac2,#ff7a3d);text-shadow:0 0 14px 
 /* ── rail de sections (index) ── */
 #fxrail{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;text-align:right;pointer-events:none;font-family:var(--f,system-ui)}
 #fxrail .n{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff}
-#fxrail .n i{font-style:normal;color:var(--mu,#a09cad);opacity:.5}
+#fxrail .n i{font-style:normal;color:var(--mu,#b5bac1);opacity:.5}
 #fxrail .l{margin-top:6px;font:700 10px var(--mono,monospace);letter-spacing:.2em;text-transform:uppercase}
 #fxrail .l::after{content:"";display:inline-block;width:34px;height:1px;margin-left:10px;vertical-align:middle;background:var(--ac);box-shadow:0 0 8px var(--ac)}
 #fxrail .t{display:flex;flex-direction:column;align-items:flex-end;gap:7px;margin-top:14px}
-#fxrail .t b{display:block;width:8px;height:1px;background:var(--ln,#2b2934);transition:width .3s,background .3s}
+#fxrail .t b{display:block;width:8px;height:1px;background:var(--ln,#3f4147);transition:width .3s,background .3s}
 #fxrail .t b.on{width:22px;background:var(--ac);box-shadow:0 0 8px var(--ac)}
 @media(max-width:1360px){#fxrail{display:none}}
 
@@ -86,7 +86,7 @@ h1 em,h2 em,.gl{font-style:normal;color:var(--ac2,#ff7a3d);text-shadow:0 0 14px 
 /* ── transition de page en portail (iris néon) ── */
 @property --fxr{syntax:"<length>";inherits:false;initial-value:150vmax}
 html::before,html::after{content:"";position:fixed;pointer-events:none;visibility:hidden;--fxr:150vmax}
-html::after{inset:0;z-index:2147483000;background:#0f1319;-webkit-mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
+html::after{inset:0;z-index:2147483000;background:#1e1f22;-webkit-mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
 html::before{left:50%;top:50%;z-index:2147483001;width:calc(var(--fxr) * 2);height:calc(var(--fxr) * 2);transform:translate(-50%,-50%);border-radius:50%;border:2px solid #ffb089;box-shadow:0 0 18px #e8510d,0 0 60px #e8510d,inset 0 0 40px rgba(232,81,13,.5);animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
 html.fxout{pointer-events:none}
 html.fxout::before,html.fxout::after{animation:fxClose .55s cubic-bezier(.5,0,.75,.2) both}
@@ -95,7 +95,7 @@ html.fxout::before,html.fxout::after{animation:fxClose .55s cubic-bezier(.5,0,.7
 @media(prefers-reduced-motion:reduce){html::before,html::after{display:none!important}}
 
 /* ── bouton des sons ── */
-#fxsnd{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;width:42px;height:42px;border-radius:50%;border:1px solid var(--ln,#2b2934);background:rgba(22,21,28,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--mu,#a09cad);display:grid;place-items:center;cursor:pointer;padding:0;transition:color .2s,border-color .2s,box-shadow .2s}
+#fxsnd{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;width:42px;height:42px;border-radius:50%;border:1px solid var(--ln,#3f4147);background:rgba(43,45,49,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--mu,#b5bac1);display:grid;place-items:center;cursor:pointer;padding:0;transition:color .2s,border-color .2s,box-shadow .2s}
 #fxsnd:hover{color:#fff;border-color:var(--ac,#e8510d)}
 #fxsnd[aria-pressed=true]{color:#ff9d6b;border-color:var(--ac,#e8510d);box-shadow:0 0 14px rgba(232,81,13,.55)}
 #fxsnd svg{width:20px;height:20px}
