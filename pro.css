@@ -160,3 +160,8 @@ html:has(#accueil) .heroTxt>:nth-child(n+7){animation-delay:2.5s}
 
 /* plus de rond qui s'ouvre à l'arrivée sur une page (la fermeture au clic reste) */
 html:not(.fxout)::before,html:not(.fxout)::after{animation:none!important;visibility:hidden!important}
+
+/* fondu à l'arrivée sur chaque page (et à chaque changement de vue dans le dashboard) */
+@keyframes pgfade{from{opacity:0}to{opacity:1}}
+body{animation:pgfade .5s ease-out backwards!important}
+.content{animation:pgfade .35s ease-out backwards}
