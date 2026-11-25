@@ -86,7 +86,7 @@ h1 em,h2 em,.gl{font-style:normal;color:var(--ac2,#ff7a3d);text-shadow:0 0 14px 
 /* ── transition de page en portail (iris néon) ── */
 @property --fxr{syntax:"<length>";inherits:false;initial-value:150vmax}
 html::before,html::after{content:"";position:fixed;pointer-events:none;visibility:hidden;--fxr:150vmax}
-html::after{inset:0;z-index:2147483000;background:#0e0d12;-webkit-mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
+html::after{inset:0;z-index:2147483000;background:#0f1319;-webkit-mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));mask:radial-gradient(circle at 50% 50%,transparent var(--fxr),#000 calc(var(--fxr) + 1px));animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
 html::before{left:50%;top:50%;z-index:2147483001;width:calc(var(--fxr) * 2);height:calc(var(--fxr) * 2);transform:translate(-50%,-50%);border-radius:50%;border:2px solid #ffb089;box-shadow:0 0 18px #e8510d,0 0 60px #e8510d,inset 0 0 40px rgba(232,81,13,.5);animation:fxOpen .95s cubic-bezier(.65,0,.25,1) .05s both}
 html.fxout{pointer-events:none}
 html.fxout::before,html.fxout::after{animation:fxClose .55s cubic-bezier(.5,0,.75,.2) both}
