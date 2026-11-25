@@ -1543,13 +1543,14 @@ function mentionsOf(t){t=String(t);var ids=[],re=/<@&(\d+)>/g,m;while((m=re.exec
 return{everyone:/(^|\s)@everyone(?=\s|$|[.,!?;:])/.test(t),here:/(^|\s)@here(?=\s|$|[.,!?;:])/.test(t),roles:ids}}
 function roleColor(r){return r&&r.color?(typeof r.color==="number"?"#"+r.color.toString(16).padStart(6,"0"):r.color):"#99aab5"}
 function readDataUrl(f){return new Promise(function(ok,ko){var r=new FileReader();r.onload=function(){ok(r.result)};r.onerror=function(){ko({error:"read_failed"})};r.readAsDataURL(f)})}
-function sendErr(e){return e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error)?"L’envoi immédiat n’est pas encore présent sur le bot déployé. Redémarre CoreLab avec la dernière version.":e.error==="missing_permissions"?"Le bot n’a pas la permission d’écrire (ou de mentionner ces rôles) dans ce salon.":errText(e)}
+function sendErr(e){return e&&(e.error==="not_found"||e.error==="unknown_route"||!e.error)?"L’envoi immédiat n’est pas encore présent sur le bot déployé. Redémarre CoreLab avec la dernière version.":e.error==="missing_permissions"?"Le bot n’a pas la permission d’écrire (ou d’envoyer une image) dans ce salon.":e.error==="too_fast"?"Doucement : attends quelques secondes entre deux envois.":e.error==="send_failed"?"Discord a refusé le message. Vérifie les permissions du bot.":errText(e)}
+function sentMsg(r,chId){var w=(r&&r.warnings)||[],t="Message envoyé dans "+chanName(chId)+" ✓";if(w.indexOf("everyone")>=0)t+=" — mais le bot ne peut pas notifier @everyone/@here (permission manquante).";else if(w.indexOf("roles")>=0)t+=" — mais certains rôles ne seront pas notifiés (rôle non mentionnable).";return t}
 function confirmSend(msgText,chId){var m=mentionsOf(msgText),w="";
 if(m.everyone)w="\n\n⚠ Ce message va notifier TOUT le serveur (@everyone).";else if(m.here)w="\n\n⚠ Ce message va notifier les membres en ligne (@here).";else if(m.roles.length)w="\n\nRôles notifiés : "+m.roles.map(function(id){var r=roleOf(id);return r?"@"+r.name:"@rôle supprimé"}).join(", ");
 return confirm("Envoyer maintenant dans "+chanName(chId)+" ?"+w)}
 function sendSaved(a,btn){if(busy)return;if(!confirmSend(a.message,a.channelId))return;
 busy=true;if(btn)btn.disabled=true;
-api(url+"/"+a.id+"/send",{method:"POST"}).then(function(){toast("Annonce envoyée dans "+chanName(a.channelId)+" ✓")})
+api(url+"/"+a.id+"/send",{method:"POST"}).then(function(r){toast(sentMsg(r,a.channelId),(r&&r.warnings&&r.warnings.length)?true:false)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(sendErr(e),true)})
 .then(function(){busy=false;if(btn)btn.disabled=false})}
 /* Dates d'envoi d'une annonce entre deux instants (pour le calendrier) */
@@ -1671,7 +1672,7 @@ var body={message:msg.value.trim(),channelId:ch.value,mentions:mentionsOf(msg.va
 var prep=pendingFile?readDataUrl(pendingFile).then(function(u){body.image=u}):Promise.resolve();
 if(!pendingFile&&a&&a.hasImage&&!dropImage)body.announcementId=a.id;
 prep.then(function(){return api(url+"/send-now",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})})
-.then(function(){toast("Message envoyé dans "+chanName(ch.value)+" ✓")})
+.then(function(r){toast(sentMsg(r,ch.value),(r&&r.warnings&&r.warnings.length)?true:false)})
 .catch(function(e){if(e&&e.message==="auth")return;toast(e&&e.error==="read_failed"?"Impossible de lire l’image.":sendErr(e),true)})
 .then(function(){busy=false;sendBtn.textContent="🚀 Envoyer maintenant";valid()})});
 save.addEventListener("click",function(){
