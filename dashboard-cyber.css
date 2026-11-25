@@ -93,3 +93,31 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cy-ban.low .cy-sh .o{stroke:var(--bad)}.cy-ban.low .cy-sh .k{stroke:var(--bad)}.cy-ban.low .cy-bar b{background:var(--bad)}
 @media(max-width:700px){.cy-ban{grid-template-columns:64px minmax(0,1fr);padding:16px}.cy-sh{width:64px;height:71px}.cy-sc{grid-column:1/-1;text-align:left}.cy-in h3{font-size:19px}}
 @media(prefers-reduced-motion:reduce){.cy-ban::before,.cy-sh .sc2,.cy-st i{animation:none}.cy-bar b{transition:none}}
+
+/* ── liste des serveurs : grille « bento », halo coloré tiré de l'icône ── */
+.sl-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))!important;grid-auto-flow:dense;gap:16px!important}
+.sl-card{position:relative;display:flex!important;flex-direction:column;isolation:isolate;overflow:hidden;min-height:230px;border-radius:10px!important;background-color:var(--s1)!important;animation:slIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*70ms);transition:transform .25s,border-color .25s,box-shadow .25s!important}
+.sl-card:hover{transform:translateY(-5px)!important;border-color:var(--ac)!important;box-shadow:0 18px 40px -14px rgba(232,81,13,.55)!important}
+.sl-card.feat{grid-column:span 2;grid-row:span 2}
+.sl-ban{position:absolute!important;z-index:-1;top:0;left:0;right:0;height:170px!important;background:radial-gradient(ellipse at 30% 0,rgba(232,81,13,.55),transparent 70%) center/cover;filter:blur(26px) saturate(1.5);transform:scale(1.35);opacity:.6;-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent);transition:opacity .3s,transform .5s}
+.sl-card:hover .sl-ban{opacity:.95;transform:scale(1.5)}
+.sl-card.feat .sl-ban{height:320px!important}
+.sl-in{margin-top:62px!important;padding:0 22px 16px!important;flex:1}
+.sl-card.feat .sl-in{margin-top:150px!important}
+.sl-in .av{border-radius:20px!important;border:3px solid var(--s1)!important;box-shadow:0 0 0 1px var(--ln),0 14px 30px rgba(0,0,0,.45)}
+.sl-in .av img{border-radius:0}
+.sl-in b{font-size:19px!important;margin:12px 0 6px!important}
+.sl-card.feat .sl-in b{font-size:30px!important;letter-spacing:-.02em}
+.sl-meta{font-family:var(--mono);font-size:12.5px!important}
+.sl-top{padding:1px 8px;border-radius:4px;background:rgba(232,81,13,.16);color:var(--ac2);box-shadow:inset 0 0 0 1px rgba(232,81,13,.4)}
+.sl-bot{padding:13px 22px!important;background:rgba(0,0,0,.14)}
+.sl-on{font-family:var(--mono);font-size:12.5px!important}
+.sl-on::before{animation:cyBlink 2.4s infinite}
+.sl-go{font-weight:600;font-size:14px;color:var(--mu);transition:color .2s,transform .2s}
+.sl-card:hover .sl-go{color:var(--ac2);transform:translateX(5px)}
+.sl-row{border-radius:8px!important}
+.sl-row .btn{background:transparent!important;border-color:var(--ac)!important;color:var(--ac2)!important}
+.sl-row .btn:hover{background:var(--ac)!important;color:#fff!important}
+@keyframes slIn{from{opacity:0;transform:translateY(18px) scale(.97)}}
+@media(max-width:700px){.sl-card.feat{grid-column:span 1;grid-row:span 1}.sl-card.feat .sl-ban{height:170px!important}.sl-card.feat .sl-in{margin-top:62px!important}.sl-card.feat .sl-in b{font-size:19px!important}}
+@media(prefers-reduced-motion:reduce){.sl-card{animation:none}.sl-ban,.sl-go{transition:none}}

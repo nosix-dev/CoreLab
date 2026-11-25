@@ -970,10 +970,13 @@ var list=all.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>-1}),
 if(tab==="with")a=[];if(tab==="add")w=[];
 if(!w.length&&!a.length){body.appendChild(h("div",{class:"empty",text:"Aucun serveur ne correspond."}));return}
 if(w.length){body.appendChild(head("Avec CoreLab",w.length));
-body.appendChild(h("div",{class:"sl-grid"},w.map(function(s){var meta=[];
+w.sort(function(x,y){return (y.members||0)-(x.members||0)});
+body.appendChild(h("div",{class:"sl-grid"},w.map(function(s,i){var meta=[],feat=i===0&&w.length>2,ban=h("div",{class:"sl-ban"});
+if(s.icon)ban.style.backgroundImage="url(https://cdn.discordapp.com/icons/"+s.id+"/"+s.icon+".png?size=256)";
+if(feat)meta.push(h("span",{class:"sl-top",text:"Plus grande communauté"}));
 if(role(s))meta.push(h("span",{text:role(s)}));if(typeof s.members==="number")meta.push(h("span",{text:fmtN(s.members)+" membres"}));
-return h("div",{class:"sl-card"},[h("div",{class:"sl-ban"}),h("div",{class:"sl-in"},[icon(s.id,s.icon,s.name,56),h("b",{text:s.name}),h("div",{class:"sl-meta"},meta)]),
-h("div",{class:"sl-bot"},[h("span",{class:"sl-on",text:"Connecté"}),h("a",{class:"btn ghost sm",href:"#/g/"+s.id,text:"Ouvrir →"})])])})))}
+return h("a",{class:"sl-card"+(feat?" feat":""),href:"#/g/"+s.id,style:"--i:"+i},[ban,h("div",{class:"sl-in"},[icon(s.id,s.icon,s.name,feat?96:64),h("b",{text:s.name}),h("div",{class:"sl-meta"},meta)]),
+h("div",{class:"sl-bot"},[h("span",{class:"sl-on",text:"Connecté"}),h("span",{class:"sl-go",text:"Ouvrir →"})])])})))}
 if(a.length){body.appendChild(head("À ajouter",a.length));
 body.appendChild(h("div",{class:"sl-rows"},a.map(function(s){
 var inv="https://discord.com/oauth2/authorize?client_id="+CLIENT_ID+"&scope=bot%20applications.commands&permissions=8&guild_id="+s.id+"&disable_guild_select=true";
