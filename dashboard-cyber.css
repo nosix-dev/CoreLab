@@ -2,16 +2,16 @@
 :root,:root[data-theme="dark"]{
   --bg:#060b10;--s1:#0b141c;--s2:#101c27;--ln:#173040;--card:#0b141c;--bd:#173040;
   --tx:#e6f4f7;--fg:#e6f4f7;--mu:#7f9aa6;--mut:#7f9aa6;
-  --ac:#00e5ff;--ac2:#5ef2ff;--ok:#2dff9a;--bad:#ff3b5c;--warn:#ffb020;
+  --ac:#e8510d;--ac2:#ff7a3d;--ok:#2dff9a;--bad:#ff3b5c;--warn:#ffb020;
   --r:6px;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 html{color-scheme:dark}
 html body{
   background-color:var(--bg);
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% -10%,rgba(0,229,255,.12),transparent 70%),
-    linear-gradient(rgba(0,229,255,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,229,255,.045) 1px,transparent 1px);
+    radial-gradient(ellipse 60% 40% at 50% -10%,rgba(232,81,13,.12),transparent 70%),
+    linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
   background-size:auto,44px 44px,44px 44px;background-attachment:fixed;
 }
 /* scanlines très discrètes */
@@ -22,7 +22,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;
 /* ── barre du haut ── */
 header{background:rgba(6,11,16,.92)!important;border-bottom:1px solid var(--ln)!important}
 header::after{background:linear-gradient(90deg,var(--ac),transparent)!important;width:240px!important}
-.logo img{filter:drop-shadow(0 0 6px rgba(0,229,255,.55))!important;animation:none!important}
+.logo img{filter:drop-shadow(0 0 6px rgba(232,81,13,.55))!important;animation:none!important}
 .logo::after{content:"PROTECTION ACTIVE";color:var(--ok);border-color:rgba(45,255,154,.45);background:rgba(45,255,154,.07);padding-left:20px;position:relative;background-image:radial-gradient(circle at 9px 50%,var(--ok) 0 2.5px,transparent 3px)}
 .logo small{font-family:var(--mono);font-weight:500;font-size:12px}
 
@@ -31,50 +31,50 @@ h2.t,.center h1,.lgn-card h2{font-family:var(--mono);font-weight:500;letter-spac
 h2.t::before{background:var(--ac)!important;box-shadow:0 0 10px var(--ac)}
 .lead,.gt,.sec,.net-lbl{font-family:var(--mono);font-size:12px}
 .gl{font-family:var(--mono)!important;color:var(--ac)!important;text-shadow:none!important;animation:none!important;letter-spacing:.06em}
-.glc{font-family:var(--mono);background:rgba(0,229,255,.1);color:var(--ac2)}
-.stat b,.net-st .v,.cal-t{font-family:var(--mono);font-weight:500;color:var(--ac2);text-shadow:0 0 18px rgba(0,229,255,.35)}
+.glc{font-family:var(--mono);background:rgba(232,81,13,.1);color:var(--ac2)}
+.stat b,.net-st .v,.cal-t{font-family:var(--mono);font-weight:500;color:var(--ac2);text-shadow:0 0 18px rgba(232,81,13,.35)}
 .stat span,.net-st .k{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
 
 /* ── cartes : cadre HUD cyan + lueur au survol ── */
 .sc,.stat,.mod,.form,.net-st,.td-card,.stf-top,.inf-wrap,.pvcol,.jg,.cal-sc,.lgn-card,.trx,.ae{
   background-color:var(--s1)!important;border-color:var(--ln)!important}
-.sc:hover,.mod:hover,.stat:hover,.td-card:hover,.jg:hover{border-color:var(--ac)!important;box-shadow:0 0 0 1px rgba(0,229,255,.25),0 0 24px -6px rgba(0,229,255,.5)!important}
+.sc:hover,.mod:hover,.stat:hover,.td-card:hover,.jg:hover{border-color:var(--ac)!important;box-shadow:0 0 0 1px rgba(232,81,13,.25),0 0 24px -6px rgba(232,81,13,.5)!important}
 .fxg{display:none}
 
 /* ── navigation latérale ── */
-.side nav a:hover{background:rgba(0,229,255,.06)}
-.side nav a.on,.side .on{background:linear-gradient(90deg,rgba(0,229,255,.16),rgba(0,229,255,.03))!important;box-shadow:inset 2px 0 0 var(--ac)!important}
+.side nav a:hover{background:rgba(232,81,13,.06)}
+.side nav a.on,.side .on{background:linear-gradient(90deg,rgba(232,81,13,.16),rgba(232,81,13,.03))!important;box-shadow:inset 2px 0 0 var(--ac)!important}
 .dotk.on{background:var(--ok);box-shadow:0 0 8px var(--ok)}
 
 /* ── boutons et états actifs : texte sombre sur cyan ── */
-.btn:not(.ghost),.fchips button.on,.cal-vs button.on,.cal-c.today .cal-n,.mp-it em,.mp-av,.ticket-panels .btn.on{color:#03161b!important;font-weight:600}
-.btn:not(.ghost):hover{box-shadow:0 0 26px rgba(0,229,255,.55)!important}
+.btn:not(.ghost),.fchips button.on,.cal-vs button.on,.cal-c.today .cal-n,.mp-it em,.mp-av,.ticket-panels .btn.on{color:#fff!important;font-weight:600}
+.btn:not(.ghost):hover{box-shadow:0 0 26px rgba(232,81,13,.55)!important}
 .btn.ghost{border-color:var(--ln)}.btn.ghost:hover{border-color:var(--ac);color:var(--ac2)}
 .btn::after{display:none}
 .sw input:checked+i{background:var(--ok)!important;border-color:var(--ok)!important;box-shadow:0 0 12px rgba(45,255,154,.45)}
-.sw input:checked+i::after{background:#03161b}
+.sw input:checked+i::after{background:#fff}
 .pill{font-family:var(--mono);letter-spacing:.04em;border-radius:3px}
 .pill.on{background:rgba(45,255,154,.12);color:var(--ok);box-shadow:inset 0 0 0 1px rgba(45,255,154,.35)}
 .pill.bad{background:rgba(255,59,92,.14);color:#ff7a92}
-.pill.pr{background:rgba(0,229,255,.12);color:var(--ac2)}
+.pill.pr{background:rgba(232,81,13,.12);color:var(--ac2)}
 .fld input[type=text],.fld input[type=number],.fld select,.fld textarea,.find,.row,.abs input{background:#050a0f!important;border-color:var(--ln)}
-.fld input:focus,.fld select:focus,.fld textarea:focus,.find:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(0,229,255,.18)}
+.fld input:focus,.fld select:focus,.fld textarea:focus,.find:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(232,81,13,.18)}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:var(--ac)}
 .toast{border-left-color:var(--ac);font-family:var(--mono);font-size:13px}
 .toast.bad{border-left-color:var(--bad)}
 .err{color:#ff7a92}
-::selection{background:var(--ac);color:#03161b}
+::selection{background:var(--ac);color:#fff}
 
 /* ── bannière « centre de protection » (accueil du serveur) ── */
-.cy-ban{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:22px;align-items:center;margin:0 0 22px;padding:22px 24px;border:1px solid rgba(0,229,255,.35);border-radius:8px;background:linear-gradient(120deg,rgba(0,229,255,.1),rgba(11,20,28,.9) 55%);overflow:hidden}
-.cy-ban::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,229,255,.12),transparent);width:30%;transform:translateX(-120%);animation:cySweep 6s ease-in-out infinite;pointer-events:none}
+.cy-ban{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:22px;align-items:center;margin:0 0 22px;padding:22px 24px;border:1px solid rgba(232,81,13,.35);border-radius:8px;background:linear-gradient(120deg,rgba(232,81,13,.1),rgba(11,20,28,.9) 55%);overflow:hidden}
+.cy-ban::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(232,81,13,.12),transparent);width:30%;transform:translateX(-120%);animation:cySweep 6s ease-in-out infinite;pointer-events:none}
 @keyframes cySweep{55%,100%{transform:translateX(420%)}}
 .cy-sh{width:96px;height:106px}
 .cy-sh svg{width:100%;height:100%;overflow:visible}
-.cy-sh .o{fill:rgba(0,229,255,.08);stroke:var(--ac);stroke-width:2.5;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(0,229,255,.6))}
-.cy-sh .g{fill:none;stroke:rgba(0,229,255,.35);stroke-width:1}
+.cy-sh .o{fill:rgba(232,81,13,.08);stroke:var(--ac);stroke-width:2.5;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(232,81,13,.6))}
+.cy-sh .g{fill:none;stroke:rgba(232,81,13,.35);stroke-width:1}
 .cy-sh .k{fill:none;stroke:var(--ok);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(45,255,154,.7))}
-.cy-sh .sc2{fill:rgba(0,229,255,.28);animation:cyScan 3.4s ease-in-out infinite alternate}
+.cy-sh .sc2{fill:rgba(232,81,13,.28);animation:cyScan 3.4s ease-in-out infinite alternate}
 @keyframes cyScan{from{transform:translateY(0)}to{transform:translateY(72px)}}
 .cy-in{min-width:0}
 .cy-st{display:inline-flex;align-items:center;gap:8px;font:500 12px var(--mono);letter-spacing:.08em;color:var(--ok)}
@@ -85,7 +85,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cy-bar{height:6px;border-radius:3px;background:#050a0f;border:1px solid var(--ln);overflow:hidden;max-width:420px}
 .cy-bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ok));box-shadow:0 0 12px var(--ac);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
 .cy-sc{text-align:right;font-family:var(--mono)}
-.cy-sc b{display:block;font-size:44px;font-weight:500;line-height:1;color:var(--ac2);text-shadow:0 0 22px rgba(0,229,255,.5)}
+.cy-sc b{display:block;font-size:44px;font-weight:500;line-height:1;color:var(--ac2);text-shadow:0 0 22px rgba(232,81,13,.5)}
 .cy-sc span{font-size:12px;color:var(--mu)}
 .cy-ban.mid .cy-st,.cy-ban.mid .cy-sh .k{color:var(--warn);stroke:var(--warn)}.cy-ban.mid .cy-st i{background:var(--warn);box-shadow:0 0 10px var(--warn)}
 .cy-ban.low{border-color:rgba(255,59,92,.45);background:linear-gradient(120deg,rgba(255,59,92,.1),rgba(11,20,28,.9) 55%)}
