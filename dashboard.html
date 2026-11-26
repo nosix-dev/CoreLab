@@ -531,6 +531,28 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .serverstats-preview{position:sticky;top:calc(var(--nav) + 18px)}
 .serverstats-preview-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--ln);font-size:13.5px}
 .serverstats-preview-row:last-child{border-bottom:0}
+.cap-lvls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.cap-lvl{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);cursor:pointer;text-align:left;color:inherit;font:inherit}
+.cap-lvl:hover{border-color:#e8510d88}.cap-lvl.on{border-color:#e8510d;background:rgba(232,81,13,.08)}
+.cap-lvl b{font-size:14px}.cap-lvl b small{font-weight:500;opacity:.65;margin-left:6px}
+.cap-lvl p{margin:0;font-size:12.5px;opacity:.75}
+.cap-lvl i{position:absolute;top:14px;right:14px;width:16px;height:16px;border:2px solid var(--ln);border-radius:50%}
+.cap-lvl.on i{border-color:#e8510d;background:radial-gradient(#e8510d 45%,transparent 50%)}
+.cap-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.cap-tags span{padding:3px 8px;border:1px solid var(--ln);border-radius:6px;font-size:11.5px;opacity:.85}
+.cap-warn{margin-top:12px;padding:12px 14px;border:1px solid #d9941a;border-radius:var(--r);background:rgba(217,148,26,.08);font-size:13px}
+.cap-warn b{display:block;margin-bottom:2px}
+.cap-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--ln)}.cap-row:first-of-type{border-top:0}
+.cap-row .cap-t b{display:block;font-size:14px}.cap-row .cap-t span{font-size:12.5px;opacity:.7}
+.cap-step{display:flex;align-items:center;border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--s1);flex:none}
+.cap-step button{width:36px;height:36px;border:0;background:transparent;color:inherit;font-size:18px;cursor:pointer}.cap-step button:hover{background:rgba(232,81,13,.12)}
+.cap-step input{width:52px;height:36px;border:0;border-left:1px solid var(--ln);border-right:1px solid var(--ln);background:transparent;color:inherit;text-align:center;font:inherit;-moz-appearance:textfield}
+.cap-step input::-webkit-outer-spin-button,.cap-step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.cap-step em{padding:0 10px;font-style:normal;font-size:12.5px;opacity:.7}
+.cap-tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--ln);border-radius:10px;margin:12px 0 0}
+.cap-tabs button{flex:1;padding:8px;border:0;border-radius:7px;background:transparent;color:inherit;font:inherit;font-size:13px;cursor:pointer;opacity:.75}
+.cap-tabs button.on{background:rgba(232,81,13,.16);color:#e8510d;opacity:1;font-weight:600}
+.cap-meta{margin-top:12px;font-size:12px;opacity:.65}
+.cap-row.off,.cap-lvls.off,.nm-card.off-all{opacity:.45;pointer-events:none}
 .captcha-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,390px);gap:18px;align-items:start}
 .captcha-preview{position:sticky;top:calc(var(--nav) + 18px);padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
 .captcha-card{margin-top:12px;padding:16px;border:1px solid #3b3942;border-left:4px solid #3ba55d;border-radius:8px;background:#313338;color:#dbdee1}
@@ -2429,17 +2451,17 @@ var NIGHT_FIELDS=[
 ];
 
 /* ---- Captchas : champs affichés en cartes ---- */
-var CAP_DIFF=[{v:"easy",l:"Facile"},{v:"standard",l:"Standard"},{v:"hard",l:"Difficile"}];
+var CAP_DIFF=[{v:"easy",l:"Facile",d:"Code court, rapide à recopier.",t:["4 caractères"]},{v:"standard",l:"Standard",d:"Le membre recopie le code dans le salon.",t:["5 caractères"],rec:1},{v:"hard",l:"Difficile",d:"Code plus long, à recopier avec attention.",t:["7 caractères"]}];
 var CAPTCHA_FIELDS=[
 {key:"captcha_enabled",type:"bool",label:"Activer la vérification par captcha",hint:"Chaque nouveau membre doit recopier un code avant d’accéder au serveur.",def:false,card:""},
-{key:"captcha_difficulty",type:"select",label:"Difficulté du défi",options:CAP_DIFF,def:"standard",group:"d",dep:"captcha_enabled",card:"Défi"},
-{key:"captcha_max_attempts",type:"number",label:"Nombre maximal d’essais",hint:"Essais autorisés par challenge.",min:1,max:20,def:3,group:"d",dep:"captcha_enabled",card:"Défi"},
-{key:"captcha_timeout_minutes",type:"number",label:"Expiration du challenge (minutes)",hint:"Entre 1 et 120 minutes.",min:1,max:120,def:5,group:"d",dep:"captcha_enabled",card:"Défi"},
-{key:"captcha_kick_on_fail",type:"bool",label:"Expulser en cas d’échec",hint:"Le membre est expulsé s’il épuise ses essais ou laisse expirer le challenge.",def:true,dep:"captcha_enabled",card:"Défi"},
-{key:"captcha_channel_id",type:"channel",label:"Salon de vérification",hint:"Le panneau de vérification est publié ici.",none:"Rechercher un salon",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
-{key:"captcha_role_id",type:"role",label:"Rôle avant vérification",hint:"Attribué aux nouveaux membres en attente.",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
-{key:"captcha_verified_role_id",type:"role",label:"Rôle après vérification",hint:"Attribué après un captcha réussi.",def:"",group:"r",dep:"captcha_enabled",card:"Salon et rôles"},
-{key:"captcha_exempt_roles",type:"roles",label:"Rôles dispensés de vérification",hint:"Ces membres n’ont pas de captcha à passer.",def:[],group:"r",dep:"captcha_enabled",card:"Salon et rôles"}
+{key:"captcha_channel_id",type:"channel",label:"Salon",hint:"Le challenge y est envoyé. Restreins-le pour que seuls les non-vérifiés le voient.",none:"Sélectionne un salon",def:"",dep:"captcha_enabled",card:"Salon du captcha"},
+{key:"captcha_difficulty",type:"select",label:"Niveau de sécurité",options:CAP_DIFF,def:"standard",dep:"captcha_enabled",card:"Niveau de sécurité",cardsub:"Longueur du code à recopier."},
+{key:"captcha_max_attempts",type:"number",label:"Essais avant exclusion",hint:"Entre 1 et 20. Essais autorisés par challenge.",min:1,max:20,def:3,dep:"captcha_enabled",card:"Tentatives et délais",unit:"essais"},
+{key:"captcha_timeout_minutes",type:"number",label:"Durée de vie d’un captcha",hint:"Passé ce délai, le challenge expire. Entre 1 et 120 min.",min:1,max:120,def:5,dep:"captcha_enabled",card:"Tentatives et délais",unit:"min"},
+{key:"captcha_kick_on_fail",type:"bool",label:"Expulser après trop d’échecs",hint:"Le membre est expulsé s’il épuise ses essais ou laisse expirer le challenge. Il peut revenir avec une nouvelle invitation.",def:true,dep:"captcha_enabled",card:"Tentatives et délais"},
+{key:"captcha_role_id",type:"role",label:"Rôle avant vérification",hint:"Attribué aux nouveaux membres en attente.",def:"",group:"r",dep:"captcha_enabled",card:"Rôles"},
+{key:"captcha_verified_role_id",type:"role",label:"Rôle après vérification",hint:"Attribué après un captcha réussi.",def:"",group:"r",dep:"captcha_enabled",card:"Rôles"},
+{key:"captcha_exempt_roles",type:"roles",label:"Rôles dispensés de vérification",hint:"Ces membres n’ont pas de captcha à passer.",def:[],dep:"captcha_enabled",card:"Rôles"}
 ];
 function capFields(d){var known={};CAPTCHA_FIELDS.forEach(function(f){known[f.key]=1});
 var extra=((d.module&&d.module.fields)||[]).filter(function(f){return !known[f.key]}).map(function(f){return Object.assign({},f,{card:"Autres réglages"})});
@@ -2552,39 +2574,49 @@ c.appendChild(captchaSplit);
 captchaSplit.appendChild(captchaForm);
 captchaSplit.appendChild(captchaPreview);
 colL=captchaForm;
-var captchaCard=null;
+var capTab="challenge",capLvls=null,capWarn=null;
 live=function(){
 var enabled=inputs.captcha_enabled&&inputs.captcha_enabled.get();
-var timeout=inputs.captcha_timeout_minutes&&inputs.captcha_timeout_minutes.get();
-var attempts=inputs.captcha_max_attempts&&inputs.captcha_max_attempts.get();
+var timeout=(inputs.captcha_timeout_minutes&&inputs.captcha_timeout_minutes.get())||5;
+var attempts=(inputs.captcha_max_attempts&&inputs.captcha_max_attempts.get())||3;
 var kick=inputs.captcha_kick_on_fail&&inputs.captcha_kick_on_fail.get();
 var channelId=inputs.captcha_channel_id&&inputs.captcha_channel_id.get();
-var pendingRoleId=inputs.captcha_role_id&&inputs.captcha_role_id.get();
-var verifiedRoleId=inputs.captcha_verified_role_id&&inputs.captcha_verified_role_id.get();
 var diffId=inputs.captcha_difficulty&&inputs.captcha_difficulty.get();
-var exempt=(inputs.captcha_exempt_roles&&inputs.captcha_exempt_roles.get())||[];
-var diff=CAP_DIFF.filter(function(x){return x.v===diffId})[0];
-var channel=(meta.channels||[]).filter(function(x){return x.id===channelId})[0];
-var pending=(meta.roles||[]).filter(function(x){return x.id===pendingRoleId})[0];
-var verified=(meta.roles||[]).filter(function(x){return x.id===verifiedRoleId})[0];
+var diff=CAP_DIFF.filter(function(x){return x.v===diffId})[0]||CAP_DIFF[1];
+var len=diff.v==="easy"?4:diff.v==="hard"?7:5,code="K7X2PM9".slice(0,len);
+if(capLvls)capLvls.classList.toggle("off",!enabled);
+if(capWarn)capWarn.style.display=(enabled&&!channelId)?"":"none";
+if(capLvls)Array.prototype.forEach.call(capLvls.children,function(b){b.classList.toggle("on",b.dataset.v===diff.v)});
 captchaPreview.innerHTML="";
-captchaPreview.appendChild(h("span",{class:"h",text:"APERÇU DU CAPTCHA"}));
-captchaCard=h("div",{class:"captcha-card"+(enabled?"":" off")},[
-h("h3",{text:enabled?"🧩 Vérification requise":"🔒 Captcha désactivé"}),
-h("p",{text:"Bienvenue sur "+G.name+" ! Pour obtenir l’accès au serveur, recopie le code ci-dessous."}),
-h("div",{class:"captcha-code",text:"K7 M2 X"}),
+captchaPreview.appendChild(h("span",{class:"h",text:"CE QUE VOIT LE MEMBRE"}));
+var tabs=h("div",{class:"cap-tabs"});
+[["challenge","Défi"],["fail","Échec"],["ok","Réussite"]].forEach(function(t){tabs.appendChild(h("button",{type:"button",class:capTab===t[0]?"on":"",text:t[1],onclick:function(){capTab=t[0];live()}}))});
+captchaPreview.appendChild(tabs);
+var card;
+if(capTab==="challenge"){
+card=h("div",{class:"captcha-card"+(enabled?"":" off")},[
+h("h3",{text:enabled?"🔒 Vérification Captcha":"🔒 Captcha désactivé"}),
+h("p",{text:"Bienvenue ! Pour accéder au serveur, veuillez taper le code suivant :"}),
+h("div",{class:"captcha-code",text:code.split("").join(" ")}),
 h("div",{class:"captcha-fields"},[
-h("span",{},["Salon : ",h("b",{text:channel?"# "+channel.name:"non défini"})]),
-h("span",{},["Rôle en attente : ",h("b",{text:pending?pending.name:"non défini"})]),
-h("span",{},["Rôle vérifié : ",h("b",{text:verified?verified.name:"non défini"})]),
-h("span",{},["Difficulté : ",h("b",{text:diff?diff.l:"Standard"})]),
-h("span",{},["Dispensés : ",h("b",{text:exempt.length?exempt.length+" rôle"+(exempt.length>1?"s":""):"aucun"})]),
-h("span",{},["Temps : ",h("b",{text:(timeout||5)+" minutes"})]),
-h("span",{},["Essais : ",h("b",{text:String(attempts||3)})]),
-h("span",{},["Échec : ",h("b",{text:kick?"expulsion":"aucune expulsion"})])
-])
-]);
-captchaPreview.appendChild(captchaCard);
+h("span",{},["⏰ Temps restant : ",h("b",{text:timeout+" minute(s)"})]),
+h("span",{},["🔄 Tentatives restantes : ",h("b",{text:String(attempts)})]),
+h("span",{text:"Tapez exactement le code affiché ci-dessus (sensible à la casse)."}),
+h("span",{text:kick?"⚠️ Attention : vous serez expulsé si vous échouez ou si le temps expire.":"⚠️ Vous devrez contacter un administrateur si vous échouez."})])])}
+else if(capTab==="fail"){
+card=h("div",{class:"captcha-card off"},[
+h("h3",{text:"❌ Code incorrect"}),
+h("p",{},["@nouveau-membre Code incorrect ! Il vous reste ",h("b",{text:String(Math.max(attempts-1,0))})," tentative(s)."]),
+h("div",{class:"captcha-fields"},[h("span",{text:"Un nouveau code est alors généré."}),
+h("span",{text:kick?"Sans tentative restante : « ❌ Vérification échouée », puis expulsion.":"Sans tentative restante : « ❌ Vérification échouée », contactez un administrateur."}),
+h("span",{text:"Si le temps expire : « ⏰ Temps écoulé »."})])])}
+else{
+card=h("div",{class:"captcha-card"},[
+h("h3",{text:"✅ Vérification réussie !"}),
+h("p",{text:"@nouveau-membre a été vérifié avec succès ! Bienvenue sur le serveur ! 🎉"}),
+h("div",{class:"captcha-fields"},[h("span",{text:"Le rôle « en attente » est retiré et le rôle « vérifié » est donné."}),h("span",{text:"Ce message disparaît au bout de 10 secondes."})])])}
+captchaPreview.appendChild(card);
+captchaPreview.appendChild(h("p",{class:"cap-meta",text:"Niveau "+diff.l.toLowerCase()+" · "+len+" caractères · "+attempts+" essai(s) · expire après "+timeout+" min"}));
 };
 }
 if(mid==="honeypot"){
@@ -2711,6 +2743,23 @@ else{grpKey=null;grp=null;card.appendChild(nb.wrap)}
 return}
 if(f.section&&f.section!==last){form.appendChild(h("div",{class:"sec",text:f.section}));last=f.section}
 var b=buildField(f,v,meta,d.premium,dirty);inputs[f.key]=b;form.appendChild(b.wrap)});
+if(isCap){
+["captcha_max_attempts","captcha_timeout_minutes"].forEach(function(k){
+var inp=inputs[k],fd=CAPTCHA_FIELDS.filter(function(x){return x.key===k})[0];if(!inp||!fd)return;
+var el=inp.wrap.querySelector("input[type=number]");if(!el)return;
+function bump(dx){var v=Number(el.value)||fd.def;v=Math.min(fd.max,Math.max(fd.min,v+dx));el.value=v;el.dispatchEvent(new Event("input",{bubbles:true}))}
+el.addEventListener("change",function(){var v=Number(el.value)||fd.def;el.value=Math.min(fd.max,Math.max(fd.min,v))});
+inp.wrap.innerHTML="";inp.wrap.className="fld cap-row";
+inp.wrap.appendChild(h("div",{class:"cap-t"},[h("b",{text:fd.label}),h("span",{text:fd.hint})]));
+inp.wrap.appendChild(h("div",{class:"cap-step"},[h("button",{type:"button",text:"−",onclick:function(){bump(-1)}}),el,h("button",{type:"button",text:"+",onclick:function(){bump(1)}}),h("em",{text:fd.unit})]))});
+var dsel=inputs.captcha_difficulty;
+if(dsel){var sel=dsel.wrap.querySelector("select");dsel.wrap.style.display="none";
+capLvls=h("div",{class:"cap-lvls"});
+CAP_DIFF.forEach(function(o){var b=h("button",{type:"button",class:"cap-lvl",onclick:function(){sel.value=o.v;sel.dispatchEvent(new Event("change",{bubbles:true}))}},[h("i"),h("b",{},[o.l,o.rec?h("small",{text:"· recommandé"}):null]),h("p",{text:o.d}),h("div",{class:"cap-tags"},o.t.map(function(t){return h("span",{text:t})}))]);b.dataset.v=o.v;capLvls.appendChild(b)});
+dsel.wrap.parentNode.appendChild(capLvls)}
+var chI=inputs.captcha_channel_id;
+if(chI){capWarn=h("div",{class:"cap-warn"},[h("b",{text:"Sans salon, aucun captcha ne peut être envoyé."}),h("span",{text:"Les nouveaux membres entrent donc sans vérification."})]);chI.wrap.parentNode.appendChild(capWarn)}
+}
 if(isCap){
 var capMsg=h("span",{class:"h"}),capRoles=h("button",{class:"btn ghost",type:"button",text:"Créer les rôles et régler les salons"}),capPub=h("button",{class:"btn",type:"button",text:"Publier le panneau de vérification"});
 if(d.offline){capRoles.disabled=true;capPub.disabled=true}
