@@ -93,11 +93,3 @@ html.fxout::before,html.fxout::after{animation:fxClose .55s cubic-bezier(.5,0,.7
 @keyframes fxOpen{0%{--fxr:0px;visibility:visible}99%{visibility:visible}100%{--fxr:150vmax;visibility:hidden}}
 @keyframes fxClose{from{--fxr:150vmax;visibility:visible}to{--fxr:0px;visibility:visible}}
 @media(prefers-reduced-motion:reduce){html::before,html::after{display:none!important}}
-
-/* ── bouton des sons ── */
-#fxsnd{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;width:42px;height:42px;border-radius:50%;border:1px solid var(--ln,#3f4147);background:rgba(43,45,49,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--mu,#b5bac1);display:grid;place-items:center;cursor:pointer;padding:0;transition:color .2s,border-color .2s,box-shadow .2s}
-#fxsnd:hover{color:#fff;border-color:var(--ac,#e8510d)}
-#fxsnd[aria-pressed=true]{color:#ff9d6b;border-color:var(--ac,#e8510d);box-shadow:0 0 14px rgba(232,81,13,.55)}
-#fxsnd svg{width:20px;height:20px}
-#fxsnd .on,#fxsnd[aria-pressed=true] .off{display:none}
-#fxsnd[aria-pressed=true] .on{display:block}
