@@ -515,6 +515,33 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .captcha-code{display:inline-block;padding:10px 16px;border-radius:8px;background:#202225;color:#fff;font:700 18px var(--mono);letter-spacing:5px}
 .captcha-fields{display:grid;gap:7px;margin-top:12px;font-size:12.5px;color:#b5bac1}
 .captcha-fields b{color:#fff}
+.wlc-card{margin-bottom:18px;padding:22px 24px;gap:18px}
+.wlc-t{margin:0;font-size:15px;font-weight:700}
+.wlc-top{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:26px;align-items:start}
+.wlc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 16px;align-items:start}
+.wlc-s4{grid-column:1/-1}
+.wlc-card .fld label.l{font-size:12.5px;color:var(--mu);margin-bottom:6px}
+.wlc-card .fld input[type=text],.wlc-card .fld input[type=number],.wlc-card .fld select,.wlc-card .fld textarea{padding:10px 12px;border-radius:8px;font-size:13.5px}
+.wlc-card .fld textarea{min-height:84px}
+.wlc-tg{display:flex;flex-direction:column;justify-content:center;gap:6px;min-height:62px;padding:14px;border:1px solid var(--ln);border-radius:10px;background:var(--bg)}
+.wlc-tg .sw{width:100%;font-size:12.5px}
+.wlc-tg .h{margin:0}
+.wlc-preview{position:sticky;top:calc(var(--nav) + 18px)}
+.wlc-msg{margin-top:12px;padding:14px;border-radius:8px;background:#313338;color:#dbdee1;font-size:14px;line-height:1.4}
+.wlc-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.wlc-hd b{color:#fff}.wlc-hd small{color:#949ba4;font-size:11px}
+.wlc-bot{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#e8510d,#f59e0b);flex:none}
+.wlc-app{padding:1px 5px;border-radius:4px;background:#5865f2;color:#fff;font-size:10px;font-weight:700}
+.wlc-emb{display:flex;gap:12px;padding:12px 14px;border-left:4px solid #e8510d;border-radius:4px;background:#2b2d31}
+.wlc-et{flex:1;min-width:0}
+.wlc-tt{margin-bottom:6px;color:#fff;font-size:16px;font-weight:700;overflow-wrap:anywhere}
+.wlc-td{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13.5px}
+.wlc-th{flex:none;width:64px;height:64px;border-radius:8px;background:linear-gradient(135deg,#5865f2,#a78bfa)}
+.wlc-ft{margin-top:10px;padding-top:8px;border-top:1px solid #3f4147;color:#949ba4;font-size:12px;font-style:italic}
+.wlc-mn{padding:0 2px;border-radius:3px;background:rgba(88,101,242,.3);color:#c9cdfb}
+@media(max-width:1250px){.wlc-top{grid-template-columns:1fr}.wlc-preview{position:static}}
+@media(max-width:900px){.wlc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.wlc-grid{grid-template-columns:1fr}}
 .module-preview-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:18px;align-items:start}
 .module-preview{position:sticky;top:calc(var(--nav) + 18px);padding:18px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
 .module-preview-card{margin-top:12px;padding:14px;border:1px solid var(--ln);border-left:4px solid var(--ac);border-radius:10px;background:var(--bg)}
@@ -2360,27 +2387,36 @@ h("span",{text:"Le nombre de questions disponibles peut aussi être limité par 
 c.appendChild(aiInfo);
 }
 var colL=c,live=null;
+var isWel=mid==="welcome";
+var WEL_T={w:"Message de bienvenue",g:"Message de départ",b:"Boosts",a:"Rôles à l’arrivée",r:"Règlement et sécurité"};
+var WEL_ORD=[["welcome_enabled","w",1],["welcome_channel_id","w",1],["welcome_appearance.title","w",1],["welcome_appearance.description","w",4],["welcome_appearance.footer","w",1],["welcome_appearance.color","w",1],["welcome_appearance.showAvatar","w",1],["welcome_appearance.showMemberCount","w",1],["welcome_rules_channel_id","w",1],["welcome_roles_channel_id","w",1],["welcome_dm_enabled","w",1],["welcome_dm_message","w",4],["welcome_appearance.cardStyle","w",1],["welcome_appearance.buttons","w",4],
+["goodbye_enabled","g",1],["goodbye_channel_id","g",1],["goodbye_appearance.title","g",1],["goodbye_appearance.description","g",4],["goodbye_appearance.color","g",1],["goodbye_appearance.cardStyle","g",1],["goodbye_appearance.buttons","g",4],
+["boost_enabled","b",1],["boost_channel_id","b",1],["boost_title","b",1],["boost_message","b",4],["boost_levelup_enabled","b",1],["boost_levelup_message","b",4],["boost_role_id","b",1],
+["autorole_enabled","a",1],["autorole_role_ids","a",1],["autorole_bot_role_ids","a",1],
+["member_role_id","r",1],["member_role_id_2","r",1],["min_account_age_days","r",1],["send_rules_dm","r",1],["rules_dm_text","r",4]];
+function welGet(k){for(var i=0;i<WEL_ORD.length;i++)if(WEL_ORD[i][0]===k)return i;return 999}
 function welcomeLivePreview(){
 function gv(k){var i=inputs[k];return i&&!i.locked?i.get():""}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function chn(id){var c=(meta.channels||[]).filter(function(x){return x.id===id})[0];return c?"#"+c.name:""}
 var sn=G.name||"Serveur",mc=128,rules=chn(gv("welcome_rules_channel_id")),roles=chn(gv("welcome_roles_channel_id"));
 function sub(t){return String(t||"").replace(/\{user\.mention\}/g,"@nouveau-membre").replace(/\{user\.name\}/g,"nouveau-membre").replace(/\{user\.id\}/g,"123456789012345678").replace(/\{user\.joined_at\}/g,new Date().toLocaleDateString("fr-FR")).replace(/\{server\.name\}/g,sn).replace(/\{server\.member_count\}/g,String(mc)).replace(/\{rules\}/g,rules||"#règlement").replace(/\{roles\}/g,roles||"#rôles")}
-function md(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>")}
+function md(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/@nouveau-membre/g,'<span class="wlc-mn">@nouveau-membre</span>')}
 var title=sub(gv("welcome_appearance.title"))||"Bienvenue sur "+sn+" !";
 var desc=sub(gv("welcome_appearance.description"))||("Salut @nouveau-membre, bienvenue sur **"+sn+"** !\n"+(gv("welcome_appearance.showMemberCount")===false?"":"Tu es notre **membre n°"+mc+"**.\n")+"\n📌 **Premiers pas :**\n• Lis le règlement"+(rules?" dans "+rules:"")+"\n• Choisis tes rôles"+(roles?" dans "+roles:"")+"\n• Présente-toi à la communauté");
 var footer=sub(gv("welcome_appearance.footer")),color=gv("welcome_appearance.color")||"#e8510d";
 modulePreview.innerHTML="";
 modulePreview.appendChild(h("span",{class:"h",text:"APERÇU EN DIRECT"}));
-var card=h("div",{class:"rules-message"});card.style.borderLeftColor=color;
-var av=gv("welcome_appearance.showAvatar")===false?"":'<span style="float:right;width:56px;height:56px;margin-left:12px;border-radius:50%;background:linear-gradient(135deg,#5865f2,#a78bfa)"></span>';
-card.innerHTML='<h3>'+esc(title)+'</h3>'+av+'<p>'+md(desc)+'</p>'+(footer?'<p style="margin-top:10px;padding-top:8px;border-top:1px solid #3b3942;font-size:11px;opacity:.75;font-style:italic">'+md(footer)+'</p>':"");
-modulePreview.appendChild(card);
-if(!gv("welcome_enabled")||!gv("welcome_channel_id"))modulePreview.appendChild(h("p",{class:"muted",style:"margin-top:10px;color:#e8a33d",text:!gv("welcome_enabled")?"Le message de bienvenue est désactivé, rien n’est envoyé.":"Choisis un salon de bienvenue : sans salon, rien n’est envoyé."}));
-modulePreview.appendChild(h("p",{class:"muted",style:"margin-top:8px;font-size:11px",text:"Aperçu indicatif (exemple de membre fictif). Le rendu final dépend de la carte et de l’image choisies."}));
+var msg=h("div",{class:"wlc-msg"});
+msg.innerHTML='<div class="wlc-hd"><span class="wlc-bot"></span><b>CoreLab</b><span class="wlc-app">APP</span><small>Aujourd’hui à 12:00</small></div><div class="wlc-emb" style="border-left-color:'+esc(color)+'"><div class="wlc-et"><div class="wlc-tt">'+esc(title)+'</div><div class="wlc-td">'+md(desc)+'</div>'+(footer?'<div class="wlc-ft">'+md(footer)+'</div>':"")+'</div>'+(gv("welcome_appearance.showAvatar")===false?"":'<span class="wlc-th"></span>')+'</div>';
+modulePreview.appendChild(msg);
+var off=!gv("welcome_enabled")?"Le message de bienvenue est désactivé, rien n’est envoyé.":!gv("welcome_channel_id")?"Choisis un salon de bienvenue : sans salon, rien n’est envoyé.":"";
+if(off)modulePreview.appendChild(h("p",{style:"margin-top:10px;font-size:12.5px;color:#e8a33d",text:off}));
+modulePreview.appendChild(h("p",{class:"muted",style:"margin-top:8px;font-size:11px",text:"Aperçu indicatif avec un membre fictif. L’image ou la carte choisie n’est pas affichée ici."}));
 }
 
-if(!isCard && !isNM && mid!=="captcha"){
+
+if(!isCard && !isNM && !isWel && mid!=="captcha"){
 var modulePreviewLayout=h("div",{class:"module-preview-layout"});
 var modulePreviewMain=h("div",{class:"pvmain"});
 var modulePreview=h("div",{class:"module-preview"});
@@ -2389,7 +2425,6 @@ modulePreviewLayout.appendChild(modulePreviewMain);
 modulePreviewLayout.appendChild(modulePreview);
 colL=modulePreviewMain;
 live=function(){
-if(mid==="welcome"){welcomeLivePreview();return}
 modulePreview.innerHTML="";
 modulePreview.appendChild(h("span",{class:"h",text:"APERÇU DISCORD"}));
 var card=h("div",{class:"rules-message"});
@@ -2422,6 +2457,14 @@ if(text){rows.appendChild(h("div",{class:"module-preview-row"},[h("span",{text:f
 if(!shown)rows.appendChild(h("div",{class:"module-preview-row"},[h("span",{text:"Aucun réglage visible"}),h("b",{text:"—"})]));
 card.appendChild(rows);modulePreview.appendChild(card);
 };
+}
+if(isWel){
+c.classList.add("wide");
+var modulePreview=h("div",{class:"wlc-preview"}),welCards={};
+var welCard=function(k){if(welCards[k])return welCards[k];var cd=h("div",{class:"form wlc-card"}),grid=h("div",{class:"wlc-grid"});cd.appendChild(h("h3",{class:"wlc-t",text:WEL_T[k]}));
+if(k==="w"){var top=h("div",{class:"wlc-top"});top.appendChild(grid);top.appendChild(modulePreview);cd.appendChild(top)}else cd.appendChild(grid);
+colL.appendChild(cd);welCards[k]=grid;return grid};
+live=welcomeLivePreview;
 }
 if(mid==="captcha"){
 var captchaSplit=h("div",{class:"captcha-layout"}),captchaForm=h("div",{class:"pvmain"}),captchaPreview=h("div",{class:"captcha-preview"});
@@ -2572,9 +2615,15 @@ function collect(){var body={};fields.forEach(function(f){var i=inputs[f.key];if
 function dirty(){if(d.offline){deps();if(live)live();return}PEND[G.id]=PEND[G.id]||{};PEND[G.id][mid]={label:d.module.name||d.module.title||mid,body:collect()};updateGBar();deps();if(live)live()}
 var pm=(PEND[G.id]||{})[mid];if(pm)Object.keys(pm.body).forEach(function(k){d.values[k]=pm.body[k]});
 var card=null,cardKey=null,grp=null,grpKey=null;
+if(isWel)fields=fields.slice().sort(function(x,y){return welGet(x.key)-welGet(y.key)});
 if(isNet){var ns=d.stats||d.values||{};colL.appendChild(h("div",{class:"net-stats"},[netStat(NET_SHARE,"Bans partagés",ns.shared_bans!=null?ns.shared_bans:ns.net_shared_bans,"par votre serveur"),netStat(NET_USERS,"Comptes signalés",ns.reported_accounts!=null?ns.reported_accounts:ns.net_reported_accounts,"dans le réseau CoreLab")]))}
 fields.forEach(function(f){
 var v=d.values[f.key];if((v===undefined||v===null)&&f.def!==undefined)v=f.def;
+if(isWel){
+var lay=WEL_ORD[welGet(f.key)]||["r","r",2];var wb=buildField(f,v,meta,d.premium,dirty);inputs[f.key]=wb;
+wb.wrap.classList.add("wlc-f");if(f.type==="bool")wb.wrap.classList.add("wlc-tg");
+if(lay[2]===4)wb.wrap.classList.add("wlc-s4");
+welCard(lay[1]).appendChild(wb.wrap);return}
 if(isNM){
 if(card===null||f.card!==cardKey){cardKey=f.card;card=h("div",{class:"form nm-card"+(isNet||isPerm?" net-card":"")});if(f.card&&!f.notitle)card.appendChild(h("h3",{class:"nm-title",text:f.card.trim()}));if(f.cardsub)card.appendChild(h("p",{class:"nm-sub",text:f.cardsub}));colL.appendChild(card);grp=null;grpKey=null}
 var nb=buildField(f,v,meta,d.premium,dirty);inputs[f.key]=nb;
@@ -2610,7 +2659,7 @@ if(!al.length)lst.appendChild(h("div",{class:"net-al"},["Aucune alerte pour le m
 al.forEach(function(a){var who=secName(a.member||a.actor||a.user),t=a.title||a.description||a.permission||"Changement de permission";
 lst.appendChild(h("div",{class:"net-al"},[t+(who?" · "+who:""),a.ts?h("small",{text:secDT(a.ts)}):null]))});
 colL.appendChild(lst)}
-if(!isNM)colL.appendChild(form);deps();if(live)live();
+if(!isNM&&!isWel)colL.appendChild(form);deps();if(live)live();
 }).catch(function(e){if(e&&e.message==="auth")return;c.innerHTML="";
 if(it&&e&&!offline&&/^(nightmode|netalerts|sensperms|captcha)$/.test(it.id)&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){moduleView(c,G,mid,it,true);return}
 if(it&&e&&(it.missing||e.error==="not_found"||e.error==="unknown_route"||e.error==="unknown_module"||e.error==="no_module")){
