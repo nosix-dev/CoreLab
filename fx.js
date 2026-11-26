@@ -79,22 +79,10 @@ rail.firstChild.innerHTML=p(k+1)+"<i>/"+p(secs.length)+"</i>";
 rail.children[1].textContent=LB[secs[k].id][en];
 [].forEach.call(rail.lastChild.children,function(b,i){b.className=i===k?"on":""})}
 
-/* ── transition de page en portail : l'iris se ferme, la page suivante s'ouvre depuis le centre ── */
-function portal(){
-document.addEventListener("click",function(e){
-var t=e.target,a=t.closest&&t.closest("a[href]");
-if(a&&!reduce&&!e.defaultPrevented&&!e.button&&!(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)&&(!a.target||a.target==="_self")&&!a.hasAttribute("download")){
-var u;try{u=new URL(a.href,location.href)}catch(x){u=null}
-if(u&&/^(https?|file):$/.test(u.protocol)&&u.origin===location.origin&&(u.pathname!==location.pathname||u.search!==location.search)){
-e.preventDefault();document.documentElement.classList.add("fxout");
-setTimeout(function(){location.href=u.href},560);return}}
-});
-addEventListener("pageshow",function(e){if(e.persisted)document.documentElement.classList.remove("fxout")})}
-
 var tick=false;
 function onScroll(){tick=false;hero();railUpdate()}
 function init(){
-glow();mark();portal();
+glow();mark();
 if(!lite)stars();
 if(!lite&&fine&&!reduce)light();
 cards();
