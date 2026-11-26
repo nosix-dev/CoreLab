@@ -2360,6 +2360,26 @@ h("span",{text:"Le nombre de questions disponibles peut aussi être limité par 
 c.appendChild(aiInfo);
 }
 var colL=c,live=null;
+function welcomeLivePreview(){
+function gv(k){var i=inputs[k];return i&&!i.locked?i.get():""}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function chn(id){var c=(meta.channels||[]).filter(function(x){return x.id===id})[0];return c?"#"+c.name:""}
+var sn=G.name||"Serveur",mc=128,rules=chn(gv("welcome_rules_channel_id")),roles=chn(gv("welcome_roles_channel_id"));
+function sub(t){return String(t||"").replace(/\{user\.mention\}/g,"@nouveau-membre").replace(/\{user\.name\}/g,"nouveau-membre").replace(/\{user\.id\}/g,"123456789012345678").replace(/\{user\.joined_at\}/g,new Date().toLocaleDateString("fr-FR")).replace(/\{server\.name\}/g,sn).replace(/\{server\.member_count\}/g,String(mc)).replace(/\{rules\}/g,rules||"#règlement").replace(/\{roles\}/g,roles||"#rôles")}
+function md(t){return esc(t).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>")}
+var title=sub(gv("welcome_appearance.title"))||"Bienvenue sur "+sn+" !";
+var desc=sub(gv("welcome_appearance.description"))||("Salut @nouveau-membre, bienvenue sur **"+sn+"** !\n"+(gv("welcome_appearance.showMemberCount")===false?"":"Tu es notre **membre n°"+mc+"**.\n")+"\n📌 **Premiers pas :**\n• Lis le règlement"+(rules?" dans "+rules:"")+"\n• Choisis tes rôles"+(roles?" dans "+roles:"")+"\n• Présente-toi à la communauté");
+var footer=sub(gv("welcome_appearance.footer")),color=gv("welcome_appearance.color")||"#e8510d";
+modulePreview.innerHTML="";
+modulePreview.appendChild(h("span",{class:"h",text:"APERÇU EN DIRECT"}));
+var card=h("div",{class:"rules-message"});card.style.borderLeftColor=color;
+var av=gv("welcome_appearance.showAvatar")===false?"":'<span style="float:right;width:56px;height:56px;margin-left:12px;border-radius:50%;background:linear-gradient(135deg,#5865f2,#a78bfa)"></span>';
+card.innerHTML='<h3>'+esc(title)+'</h3>'+av+'<p>'+md(desc)+'</p>'+(footer?'<p style="margin-top:10px;padding-top:8px;border-top:1px solid #3b3942;font-size:11px;opacity:.75;font-style:italic">'+md(footer)+'</p>':"");
+modulePreview.appendChild(card);
+if(!gv("welcome_enabled")||!gv("welcome_channel_id"))modulePreview.appendChild(h("p",{class:"muted",style:"margin-top:10px;color:#e8a33d",text:!gv("welcome_enabled")?"Le message de bienvenue est désactivé, rien n’est envoyé.":"Choisis un salon de bienvenue : sans salon, rien n’est envoyé."}));
+modulePreview.appendChild(h("p",{class:"muted",style:"margin-top:8px;font-size:11px",text:"Aperçu indicatif (exemple de membre fictif). Le rendu final dépend de la carte et de l’image choisies."}));
+}
+
 if(!isCard && !isNM && mid!=="captcha"){
 var modulePreviewLayout=h("div",{class:"module-preview-layout"});
 var modulePreviewMain=h("div",{class:"pvmain"});
@@ -2369,6 +2389,7 @@ modulePreviewLayout.appendChild(modulePreviewMain);
 modulePreviewLayout.appendChild(modulePreview);
 colL=modulePreviewMain;
 live=function(){
+if(mid==="welcome"){welcomeLivePreview();return}
 modulePreview.innerHTML="";
 modulePreview.appendChild(h("span",{class:"h",text:"APERÇU DISCORD"}));
 var card=h("div",{class:"rules-message"});
