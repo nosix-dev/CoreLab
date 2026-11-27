@@ -1147,9 +1147,9 @@ SUIVI.forEach(function(m){var ic=h("span",{class:"ic"});ic.innerHTML=m.svg;ic.ap
 sui.list.appendChild(h("a",{href:"#/g/"+G.id+"/"+m.id,class:"sv"+(r.m===m.id?" on":""),"data-n":m.name.toLowerCase()+" "+m.kw},ic))});
 sui.count(SUIVI.length);
 var by={},order=[];G.modules.forEach(function(m){if(!by[m.group]){by[m.group]=[];order.push(m.group)}by[m.group].push(m)});
-var SECIT=secBuild(G);
+var SECIT=secBuild(G),allClaimed={};SECIT.forEach(function(x){allClaimed[x.route]=1});
 SEC.forEach(function(sg){
-var gk=nz(sg.group),mine=SECIT.filter(function(x){return x.g===gk}),claimed={},extra=[];
+var gk=nz(sg.group),mine=SECIT.filter(function(x){return x.g===gk}),claimed=Object.assign({},allClaimed),extra=[];
 mine.forEach(function(x){claimed[x.route]=1});
 order.forEach(function(k){if(nz(k)===gk)by[k].forEach(function(m){if(!claimed[m.id])extra.push(m)})});
 var box=catBox(sg.group.toUpperCase(),mine.some(function(x){return x.route===r.m})||extra.some(function(m){return m.id===r.m}));
@@ -1162,7 +1162,7 @@ order.forEach(function(k){
 if(SEC.some(function(sg){return nz(sg.group)===nz(k)}))return;
 var open=!!(r.m&&(by[k].some(function(m){return m.id===r.m})||(k.toLowerCase()==="serveur"&&(r.m==="notifs"||r.m==="announcements"||r.m==="embeds"))));
 var box=catBox(k.toUpperCase(),open),n=by[k].length;
-by[k].forEach(function(m){box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m.id,m.name.toLowerCase(),ICO_MOD,cleanName(m.name),h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})))});
+by[k].forEach(function(m){if(allClaimed[m.id])return;box.list.appendChild(navA("#/g/"+G.id+"/"+m.id,r.m===m.id,m.name.toLowerCase(),ICO_MOD,cleanName(m.name),h("i",{class:"dotk"+(m.enabled===null?" none":m.enabled?" on":"")})))});
 if(k.toLowerCase()==="serveur"){box.list.appendChild(navA("#/g/"+G.id+"/notifs",r.m==="notifs","notifications youtube twitch tiktok instagram medal",ICO_BELL,"Notifications"));box.list.appendChild(navA("#/g/"+G.id+"/announcements",r.m==="announcements","annonces messages programmes planifies calendrier",ICO_CAL,"Annonces"));box.list.appendChild(navA("#/g/"+G.id+"/embeds",r.m==="embeds","createur embeds messages boutons annonces",ICO_EMBED,"Créateur d’embeds"));n+=3}
 box.count(n)});
 find.addEventListener("input",function(){var q=find.value.trim().toLowerCase();
