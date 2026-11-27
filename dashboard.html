@@ -915,42 +915,22 @@ body.hs>header{display:none}
 .hm-all{display:inline-block;margin-top:6px;color:var(--mu);font-size:14px}.hm-all:hover{color:var(--tx)}
 @media(max-width:1280px){.hm-grid{grid-template-columns:1fr 1fr}.hm-right{grid-column:1/-1}.hm-sts{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.hm-grid,.hm-sts{grid-template-columns:1fr}.hm-actin{flex-direction:column}.hm-hero h1{font-size:26px}}
-/* Automodération 5.5.49 : vue en cartes + sous-navigation */
-.am2-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:0 0 18px}
-.am2-head .tt{flex:1;min-width:240px}.am2-head h2{margin:0;font-size:26px}
-.am2-head p{margin:4px 0 0;color:var(--mu);font-size:14.5px}
-.am2-ib{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ln);border-radius:10px;background:var(--bg);color:var(--mu);flex:none}
-.am2-ib.big{width:52px;height:52px;border-radius:14px;background:var(--s1);color:var(--tx)}
-.am2-ib svg,.am2-ni svg,.am2-ci svg,.am2-card .arr svg,.am2-binfo svg,.am2-banner .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.am2-ib.big svg{width:24px;height:24px}
-.am2-st{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.am2-chip{padding:7px 12px;border:1px solid var(--ln);border-radius:999px;background:var(--s1);font-size:13px;color:var(--mu)}
-.am2-master{display:inline-flex;align-items:center;gap:12px;padding:7px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--s1);font-weight:700;font-size:14px}
-.am2-banner{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 18px;margin:0 0 20px;border:1px solid rgba(232,81,13,.45);border-radius:var(--r);background:rgba(232,81,13,.08)}
-.am2-binfo{color:var(--ac2);display:grid}
-.am2-banner .in{flex:1;min-width:220px}.am2-banner .in b,.am2-banner .in span{display:block}.am2-banner .in span{color:var(--mu);font-size:13.5px}
-.am2-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}
-.am2-nav{position:sticky;top:20px;padding:12px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1);max-height:calc(100vh - 40px);overflow:auto}
-.am2-nav h4{margin:16px 10px 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);font-weight:700}.am2-nav h4:first-child{margin-top:4px}
-.am2-nav button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:9px;background:transparent;color:var(--mu);font:inherit;font-size:14px;font-weight:500;text-align:left;cursor:pointer}
-.am2-nav button:hover{color:var(--tx);background:var(--s2)}
-.am2-nav button.on{color:var(--ac2);background:rgba(232,81,13,.14)}
-.am2-ni{display:grid;flex:none}.am2-nav .dot{margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
-.am2-panel{border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
-.am2-ph{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--ln)}
-.am2-ph .in{flex:1;min-width:0}.am2-ph .in b{display:block}.am2-ph .in .d{display:block;color:var(--mu);font-size:13.5px;margin-top:2px}
-.am2-pb{padding:20px 22px}.am2-pb .td-card{background:var(--bg)}
-.am2-find{width:100%;padding:11px 14px;margin:0 0 6px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:14px}
-.am2-gt{margin:18px 0 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
-.am2-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.am2-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:16px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,transform .15s}
-.am2-card:hover{border-color:var(--ac);transform:translateY(-2px)}
-.am2-card .top{display:flex;align-items:center;gap:10px;width:100%;font-weight:700}
-.am2-card .nm{flex:1;min-width:0}.am2-card .arr{display:grid;color:var(--mu)}
-.am2-ci{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--ln);border-radius:10px;background:var(--s1);color:var(--mu);flex:none}
-.am2-card.on .am2-ci{color:var(--ac2);border-color:rgba(232,81,13,.5)}
-.am2-card .flow{color:var(--mu);font-size:13px}
-@media(max-width:900px){.am2-layout{grid-template-columns:1fr}.am2-nav{position:static;display:flex;gap:6px;overflow-x:auto;max-height:none;padding:10px}.am2-nav h4{display:none}.am2-nav button{width:auto;white-space:nowrap}.am2-nav .dot{margin-left:4px}}
+.sc-stats{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.sc-stats .net-st .v{font-size:26px}
+.sc-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start;margin:0 0 16px}.sc-grid .td-card{margin:0}
+@media(max-width:900px){.sc-grid{grid-template-columns:1fr}}
+.sc-note{display:flex;align-items:center;gap:14px;margin:0 0 16px;padding:16px 20px;border:1px solid var(--ln);border-radius:var(--r);background:var(--s1)}
+.sc-ni{display:grid;place-items:center;flex:none;color:var(--ac2)}.sc-ni svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sc-nt{flex:1;min-width:0}.sc-nt b{display:block;font-size:15px}.sc-nt span{display:block;color:var(--mu);font-size:13.5px;margin-top:2px}
+.sc-sel select{min-width:220px;padding:10px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:14px}
+@media(max-width:700px){.sc-note{flex-wrap:wrap}}
+.sc-lnk{margin-left:auto;border:0;background:none;color:var(--mu);font:inherit;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap}.sc-lnk:hover{color:var(--tx)}
+.sc-cap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--ln)}.sc-cap b{font-weight:600;font-size:14.5px}
+.sc-empty{margin:0;padding:34px 16px;text-align:center;border:1px dashed var(--ln);border-radius:12px;color:var(--mu)}.sc-empty .td-ic{margin:0 auto}.sc-empty b{display:block;color:var(--tx);margin:10px 0 2px}
+.sc-ia{display:flex;gap:8px;flex:none}
+.pill.warn{background:rgba(232,160,13,.18);color:#f0b45a}
+.sc-rule{padding:14px 0;border-top:1px solid var(--ln)}.sc-rule .td-cfg{margin-top:12px;padding-top:0;border:0;grid-template-columns:repeat(auto-fit,minmax(160px,220px))}
+.sc-chk{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:1px solid var(--ln)}.sc-chk .in{flex:1;min-width:0}.sc-chk .in b{display:block}.sc-chk .in span{display:block;color:var(--mu);font-size:13.5px;margin-top:2px}
+.sc-badge{font-style:normal;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--ac);color:#fff}
 </style>
 <link rel="stylesheet" href="fx.css">
 <link rel="stylesheet" href="pro.css">
@@ -991,7 +971,7 @@ if(hm){token=hm[1];try{localStorage.setItem("cl_dash",token)}catch(e){}}
 if(hm||he)history.replaceState(null,"",location.pathname);
 
 /* ---- Navigation ---- */
-function route(){var m=location.hash.match(/^#\/g\/(\d+)(?:\/([\w-]+))?/);if(m)return{g:m[1],m:m[2]||null};var pg=location.hash.match(/^#\/(servers|account)/);return pg?{page:pg[1]}:{}}
+function route(){var m=location.hash.match(/^#\/g\/(\d+)(?:\/([\w-]+))?(?:\/([\w-]+))?/);if(m)return{g:m[1],m:m[2]||null,s:m[3]||null};var pg=location.hash.match(/^#\/(servers|account)/);return pg?{page:pg[1]}:{}}
 window.addEventListener("hashchange",function(){if(DIRTY&&!confirm("Quitter sans enregistrer ?")){history.back();return}DIRTY=false;render()});
 window.addEventListener("beforeunload",function(e){if(DIRTY||anyPend()){e.preventDefault();e.returnValue=""}});
 
@@ -1224,6 +1204,233 @@ if(!r.m)overview(content,G,order,by);else if(r.m==="antiscam_test")antiscamTest(
 }).catch(function(e){if(e&&e.message==="auth")return;document.body.classList.remove("hs");app.innerHTML="";
 app.appendChild(h("div",{class:"center"},h("div",{},[h("h1",{text:e&&e.error==="bot_absent"?"CoreLab n’est pas sur ce serveur.":"Accès impossible."}),h("a",{class:"btn",href:"#/servers",text:"Retour aux serveurs"})])))})}
 
+
+/* ---- CoreLab Security : Vue d’ensemble · Incidents · Anti-Nuke · Diagnostic · Verrouillage · Configuration ---- */
+var SC_IC={
+layout:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+incidents:'<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
+bomb:'<circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/>',
+activity:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+lock:'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+unlock:'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+sliders:'<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',
+shieldcheck:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>'};
+var SC_TABS=[["overview","","layout","Vue d’ensemble"],["incidents","incidents","incidents","Incidents"],["antinuke","antinuke","bomb","Anti-Nuke"],["diagnostic","diagnostic","activity","Diagnostic"],["lockdown","lockdown","lock","Verrouillage"],["settings","settings","sliders","Configuration"]];
+var SC_SEV={low:["Faible",""],medium:["Moyen","warn"],high:["Grave","bad"],critical:["Critique","bad"]};
+var SC_STS={open:["Ouvert","warn"],resolved:["Traité","on"],dismissed:["Ignoré",""]};
+var SC_ST={ok:["Opérationnelle","on"],warn:["Partielle","warn"],off:["Non réglée",""],bad:["Indisponible","bad"]};
+var SC_DS={ok:["OK","on"],warn:["À vérifier","warn"],bad:["Problème","bad"],off:["Non réglé",""]};
+var SC_PUN=[["alert","Alerter le staff seulement"],["strip","Retirer les rôles de l’auteur"],["kick","Expulser l’auteur"],["ban","Bannir l’auteur"]];
+var SC_MIN=[["low","Tous les incidents"],["medium","Moyens et plus"],["high","Graves et critiques seulement"]];
+var SC_RET=[[30,"30 jours"],[60,"60 jours"],[90,"90 jours"],[180,"180 jours"],[365,"1 an"]];
+var SC_AUTO=[[0,"Manuel : je lève le verrouillage moi-même"],[15,"Après 15 minutes"],[30,"Après 30 minutes"],[60,"Après 1 heure"],[180,"Après 3 heures"],[720,"Après 12 heures"]];
+var SC_RULES=[
+{k:"channel_delete",name:"Suppression de salons",desc:"Un membre ou un bot supprime plusieurs salons en peu de temps.",limit:3,window:60,on:true},
+{k:"channel_create",name:"Création de salons en rafale",desc:"Des dizaines de salons créés d’un coup pour noyer le serveur.",limit:5,window:60,on:false},
+{k:"role_delete",name:"Suppression de rôles",desc:"Plusieurs rôles supprimés en rafale.",limit:3,window:60,on:true},
+{k:"member_ban",name:"Bannissements en masse",desc:"Un modérateur (ou un compte piraté) bannit beaucoup de membres rapidement.",limit:4,window:60,on:true},
+{k:"member_kick",name:"Expulsions en masse",desc:"Beaucoup de membres expulsés en peu de temps.",limit:4,window:60,on:true},
+{k:"webhook_create",name:"Création de webhooks",desc:"Plusieurs webhooks créés : souvent utilisés pour spammer ou piller un serveur.",limit:3,window:60,on:false},
+{k:"bot_add",name:"Ajout de bots",desc:"Un bot est ajouté au serveur par un membre sans rôle de confiance.",limit:1,window:300,on:true},
+{k:"perm_grant",name:"Permissions dangereuses",desc:"Attribution de la permission Administrateur ou de permissions sensibles à un rôle.",limit:1,window:60,on:true}];
+function scDefaults(){var rules={};SC_RULES.forEach(function(r){rules[r.k]={enabled:!!r.on,limit:r.limit,window:r.window}});
+return{enabled:false,mode:"monitor",alert_channel:"",alert_roles:[],alert_min:"medium",retention_days:90,ignored_roles:[],
+anti:{enabled:false,punishment:"alert",trusted_roles:[],rules:rules},
+lock:{scope:"all",channels:[],exclude_roles:[],auto_unlock_min:0,auto_on_raid:false,message:"🔒 Le serveur est temporairement verrouillé par l’équipe de modération. Merci de patienter."}}}
+function scBody(V){return{security_enabled:V.enabled,security_mode:V.mode,security_alert_channel:V.alert_channel||"",security_alert_roles:V.alert_roles,security_alert_min:V.alert_min,security_retention_days:V.retention_days,security_ignored_roles:V.ignored_roles,security_antinuke:V.anti,security_lockdown:V.lock}}
+function scMerge(V,v){if(!v||typeof v!=="object")return;
+if(typeof v.security_enabled==="boolean")V.enabled=v.security_enabled;
+if(v.security_mode==="monitor"||v.security_mode==="protect")V.mode=v.security_mode;
+if(typeof v.security_alert_channel==="string")V.alert_channel=v.security_alert_channel;
+if(Array.isArray(v.security_alert_roles))V.alert_roles=v.security_alert_roles;
+if(v.security_alert_min)V.alert_min=v.security_alert_min;
+if(Number(v.security_retention_days))V.retention_days=Number(v.security_retention_days);
+if(Array.isArray(v.security_ignored_roles))V.ignored_roles=v.security_ignored_roles;
+var a=v.security_antinuke;if(a&&typeof a==="object"){V.anti.enabled=!!a.enabled;if(a.punishment)V.anti.punishment=a.punishment;if(Array.isArray(a.trusted_roles))V.anti.trusted_roles=a.trusted_roles;
+if(a.rules&&typeof a.rules==="object")Object.keys(a.rules).forEach(function(k){if(V.anti.rules[k]&&a.rules[k])Object.assign(V.anti.rules[k],a.rules[k])})}
+var l=v.security_lockdown;if(l&&typeof l==="object")Object.assign(V.lock,l)}
+
+function securityView(c,G,it){
+c.classList.add("wide");
+var meta=META[G.id]||{channels:[],roles:[]},V=scDefaults(),tab="overview",INC=null,LK=null,DG=null,AMV=null,filt="",running=false;
+var r0=route();SC_TABS.forEach(function(t){if(t[1]&&t[1]===r0.s)tab=t[0]});
+var head=h("div"),tabs=h("div",{class:"stabs",role:"tablist"}),body=h("div",{style:"margin-top:26px"});
+c.appendChild(head);c.appendChild(tabs);c.appendChild(body);
+var BASE="/api/guilds/"+G.id;
+function ic(k,cls){var s=h("span",{class:cls||"td-ic"});s.innerHTML=svg24(SC_IC[k]);return s}
+function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].security={label:"CoreLab Security",body:scBody(V)};updateGBar()}
+function jo(m,o){return{method:m,headers:{"Content-Type":"application/json"},body:JSON.stringify(o)}}
+function fail(e){if(e&&e.message==="auth")return;toast(errText(e),true)}
+function soft(p){return api(p).catch(function(){return null})}
+function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
+function row(title,desc,input){return h("div",{class:"td-hd rp-row"},[h("div",{class:"in"},[h("b",{text:title}),desc?h("span",{class:"d",text:desc}):null]),input])}
+function card(kids){return h("div",{class:"td-card"},kids)}
+function fld(label,input,cls){return h("div",{class:"fld"+(cls?" "+cls:"")},[h("label",{class:"l",text:label}),input])}
+function sel(opts,val,fn,label){var s=h("select",{"aria-label":label||""});opts.forEach(function(o){s.appendChild(opt(o[0],o[1]))});s.value=String(val);s.addEventListener("change",function(){fn(s.value)});return s}
+function num(val,min,max,fn,label){var i=h("input",{type:"number",min:min,max:max,"aria-label":label||""});i.value=val;i.addEventListener("input",function(){var n=Number(i.value);if(isNaN(n))n=min;fn(Math.min(max,Math.max(min,n)))});return i}
+function chanSel(val,fn,label){var s=h("select",{"aria-label":label});s.appendChild(opt("","— Choisir un salon —"));(meta.channels||[]).forEach(function(x){s.appendChild(opt(x.id,"# "+x.name))});if(val&&!(meta.channels||[]).some(function(x){return x.id===val}))s.appendChild(opt(val,"(salon supprimé)"));s.value=val||"";s.addEventListener("change",function(){fn(s.value)});return s}
+function multi(list,val,fn,label,pre){var s=h("select",{multiple:"multiple",size:4,"aria-label":label});(list||[]).forEach(function(x){var o=opt(x.id,(pre||"")+x.name);o.selected=val.indexOf(x.id)>-1;s.appendChild(o)});s.addEventListener("change",function(){fn([].filter.call(s.options,function(o){return o.selected}).map(function(o){return o.value}))});var w=selTools(s);if(w!==s)w.options=s.options;return w}
+function chName(id){var x=(meta.channels||[]).filter(function(y){return y.id===id})[0];return x?x.name:id}
+function banner(title,text,right,kind){var b=h("div",{class:"sc-note"+(kind?" "+kind:"")});b.appendChild(ic("info","sc-ni"));b.appendChild(h("div",{class:"sc-nt"},[h("b",{text:title}),h("span",{text:text})]));if(right)b.appendChild(right);return b}
+function stat(k,label,val,sub){var kk=h("div",{class:"k"});kk.innerHTML=svg24(SC_IC[k]);kk.appendChild(document.createTextNode(label));return h("div",{class:"net-st"},[kk,h("div",{class:"v",text:val}),h("div",{class:"s",text:sub||""})])}
+function pill(p){return h("span",{class:"pill"+(p[1]?" "+p[1]:""),text:p[0].toUpperCase()})}
+
+/* ---- données dérivées ---- */
+function findMod(al){var ids=al.map(nz);return(G.modules||[]).filter(function(m){return ids.indexOf(nz(m.id))>-1||ids.indexOf(nz(m.name))>-1})[0]||null}
+function openInc(){return(INC||[]).filter(function(i){return(i.status||"open")==="open"})}
+function graves(l){return l.filter(function(i){return i.severity==="high"||i.severity==="critical"}).length}
+function scopeOk(){return V.lock.scope==="all"||(V.lock.channels||[]).length>0}
+function caps(){var sv=(DG&&DG.capabilities)||{},raid=findMod(["antiraid","anti_raid"]),cap=findMod(["captcha"]);
+function st(k,fb){return sv[k]&&SC_ST[sv[k]]?sv[k]:fb}
+var amOn=AMV&&Array.isArray(AMV.automod_rules)?AMV.automod_rules.some(function(x){return x.enabled}):false;
+return[["Verrouillage d’urgence",st("lockdown",scopeOk()?(V.alert_channel?"ok":"warn"):"off")],
+["AutoMod",st("automod",amOn?"ok":"off")],
+["Mode Raid",st("raid",raid&&raid.enabled?"ok":"off")],
+["Captcha",st("captcha",cap&&cap.enabled?"ok":"off")],
+["Auteur des actions",st("audit",V.enabled?"ok":"off")],
+["Alertes de sécurité",st("alerts",V.alert_channel?"ok":"off")],
+["Anti-Nuke",st("antinuke",V.anti.enabled?"ok":"off")]]}
+function problems(){return caps().filter(function(x){return x[1]==="warn"||x[1]==="bad"}).length}
+
+/* ---- en-tête, onglets, URL ---- */
+function drawHead(){head.innerHTML="";var top=h("div",{class:"net-ico"});top.innerHTML=svg24(SC_IC.shieldcheck);head.appendChild(top);
+head.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"CoreLab Security"}));
+head.appendChild(h("p",{class:"lead",text:"Le centre de sécurité du serveur : incidents, Anti-Nuke, diagnostic des protections et verrouillage d’urgence."}))}
+function syncUrl(){var t=SC_TABS.filter(function(x){return x[0]===tab})[0];try{history.replaceState(null,"","#/g/"+G.id+"/security"+(t&&t[1]?"/"+t[1]:""))}catch(e){}}
+function drawTabs(){tabs.innerHTML="";SC_TABS.forEach(function(t){var b=h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",onclick:function(){tab=t[0];syncUrl();draw()}});var s=h("span");s.innerHTML=svg24(SC_IC[t[2]]);b.appendChild(s.firstChild);b.appendChild(document.createTextNode(t[3]));
+if(t[0]==="incidents"&&INC&&openInc().length)b.appendChild(h("em",{class:"sc-badge",text:String(openInc().length)}));tabs.appendChild(b)})}
+
+/* ---- incidents ---- */
+function act(i,a){api(BASE+"/security/incidents/"+encodeURIComponent(i.id),jo("POST",{action:a})).then(function(){i.status=a==="resolve"?"resolved":"dismissed";toast(a==="resolve"?"Incident traité ✓":"Incident ignoré ✓");draw()}).catch(fail)}
+function incRow(i){var sv=SC_SEV[i.severity]||SC_SEV.low,stt=SC_STS[i.status||"open"]||SC_STS.open,acts=[];
+if((i.status||"open")==="open"){acts.push(h("button",{class:"btn sm",type:"button",text:"Traiter",onclick:function(){act(i,"resolve")}}));acts.push(h("button",{class:"btn ghost sm",type:"button",text:"Ignorer",onclick:function(){if(!confirm("Ignorer cet incident ?"))return;act(i,"dismiss")}}))}
+var who=i.actor&&(i.actor.name||i.actor.id)?" · "+(i.actor.name||i.actor.id):"";
+return h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[i.title||i.type||"Incident",h("span",{class:"pill"+(sv[1]?" "+sv[1]:""),style:"margin-left:8px",text:sv[0].toUpperCase()}),h("span",{class:"pill"+(stt[1]?" "+stt[1]:""),style:"margin-left:6px",text:stt[0].toUpperCase()})]),
+i.detail?h("span",{class:"ad",text:i.detail}):null,h("span",{class:"ad",text:secDT(i.ts)+who})]),acts.length?h("div",{class:"sc-ia"},acts):null])}
+function emptyInc(){return h("div",{class:"sc-empty"},[ic("shield"),h("b",{text:"Aucun incident"}),h("span",{text:"Rien à signaler pour le moment."})])}
+
+/* ---- vue d’ensemble ---- */
+function drawOverview(){
+if(!V.enabled)body.appendChild(banner("CoreLab Security est désactivé","Activez le module pour enregistrer les incidents et pouvoir verrouiller le serveur. Le mode Surveillance (par défaut) ne sanctionne jamais automatiquement.",h("button",{class:"btn sm",type:"button",text:"Activer le module",onclick:function(){V.enabled=true;dirty();draw()}})));
+var op=openInc(),gr=graves(op),pb=problems(),lkOn=!!(LK&&LK.active);
+body.appendChild(h("div",{class:"net-stats sc-stats"},[
+stat("gauge","Mode",V.mode==="protect"?"Protection":"Surveillance",V.mode==="protect"?"Peut sanctionner automatiquement":"Détecte et journalise"),
+stat("shield","Incidents ouverts",INC?String(op.length):"…","dont "+gr+" grave"+(gr>1?"s":"")),
+stat("lock","Verrouillage",lkOn?"Actif":"Aucun",lkOn&&LK.since?"depuis le "+secDT(LK.since):"Le serveur est ouvert"),
+stat("alert","Capacités du bot",pb?pb+" problème"+(pb>1?"s":""):"Tout est OK",pb?"Voir le diagnostic":"Protections opérationnelles")]));
+var li=card([]),ca=card([]);
+li.appendChild(h("div",{class:"td-hd"},[ic("shield"),h("div",{class:"in"},[h("b",{text:"Derniers incidents"})]),h("button",{class:"sc-lnk",type:"button",text:"Tous les incidents ›",onclick:function(){tab="incidents";syncUrl();draw()}})]));
+li.appendChild(h("hr",{class:"td-sep"}));
+if(!INC)li.appendChild(h("p",{class:"td-empty",style:"margin:0",text:"Chargement…"}));
+else if(!INC.length)li.appendChild(emptyInc());
+else{var l=h("div",{class:"trl"});INC.slice(0,5).forEach(function(i){l.appendChild(incRow(i))});li.appendChild(l)}
+ca.appendChild(h("div",{class:"td-hd"},[ic("shieldcheck"),h("div",{class:"in"},[h("b",{text:"Capacités réelles"}),h("span",{class:"d",text:"Calculées pour CoreLab, le bot qui protège ce serveur."})]),h("button",{class:"sc-lnk",type:"button",text:"Détails ›",onclick:function(){tab="diagnostic";syncUrl();draw()}})]));
+ca.appendChild(h("hr",{class:"td-sep",style:"margin:14px 0 0"}));
+caps().forEach(function(x){ca.appendChild(h("div",{class:"sc-cap"},[h("b",{text:x[0]}),pill(SC_ST[x[1]])]))});
+body.appendChild(h("div",{class:"sc-grid"},[li,ca]));
+if(!V.alert_channel){var s=h("div",{class:"sc-sel"},[chanSel("",function(v){V.alert_channel=v;dirty();draw()},"Salon des alertes")]);
+body.appendChild(banner("Aucun salon d’alertes","Choisissez un salon pour être prévenu sur Discord des incidents importants.",s))}
+if(V.mode==="monitor")body.appendChild(banner("Mode Surveillance actif","L’Anti-Nuke et les protections automatiques alertent le staff sans jamais sanctionner. Passez en mode Protection dans Configuration pour autoriser les sanctions.",h("button",{class:"btn ghost sm",type:"button",text:"Configuration",onclick:function(){tab="settings";syncUrl();draw()}})))}
+
+/* ---- incidents (onglet) ---- */
+function drawIncidents(){
+var chips=h("div",{class:"fchips"});[["","Tous"],["open","Ouverts"],["resolved","Traités"],["dismissed","Ignorés"]].forEach(function(f){chips.appendChild(h("button",{type:"button",class:filt===f[0]?"on":"",text:f[1],onclick:function(){filt=f[0];draw()}}))});
+body.appendChild(chips);
+if(!INC){body.appendChild(h("p",{class:"td-empty",text:"Chargement…"}));return}
+var list=INC.filter(function(i){return!filt||(i.status||"open")===filt});
+if(!list.length){body.appendChild(card([emptyInc()]));return}
+var l=h("div",{class:"trl"});list.forEach(function(i){l.appendChild(incRow(i))});body.appendChild(l)}
+
+/* ---- Anti-Nuke ---- */
+function drawAnti(){var A=V.anti,cd=card([]);
+cd.appendChild(row("Activer l’Anti-Nuke","Détecte les actions destructrices en rafale (salons, rôles, bannissements, webhooks, bots) et réagit selon la sanction choisie.",sw(A.enabled,function(v){A.enabled=v;dirty();draw()})));
+if(A.enabled){cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
+fld("Sanction",sel(SC_PUN,A.punishment,function(v){A.punishment=v;dirty()},"Sanction")),
+fld("Rôles de confiance (jamais sanctionnés)",multi(meta.roles,A.trusted_roles,function(v){A.trusted_roles=v;dirty()},"Rôles de confiance","@ "))]))}
+if(V.mode==="monitor")body.appendChild(banner("Mode Surveillance actif","L’Anti-Nuke alerte le staff mais ne sanctionne pas : la sanction choisie ne s’applique qu’en mode Protection.",null));
+body.appendChild(cd);
+if(!A.enabled)return;
+var rl=card([h("div",{class:"td-hd"},[ic("bomb"),h("div",{class:"in"},[h("b",{text:"Détections"}),h("span",{class:"d",text:"Une action répétée au-delà du seuil dans la fenêtre de temps déclenche un incident."})])]),h("hr",{class:"td-sep",style:"margin:14px 0 0"})]);
+SC_RULES.forEach(function(d){var r=A.rules[d.k];if(!r)return;var b=h("div",{class:"sc-rule"});
+b.appendChild(row(d.name,d.desc,sw(r.enabled,function(v){r.enabled=v;dirty();draw()})));
+if(r.enabled)b.appendChild(h("div",{class:"td-cfg"},[fld("Seuil (actions)",num(r.limit,1,50,function(v){r.limit=v;dirty()},"Seuil")),fld("Fenêtre (secondes)",num(r.window,10,3600,function(v){r.window=v;dirty()},"Fenêtre"))]));
+rl.appendChild(b)});
+body.appendChild(rl)}
+
+/* ---- diagnostic ---- */
+function checks(){var out=[],cp=caps();
+function add(label,st,detail){out.push({label:label,status:st,detail:detail})}
+add("Module CoreLab Security",V.enabled?"ok":"bad",V.enabled?"Le module est actif : les incidents sont enregistrés.":"Le module est désactivé : aucun incident n’est enregistré.");
+add("Mode de protection","ok",V.mode==="protect"?"Mode Protection : les sanctions automatiques sont autorisées.":"Mode Surveillance : le bot détecte et journalise sans jamais sanctionner.");
+add("Salon d’alertes",V.alert_channel?"ok":"warn",V.alert_channel?"Les incidents importants sont envoyés dans #"+chName(V.alert_channel)+".":"Aucun salon choisi : le staff n’est pas prévenu sur Discord.");
+add("Anti-Nuke",V.anti.enabled?"ok":"off",V.anti.enabled?(V.anti.trusted_roles.length?"Actif avec "+V.anti.trusted_roles.length+" rôle(s) de confiance.":"Actif, mais aucun rôle de confiance : les administrateurs légitimes pourraient être signalés."):"Non activé.");
+if(V.anti.enabled&&!V.anti.trusted_roles.length)out[out.length-1].status="warn";
+add("Verrouillage d’urgence",cp[0][1]==="ok"?"ok":cp[0][1]==="warn"?"warn":"off",scopeOk()?(V.alert_channel?"Prêt : "+(V.lock.scope==="all"?"tous les salons textuels":V.lock.channels.length+" salon(s) ciblé(s)")+".":"Prêt, mais sans salon d’alertes pour prévenir le staff."):"Aucun salon ciblé : choisissez des salons dans l’onglet Verrouillage.");
+[["Mode Raid",2,"L’anti-raid bloque les arrivées massives de comptes."],["Captcha",3,"Le captcha vérifie les nouveaux membres à l’arrivée."],["AutoMod",1,"Au moins une règle d’automodération est active."]].forEach(function(x){var s=cp[x[1]][1];add(x[0],s==="ok"?"ok":s==="warn"?"warn":s==="bad"?"bad":"off",s==="ok"?x[2]:"Non activé : "+x[2].charAt(0).toLowerCase()+x[2].slice(1))});
+if(DG&&Array.isArray(DG.checks))DG.checks.forEach(function(x){if(x&&x.label)out.push({label:x.label,status:SC_DS[x.status]?x.status:"warn",detail:x.detail||""})});
+return out}
+function drawDiag(){var list=checks(),ok=list.filter(function(x){return x.status==="ok"}).length,cd=card([]);
+cd.appendChild(h("div",{class:"td-hd"},[ic("activity"),h("div",{class:"in"},[h("b",{text:ok+" vérification"+(ok>1?"s":"")+" sur "+list.length+" au vert"}),h("span",{class:"d",text:"État réel des protections de ce serveur, calculé à partir de votre configuration et des modules du bot."})]),
+h("button",{class:"btn sm",type:"button",disabled:running,text:running?"Analyse…":"Relancer le diagnostic",onclick:function(){running=true;draw();Promise.all([soft(BASE+"/security/diagnostic"),soft(BASE+"/modules/automod")]).then(function(r){DG=r[0]&&typeof r[0]==="object"?r[0]:{};AMV=r[1]&&r[1].values?r[1].values:AMV||{};running=false;draw();toast("Diagnostic mis à jour ✓")})}})]));
+cd.appendChild(h("hr",{class:"td-sep",style:"margin:14px 0 0"}));
+list.forEach(function(x){var p=SC_DS[x.status]||SC_DS.warn;cd.appendChild(h("div",{class:"sc-chk"},[h("div",{class:"in"},[h("b",{text:x.label}),h("span",{text:x.detail})]),pill(p)]))});
+body.appendChild(cd)}
+
+/* ---- verrouillage ---- */
+function doLock(on,reason){if(on&&!confirm("Verrouiller le serveur ? Les membres ne pourront plus écrire dans les salons ciblés."))return;
+api(BASE+"/security/lockdown",jo("POST",{action:on?"lock":"unlock",reason:reason||""})).then(function(d){LK=d&&typeof d==="object"&&typeof d.active==="boolean"?d:{active:on,since:on?new Date().toISOString():null,reason:reason||""};toast(on?"Serveur verrouillé ✓":"Verrouillage levé ✓");draw()}).catch(fail)}
+function drawLock(){var on=!!(LK&&LK.active),L=V.lock,st=card([]),why=h("input",{type:"text",maxlength:200,placeholder:"Ex. : raid en cours",value:"","aria-label":"Raison"});
+st.appendChild(h("div",{class:"td-hd"},[ic(on?"lock":"unlock"),h("div",{class:"in"},[h("b",{text:on?"Le serveur est verrouillé":"Le serveur n’est pas verrouillé"}),h("span",{class:"d",text:on?("Depuis le "+(LK.since?secDT(LK.since):"—")+(LK.reason?" · "+LK.reason:"")):"En cas de raid ou d’attaque, verrouillez les salons d’un clic. Les membres de confiance restent exemptés."})]),pill(on?["Actif","bad"]:["Aucun",""])]));
+st.appendChild(h("hr",{class:"td-sep"}));
+if(!on)st.appendChild(h("div",{class:"sv-form",style:"grid-template-columns:minmax(220px,1fr) auto"},[lab("Raison (facultatif)",why),h("button",{class:"btn",type:"button",text:"Verrouiller le serveur",onclick:function(){doLock(true,why.value.trim())}})]));
+else st.appendChild(h("button",{class:"btn",type:"button",text:"Lever le verrouillage",onclick:function(){doLock(false,"")}}));
+body.appendChild(st);
+var cd=card([h("div",{class:"td-hd"},[ic("sliders"),h("div",{class:"in"},[h("b",{text:"Réglages du verrouillage"}),h("span",{class:"d",text:"À enregistrer avec « Tout enregistrer »."})])]),h("hr",{class:"td-sep"})]);
+var cfg=[fld("Salons concernés",sel([["all","Tous les salons textuels"],["selected","Seulement les salons choisis"]],L.scope,function(v){L.scope=v;dirty();draw()},"Salons concernés"))];
+if(L.scope==="selected")cfg.push(fld("Salons à verrouiller",multi(meta.channels,L.channels,function(v){L.channels=v;dirty()},"Salons à verrouiller","# ")));
+cfg.push(fld("Rôles exemptés",multi(meta.roles,L.exclude_roles,function(v){L.exclude_roles=v;dirty()},"Rôles exemptés","@ ")));
+cfg.push(fld("Levée du verrouillage",sel(SC_AUTO,L.auto_unlock_min,function(v){L.auto_unlock_min=Number(v);dirty()},"Levée")));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},cfg));
+var ta=h("textarea",{maxlength:500,"aria-label":"Message"});ta.value=L.message||"";ta.addEventListener("input",function(){L.message=ta.value;dirty()});
+cd.appendChild(h("div",{style:"margin-top:14px"},[fld("Message affiché dans les salons verrouillés",ta)]));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(row("Verrouiller automatiquement en cas de raid","Quand le mode Raid détecte une attaque, le serveur est verrouillé sans attendre un modérateur.",sw(L.auto_on_raid,function(v){L.auto_on_raid=v;dirty()})));
+body.appendChild(cd)}
+
+/* ---- configuration ---- */
+function drawSettings(){
+var c1=card([]);
+c1.appendChild(row("Activer CoreLab Security","Enregistre les incidents de sécurité et permet de verrouiller le serveur.",sw(V.enabled,function(v){V.enabled=v;dirty()})));
+c1.appendChild(h("hr",{class:"td-sep"}));
+c1.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[fld("Mode",sel([["monitor","Surveillance : détecte et journalise, ne sanctionne jamais"],["protect","Protection : peut sanctionner automatiquement"]],V.mode,function(v){V.mode=v;dirty();draw()},"Mode"))]));
+c1.appendChild(h("p",{class:"muted",style:"margin:10px 0 0;font-size:13.5px",text:V.mode==="protect"?"En mode Protection, la sanction choisie dans l’onglet Anti-Nuke est appliquée automatiquement. Ajoutez vos rôles de confiance avant de l’activer.":"Le mode Surveillance est recommandé pour commencer : vous voyez ce que CoreLab détecterait sans aucun risque de sanction injustifiée."}));
+body.appendChild(c1);
+var c2=card([h("div",{class:"td-hd"},[ic("alert"),h("div",{class:"in"},[h("b",{text:"Alertes"}),h("span",{class:"d",text:"Où et pour quels incidents le staff est prévenu."})])]),h("hr",{class:"td-sep"})]);
+c2.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
+fld("Salon des alertes",chanSel(V.alert_channel,function(v){V.alert_channel=v;dirty()},"Salon des alertes")),
+fld("Gravité minimale",sel(SC_MIN,V.alert_min,function(v){V.alert_min=v;dirty()},"Gravité minimale")),
+fld("Rôles à mentionner",multi(meta.roles,V.alert_roles,function(v){V.alert_roles=v;dirty()},"Rôles à mentionner","@ "))]));
+body.appendChild(c2);
+var c3=card([h("div",{class:"td-hd"},[ic("shield"),h("div",{class:"in"},[h("b",{text:"Données et exceptions"})])]),h("hr",{class:"td-sep"})]);
+c3.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
+fld("Conservation des incidents",sel(SC_RET,V.retention_days,function(v){V.retention_days=Number(v);dirty()},"Conservation")),
+fld("Rôles exemptés de la détection",multi(meta.roles,V.ignored_roles,function(v){V.ignored_roles=v;dirty()},"Rôles exemptés","@ "))]));
+body.appendChild(c3)}
+
+function draw(){body.innerHTML="";drawHead();drawTabs();
+if(tab==="overview")drawOverview();else if(tab==="incidents")drawIncidents();else if(tab==="antinuke")drawAnti();else if(tab==="diagnostic")drawDiag();else if(tab==="lockdown")drawLock();else drawSettings()}
+function redraw(){if(body.isConnected){var a=document.activeElement;if(a&&body.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return;draw()}}
+draw();
+soft(BASE+"/modules/security").then(function(d){if(d&&d.values)scMerge(V,d.values);var pm=(PEND[G.id]||{}).security;if(pm)scMerge(V,pm.body);redraw()});
+soft(BASE+"/security/incidents").then(function(d){INC=d&&Array.isArray(d.items)?d.items:[];redraw()});
+soft(BASE+"/security/lockdown").then(function(d){LK=d&&typeof d==="object"?d:{active:false};redraw()});
+soft(BASE+"/security/diagnostic").then(function(d){DG=d&&typeof d==="object"?d:{};redraw()});
+soft(BASE+"/modules/automod").then(function(d){AMV=d&&d.values?d.values:{};redraw()})}
 
 /* ---- Graphiques d’activité (SVG maison, sans bibliothèque) ---- */
 var NS="http://www.w3.org/2000/svg",ACT={};
@@ -3191,6 +3398,9 @@ svg:svg24('<path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-
 title:"Logs de modération",lead:"Toutes les actions de modération du serveur : sanctions, messages supprimés, avertissements."}
 ]},
 {group:"Protection",items:[
+{id:"security",name:"CoreLab Security",kind:"security",kw:"sécurité securite anti-nuke nuke verrouillage lockdown incidents diagnostic centre",
+svg:svg24('<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>'),
+desc:"Centre de sécurité : incidents, Anti-Nuke, diagnostic et verrouillage d’urgence."},
 {id:"radar",name:"Radar",kind:"radar",kw:"détection menaces scam",
 svg:svg24('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'),
 desc:"Détection des comportements suspects sur le serveur."},
@@ -3226,6 +3436,7 @@ function secDispatch(c,G,mid,list){
 var x=list.filter(function(y){return y.route===mid})[0];
 if(!x||x.it.kind==="module")return moduleView(c,G,mid,x&&Object.assign({},x.it,{missing:!x.mod}));
 if(x.it.kind==="radar")return radarView(c,G);
+if(x.it.kind==="security")return securityView(c,G,x.it);
 if(x.it.kind==="automod")return amView(c,G,x.it);
 if(x.it.kind==="todo")return todoView(c,G,x.it);
 if(x.it.kind==="reports")return reportsView(c,G,x.it);
@@ -3531,31 +3742,21 @@ var m=/\.([A-Za-z0-9]+)$/.exec(n);if(m&&AM_BADEXT.indexOf(m[1].toLowerCase())>-1
 function amCustomHit(r,t){var p=String(r.pattern||"");if(!p.trim())return false;
 if(r.type==="regex"){try{return new RegExp(p,"i").test(t)}catch(e){return false}}
 return p.split(/[\n,]+/).map(function(x){return x.trim().toLowerCase()}).filter(Boolean).some(function(w){return t.toLowerCase().indexOf(w)>-1})}
-/* ---- Automodération 5.5.49 : vue d'ensemble en cartes + sous-navigation (modèle HurixBot) ---- */
-Object.assign(AM_IC,{grid:'<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
-activity:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
-repeat:'<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
-smile:'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>',
-sparkles:'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
-megaphone:'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
-power:'<path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/>',
-sliders:'<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
-chevr:'<path d="m9 18 6-6-6-6"/>',
-info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
-bot:'<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>'});
-function amDur(m){m=Number(m)||0;return m>=1440&&m%1440===0?(m/1440)+" j":m>=60&&m%60===0?(m/60)+" h":m+" min"}
-function amFlow(a,tm){var m={delete:"Supprimer",warn:"Supprimer → Avertir",timeout:"Supprimer → Exclusion "+amDur(tm||10),kick:"Supprimer → Expulsion",ban:"Supprimer → Bannissement",alert:"Alerte au staff"};return m[a]||"Supprimer"}
 function amView(c,G,it){
 c.classList.add("wide");
-var meta=META[G.id]||{channels:[],roles:[]},cur="overview",q="",opened={},creating=false,loadErr=false,tested=null,body=null;
+var meta=META[G.id]||{channels:[],roles:[]},tab="rules",q="",opened={},creating=false,loadErr=false,tested=null;
 var V={rules:AM_BASE.map(function(r){return Object.assign({ex_channels:[],ex_roles:[],hits:0,last:null},r)}),
 smart:{enabled:false,level:"medium",cats:{toxicity:true,harassment:true,spam:true,nsfw:false},channel:"",action:"alert"},
 links:{enabled:false,mode:"blacklist",domains:"",block_invites:true,block_shorteners:false,action:"delete"},
 newm:{enabled:false,min_age_days:7,restrict_hours:24,restrict:"links",action:"alert",channel:""},
 rate:{enabled:false,max:5,window:5,action:"timeout",timeout_min:10},staff:false,
 prot:{anti_token_enabled:false,dangerous_files_enabled:false,compromised_account_enabled:false}};
-var head=h("div",{class:"am2-head"}),bannerBox=h("div"),lay=h("div",{class:"am2-layout"}),nav=h("nav",{class:"am2-nav","aria-label":"Sections de l’automodération"}),main=h("div",{class:"am2-main"});
-lay.appendChild(nav);lay.appendChild(main);c.appendChild(head);c.appendChild(bannerBox);c.appendChild(lay);
+var ico=h("div",{class:"net-ico"});ico.innerHTML=svg24(AM_IC.list);c.appendChild(ico);
+c.appendChild(h("h2",{class:"t",style:"margin-top:0",text:"Automodération"}));
+c.appendChild(h("p",{class:"lead",text:"Automodération : règles, protections CoreLab (tokens, fichiers dangereux, comptes piratés), exclusions, sanctions et heat."}));
+var tabs=h("div",{class:"stabs",role:"tablist"}),body=h("div",{style:"margin-top:26px"});c.appendChild(tabs);c.appendChild(body);
+var TABS=[["rules","list","Règles"],["prot","shield","Protections CoreLab"],["smart","shield","Automod intelligent"],["links","link","Filtre de liens"],["newm","userplus","Nouveaux membres"],["rate","gauge","Limite de publication"]];
+function drawTabs(){tabs.innerHTML="";TABS.forEach(function(t){var b=h("button",{type:"button",role:"tab",class:tab===t[0]?"on":"",onclick:function(){tab=t[0];creating=false;draw()}});var s=h("span");s.innerHTML=svg24(AM_IC[t[1]]);b.appendChild(s.firstChild);b.appendChild(document.createTextNode(t[2]));tabs.appendChild(b)})}
 function slim(r){var o={id:r.id,name:r.name,desc:r.desc,enabled:!!r.enabled,action:r.action,heat:r.heat,timeout_min:r.timeout_min||10,ex_channels:r.ex_channels,ex_roles:r.ex_roles};if(r.custom){o.custom=true;o.type=r.type;o.pattern=r.pattern}return o}
 function dirty(){PEND[G.id]=PEND[G.id]||{};PEND[G.id].automod={label:"Automodération",body:{automod_rules:V.rules.map(slim),automod_smart:V.smart,automod_links:V.links,automod_newmembers:V.newm,automod_ratelimit:V.rate,automod_apply_staff:V.staff,anti_token_enabled:V.prot.anti_token_enabled,dangerous_files_enabled:V.prot.dangerous_files_enabled,compromised_account_enabled:V.prot.compromised_account_enabled}};updateGBar()}
 function sw(val,fn){var cb=h("input",{type:"checkbox"});cb.checked=!!val;cb.addEventListener("change",function(){fn(cb.checked)});return h("label",{class:"sw"},[cb,h("i")])}
@@ -3565,138 +3766,49 @@ function num(val,min,max,fn,label){var i=h("input",{type:"number",min:min,max:ma
 function chanSel(val,fn,label){var s=h("select",{"aria-label":label});s.appendChild(opt("","— Choisir un salon —"));(meta.channels||[]).forEach(function(x){s.appendChild(opt(x.id,"# "+x.name))});if(val&&!(meta.channels||[]).some(function(x){return x.id===val}))s.appendChild(opt(val,"(salon supprimé)"));s.value=val||"";s.addEventListener("change",function(){fn(s.value)});return s}
 function multi(list,val,fn,label,pre){var s=h("select",{multiple:"multiple",size:4,"aria-label":label});(list||[]).forEach(function(x){var o=opt(x.id,(pre||"")+x.name);o.selected=val.indexOf(x.id)>-1;s.appendChild(o)});s.addEventListener("change",function(){fn([].filter.call(s.options,function(o){return o.selected}).map(function(o){return o.value}))});var w=selTools(s);if(w!==s)w.options=s.options;return w}
 function ic(k){var e=h("span",{class:"am-ic"});e.innerHTML=svg24(AM_IC[k]||AM_IC.list);return e}
-function pic(k,cls){var e=h("span",{class:"am2-ib"+(cls?" "+cls:"")});e.innerHTML=svg24(AM_IC[k]||AM_IC.list);return e}
 function card(kids){return h("div",{class:"td-card"},kids)}
 function fld(label,input,cls){return h("div",{class:"fld"+(cls?" "+cls:"")},[h("label",{class:"l",text:label}),input])}
 function stateText(r){return r.hits?"Déclenchée "+r.hits+" fois"+(r.last?" · dernière le "+secDT(r.last):""):"Jamais déclenchée"}
-function rl(id){return V.rules.filter(function(r){return r.id===id})[0]}
-function customs(){return V.rules.filter(function(r){return r.custom})}
-
-/* ---- Les protections (une carte + une page chacune) ---- */
-var ITEMS=[];
-function addRule(id,g,nav,icn){var r0=rl(id);ITEMS.push({k:id,g:g,nav:nav,ic:icn,name:r0.name,desc:r0.desc,
-on:function(){return !!rl(id).enabled},set:function(v){rl(id).enabled=v},
-flow:function(){var r=rl(id);return amFlow(r.action,r.timeout_min)},draw:function(){cfgRule(rl(id))}})}
-function addProt(P,g,nav,flow){ITEMS.push({k:P.k,g:g,nav:nav,ic:P.ic,name:P.name,desc:P.desc,
-on:function(){return !!V.prot[P.k]},set:function(v){V.prot[P.k]=v},flow:function(){return flow},draw:function(){cfgProt(P)}})}
-addRule("spam","Chat","Spam","activity");
-addRule("duplicates","Chat","Messages dupliqués","repeat");
-addRule("newlines","Chat","Retours à la ligne","list");
-addRule("caps","Chat","Majuscules","type");
-addRule("emoji_spam","Chat","Émojis","smile");
-addRule("zalgo","Chat","Caractères spéciaux","sparkles");
-ITEMS.push({k:"rate",g:"Chat",nav:"Limite de publication",ic:"gauge",name:"Limite de publication",desc:"Repère les membres qui envoient trop de messages en peu de temps.",
-on:function(){return !!V.rate.enabled},set:function(v){V.rate.enabled=v},
-flow:function(){return V.rate.max+" msg / "+V.rate.window+" s · "+amFlow(V.rate.action,V.rate.timeout_min)},draw:function(){cfgRate()}});
-addRule("insults","Filtrage","Insultes","chat");
-ITEMS.push({k:"words",g:"Filtrage",nav:"Mots personnalisés",ic:"slash",name:"Mots personnalisés",desc:"Tes propres mots interdits ou expressions régulières, chacun avec sa sanction.",
-on:function(){return customs().some(function(r){return r.enabled})},set:function(v){customs().forEach(function(r){r.enabled=v})},
-flow:function(){var n=customs().length;return n?n+" règle"+(n>1?"s":"")+" personnalisée"+(n>1?"s":""):"Aucune règle · crée la tienne"},draw:function(){cfgWords()}});
-addRule("invites","Filtrage","Publicité","megaphone");
-ITEMS.push({k:"links",g:"Filtrage",nav:"Liens",ic:"link",name:"Filtre de liens",desc:"Contrôle les liens postés par les membres.",
-on:function(){return !!V.links.enabled},set:function(v){V.links.enabled=v},
-flow:function(){return({blacklist:"Domaines bloqués",whitelist:"Liste blanche",all:"Tous les liens"})[V.links.mode]+" · "+amFlow(V.links.action)},draw:function(){cfgLinks()}});
-addRule("many_links","Filtrage","Liens en excès","link");
-addRule("scam_image","Filtrage","Arnaques en image","imgoff");
-addRule("phishing","Filtrage","Phishing et faux Nitro","shield");
-addRule("mentions","Mentions","Anti-mention","at");
-addRule("role_pings","Mentions","Pings de rôles","at");
-addProt(AM_PROT[0],"Protection CoreLab","Anti-token","Supprimer → Prévenir le membre");
-addProt(AM_PROT[1],"Protection CoreLab","Fichiers dangereux","Supprimer → Strike");
-addProt(AM_PROT[2],"Protection CoreLab","Compte piraté","Supprimer → Exclusion 24 h → MP");
-ITEMS.push({k:"newm",g:"Arrivées",nav:"Nouveaux membres",ic:"userplus",name:"Nouveaux membres",desc:"Applique des règles plus strictes aux comptes récents ou arrivés depuis peu.",
-on:function(){return !!V.newm.enabled},set:function(v){V.newm.enabled=v},
-flow:function(){return"Compte < "+V.newm.min_age_days+" j · "+({alert:"Alerte staff",quarantine:"Quarantaine",kick:"Expulsion"})[V.newm.action]},draw:function(){cfgNewm()}});
-ITEMS.push({k:"smart",g:"Intelligence",nav:"Automod intelligent",ic:"bot",name:"Automod intelligent",desc:"Analyse le sens des messages (toxicité, harcèlement, spam, contenu sexuel) au lieu de chercher des mots précis.",
-on:function(){return !!V.smart.enabled},set:function(v){V.smart.enabled=v},
-flow:function(){return({low:"Sensibilité faible",medium:"Sensibilité moyenne",high:"Sensibilité élevée"})[V.smart.level]+" · "+amFlow(V.smart.action)},draw:function(){cfgSmart()}});
-ITEMS.push({k:"tester",g:"Outils",nav:"Tester un message",ic:"flask",tool:true,name:"Tester un message",desc:"Simule ce que feraient tes protections, avec les réglages en cours (même non enregistrés).",draw:function(){cfgTester()}});
-var GROUPS=["Chat","Filtrage","Mentions","Protection CoreLab","Arrivées","Intelligence","Outils"];
-function real(){return ITEMS.filter(function(p){return !p.tool})}
-function activeCount(){return real().filter(function(p){return p.on()}).length}
-function item(k){return ITEMS.filter(function(p){return p.k===k})[0]}
-
-/* ---- Interrupteur du module : conserve les réglages, désactive/réactive les protections ---- */
-function snapKey(){return"cl_am_snap_"+G.id}
-function master(v){var all=real();
-if(!v){var on=all.filter(function(p){return p.on()}).map(function(p){return p.k});try{localStorage.setItem(snapKey(),JSON.stringify(on))}catch(e){}all.forEach(function(p){if(p.on())p.set(false)})}
-else{var keys=null;try{keys=JSON.parse(localStorage.getItem(snapKey())||"null")}catch(e){}if(!keys||!keys.length)keys=["scam_image","phishing"];all.forEach(function(p){if(keys.indexOf(p.k)>-1)p.set(true)})}
-dirty();draw()}
-
-/* ---- En-tête, bandeau, navigation ---- */
-function drawHead(){head.innerHTML="";var n=activeCount(),on=n>0;
-head.appendChild(pic("bot","big"));
-head.appendChild(h("div",{class:"tt"},[h("h2",{},["Automodération",h("span",{class:"pill"+(on?" on":""),style:"margin-left:12px;vertical-align:middle",text:on?"Actif":"Désactivé"})]),h("p",{text:"Modération automatique : anti-spam, filtres de mots et de liens, mentions, protections CoreLab et nouveaux membres."})]));
-head.appendChild(h("div",{class:"am2-st"},[h("span",{class:"am2-chip",text:n+" protection"+(n>1?"s":"")+" active"+(n>1?"s":"")}),h("span",{class:"am2-master"},[h("span",{text:on?"Module actif":"Module inactif"}),sw(on,master)])]))}
-function drawBanner(){bannerBox.innerHTML="";if(activeCount()>0)return;
-var b=h("div",{class:"am2-banner"});var i=h("span",{class:"am2-binfo"});i.innerHTML=svg24(AM_IC.info);b.appendChild(i);
-b.appendChild(h("div",{class:"in"},[h("b",{text:"Ce module est désactivé : tes réglages sont conservés, rien ne s’exécute."}),h("span",{text:"Tu peux relire ou préparer la configuration ; elle prendra effet à l’activation."})]));
-var bt=h("button",{class:"btn sm",type:"button",onclick:function(){master(true)}});bt.innerHTML=svg24(AM_IC.power);bt.appendChild(document.createTextNode("Activer"));b.appendChild(bt);bannerBox.appendChild(b)}
-function drawNav(){nav.innerHTML="";
-function nb(k,icn,label,onx){var b=h("button",{type:"button",class:cur===k?"on":"",onclick:function(){cur=k;creating=false;draw();if(c.scrollIntoView&&window.innerWidth<900)lay.scrollIntoView({block:"start"})}});var s=h("span",{class:"am2-ni"});s.innerHTML=svg24(AM_IC[icn]||AM_IC.list);b.appendChild(s);b.appendChild(h("span",{class:"lbl",text:label}));if(onx)b.appendChild(h("i",{class:"dot",title:"Active"}));return b}
-nav.appendChild(h("h4",{text:"Général"}));nav.appendChild(nb("overview","grid","Vue d’ensemble"));
-GROUPS.forEach(function(g){var l=ITEMS.filter(function(p){return p.g===g});if(!l.length)return;nav.appendChild(h("h4",{text:g}));l.forEach(function(p){nav.appendChild(nb(p.k,p.ic,p.nav,!p.tool&&p.on()))})})}
-
-/* ---- Panneaux ---- */
-function panelHead(icn,title,sub,extra){var d=h("div",{class:"am2-ph"},[pic(icn),h("div",{class:"in"},[h("b",{},[title,extra||null]),sub?h("span",{class:"d",text:sub}):null])]);return d}
-function drawMain(){main.innerHTML="";
-if(loadErr)main.appendChild(h("p",{class:"net-note",style:"margin:0 0 16px;padding-top:0;border:0",text:"Aperçu avec les réglages par défaut : le module d’automodération n’est pas encore actif côté bot. Mettez le bot à jour pour pouvoir enregistrer."}));
-if(cur==="overview")return drawOverview();
-var p=item(cur)||item("tester"),panel=h("section",{class:"am2-panel"}),ph;
-if(p.tool)ph=panelHead(p.ic,p.name,p.desc);
-else{ph=panelHead(p.ic,p.name,p.desc,h("span",{class:"pill"+(p.on()?" on":""),style:"margin-left:10px",text:p.on()?"● ACTIVE":"● DÉSACTIVÉE"}));ph.appendChild(sw(p.on(),function(v){p.set(v);dirty();draw()}))}
-panel.appendChild(ph);body=h("div",{class:"am2-pb"});panel.appendChild(body);main.appendChild(panel);p.draw()}
-function drawOverview(){
-var panel=h("section",{class:"am2-panel"});panel.appendChild(panelHead("grid","Protections","État de chaque protection et ses sanctions. Clique pour la régler."));
-var pb=h("div",{class:"am2-pb"});
-var s=h("input",{class:"am2-find",type:"search",placeholder:"Rechercher une protection","aria-label":"Rechercher une protection"});s.value=q;pb.appendChild(s);
-var box=h("div");pb.appendChild(box);
-function pcard(p){var on=p.on(),b=h("button",{type:"button",class:"am2-card"+(on?" on":""),onclick:function(){cur=p.k;draw();window.scrollTo({top:0,behavior:"smooth"})}});
-var ch=h("span",{class:"arr"});ch.innerHTML=svg24(AM_IC.chevr);
-var ibx=h("span",{class:"am2-ci"});ibx.innerHTML=svg24(AM_IC[p.ic]||AM_IC.list);
-b.appendChild(h("span",{class:"top"},[ibx,h("span",{class:"nm",text:p.nav}),ch]));
-b.appendChild(h("span",{},[h("span",{class:"pill"+(on?" on":""),text:on?"Activé":"Désactivé"})]));
-b.appendChild(h("span",{class:"flow",text:p.flow()}));return b}
-function drawGrid(){box.innerHTML="";var k=nz(q),any=false;
-GROUPS.forEach(function(g){var l=ITEMS.filter(function(p){return !p.tool&&p.g===g&&(!k||nz(p.nav+" "+p.name+" "+p.desc).indexOf(k)>-1)});if(!l.length)return;any=true;
-box.appendChild(h("h4",{class:"am2-gt",text:g}));var gr=h("div",{class:"am2-grid"});l.forEach(function(p){gr.appendChild(pcard(p))});box.appendChild(gr)});
-if(!any)box.appendChild(h("p",{class:"td-empty",text:"Aucune protection ne correspond."}))}
-s.addEventListener("input",function(){q=s.value;drawGrid()});drawGrid();
-panel.appendChild(pb);main.appendChild(panel);
-var gp=h("section",{class:"am2-panel",style:"margin-top:20px"});gp.appendChild(panelHead("sliders","Réglages généraux","Options communes à toutes les protections."));
-var gb=h("div",{class:"am2-pb"});
-gb.appendChild(row("Appliquer aussi aux administrateurs et modérateurs","Par défaut, les membres qui ont « Administrateur » ou « Gérer les messages » sont ignorés (insultes, majuscules, invitations, règles perso, liens, nouveaux membres, limite). Active cette option pour tester avec ton propre compte.",sw(V.staff,function(v){V.staff=v;dirty()})));
-gb.appendChild(h("hr",{class:"td-sep"}));
-gb.appendChild(h("p",{class:"muted",style:"margin:0;font-size:13.5px",text:"Le heat s’additionne à chaque infraction : au-delà du seuil fixé dans « Sanctions », le membre est sanctionné automatiquement."}));
-gp.appendChild(gb);main.appendChild(gp)}
-
-/* ---- Pages de réglage ---- */
 function ruleCard(r){var isOpen=!!opened[r.id],chev=h("button",{class:"td-chev"+(isOpen?" open":""),type:"button","aria-label":"Réglages",onclick:function(){opened[r.id]=!opened[r.id];draw()}});chev.innerHTML=svg24(AM_IC.down);
-var x=h("button",{class:"am-x",type:"button",title:"Supprimer la règle","aria-label":"Supprimer",text:"✕",onclick:function(){
-if(!confirm("Supprimer la règle « "+r.name+" » ?"))return;V.rules=V.rules.filter(function(y){return y!==r});dirty();draw()}});
+var x=h("button",{class:"am-x",type:"button",title:r.custom?"Supprimer la règle":"Réinitialiser la règle","aria-label":r.custom?"Supprimer":"Réinitialiser",text:"✕",onclick:function(){
+if(r.custom){if(!confirm("Supprimer la règle « "+r.name+" » ?"))return;V.rules=V.rules.filter(function(y){return y!==r})}
+else{if(!confirm("Réinitialiser les réglages de cette règle ?"))return;var b=AM_BASE.filter(function(y){return y.id===r.id})[0];Object.assign(r,b,{ex_channels:[],ex_roles:[]})}
+dirty();draw()}});
 var pill=h("span",{class:"pill"+(r.enabled?" on":""),style:"margin-left:10px",text:r.enabled?"● ACTIVE":"● DÉSACTIVÉE"});
 var cd=card([h("div",{class:"td-hd"},[ic(r.ic||"slash"),h("div",{class:"in"},[h("b",{},[r.name,pill]),h("span",{class:"d",text:r.desc}),h("span",{class:"d",style:"opacity:.75",text:stateText(r)})]),sw(r.enabled,function(v){r.enabled=v;dirty();draw()}),x,chev])]);
 if(isOpen){var p=h("div",{class:"td-cfg"});
 p.appendChild(fld("Action",sel(AM_ACT,r.action,function(v){r.action=v;dirty();draw()},"Action")));
 if(r.action==="timeout")p.appendChild(fld("Durée de l’exclusion",sel(amTmo(r.timeout_min||10),r.timeout_min||10,function(v){r.timeout_min=Number(v);dirty()},"Durée de l’exclusion")));
 p.appendChild(fld("Heat ajouté (0 à 10)",num(r.heat,0,10,function(v){r.heat=v;dirty()},"Heat")));
-p.appendChild(fld("Type",sel([["words","Mots interdits"],["regex","Expression régulière"]],r.type||"words",function(v){r.type=v;dirty()},"Type")));
-var ta=h("textarea",{maxlength:1000,"aria-label":"Motif"});ta.value=r.pattern||"";ta.addEventListener("input",function(){r.pattern=ta.value;dirty()});p.appendChild(fld("Motif",ta));
+if(r.custom){p.appendChild(fld("Type",sel([["words","Mots interdits"],["regex","Expression régulière"]],r.type||"words",function(v){r.type=v;dirty()},"Type")));
+var ta=h("textarea",{maxlength:1000,"aria-label":"Motif"});ta.value=r.pattern||"";ta.addEventListener("input",function(){r.pattern=ta.value;dirty()});p.appendChild(fld("Motif",ta))}
 p.appendChild(fld("Salons exclus",multi(meta.channels,r.ex_channels,function(v){r.ex_channels=v;dirty()},"Salons exclus","# ")));
 p.appendChild(fld("Rôles exclus",multi(meta.roles,r.ex_roles,function(v){r.ex_roles=v;dirty()},"Rôles exclus")));
-cd.appendChild(p)}
+cd.appendChild(p);cd.appendChild(h("p",{class:"muted",style:"margin:12px 0 0;font-size:13.5px",text:"Le heat s’additionne à chaque infraction : au-delà du seuil fixé dans « Sanctions », le membre est sanctionné automatiquement."}))}
 return cd}
-function cfgRule(r){
-body.appendChild(h("p",{class:"muted",style:"margin:0 0 16px;font-size:13.5px",text:stateText(r)}));
-var p=h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"});
-p.appendChild(fld("Action",sel(AM_ACT,r.action,function(v){r.action=v;dirty();draw()},"Action")));
-if(r.action==="timeout")p.appendChild(fld("Durée de l’exclusion",sel(amTmo(r.timeout_min||10),r.timeout_min||10,function(v){r.timeout_min=Number(v);dirty()},"Durée de l’exclusion")));
-p.appendChild(fld("Heat ajouté (0 à 10)",num(r.heat,0,10,function(v){r.heat=v;dirty()},"Heat")));
-p.appendChild(fld("Salons exclus",multi(meta.channels,r.ex_channels,function(v){r.ex_channels=v;dirty()},"Salons exclus","# ")));
-p.appendChild(fld("Rôles exclus",multi(meta.roles,r.ex_roles,function(v){r.ex_roles=v;dirty()},"Rôles exclus")));
-body.appendChild(p);
-body.appendChild(h("p",{class:"muted",style:"margin:16px 0 0;font-size:13.5px",text:"Le heat s’additionne à chaque infraction : au-delà du seuil fixé dans « Sanctions », le membre est sanctionné automatiquement."}));
-body.appendChild(h("button",{class:"btn ghost sm",type:"button",style:"margin-top:16px",text:"Réinitialiser cette protection",onclick:function(){if(!confirm("Réinitialiser les réglages de cette protection ?"))return;var b=AM_BASE.filter(function(y){return y.id===r.id})[0];Object.assign(r,b,{ex_channels:[],ex_roles:[]});dirty();draw()}}))}
+function drawTester(){var box=card([]);
+box.appendChild(h("div",{class:"td-hd"},[ic("flask"),h("div",{class:"in"},[h("b",{text:"Tester un message"})])]));
+box.appendChild(h("p",{class:"muted",style:"margin:12px 0 14px;font-size:13.5px",text:"Écrivez un message comme un membre : CoreLab dit ce que chaque règle en ferait, avec les réglages en cours, même pas encore enregistrés."}));
+var ta=h("textarea",{maxlength:2000,placeholder:"Par exemple : rejoins discord.gg/abc pour du nitro gratuit","aria-label":"Message"});
+var ch=h("select",{"aria-label":"Salon"});ch.appendChild(opt("","N’importe quel salon"));(meta.channels||[]).forEach(function(x){ch.appendChild(opt(x.id,"# "+x.name))});
+var rl=multi(meta.roles,[],function(){},"Rôles du membre");
+var out=h("div",{style:"margin-top:16px"});
+function show(){out.innerHTML="";if(!tested)return;
+if(tested.empty){out.appendChild(h("p",{class:"err",text:"Écrivez un message à tester."}));return}
+var hits=tested.res.filter(function(x){return x.s==="hit"});
+out.appendChild(h("p",{style:"margin:0 0 10px;font-weight:600",text:hits.length?hits.length+" règle"+(hits.length>1?"s":"")+" se déclenche"+(hits.length>1?"nt":""):"Aucune règle ne se déclenche : le message passerait."}));
+var l=h("div",{class:"trl"});tested.res.forEach(function(x){var st=x.s==="hit"?["DÉCLENCHÉE","bad"]:x.s==="off"?["DÉSACTIVÉE",""]:x.s==="ex"?["EXCLU",""]:["OK","on"];
+l.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[x.n,h("span",{class:"pill "+st[1],style:"margin-left:8px",text:st[0]})]),x.s==="hit"?h("span",{class:"ad",text:"Elle "+x.a+" (heat +"+x.h+")."}):null])]))});out.appendChild(l);
+out.appendChild(h("p",{class:"muted",style:"margin:10px 0 0;font-size:13px",text:"Seul le texte est analysé : les images ne peuvent pas être testées ici."}))}
+var go=h("button",{class:"btn ghost",type:"button",text:"Tester",onclick:function(){var t=ta.value;if(!t.trim()){tested={empty:true};show();return}
+var rid=[].filter.call(rl.options,function(o){return o.selected}).map(function(o){return o.value});
+tested={res:V.rules.map(function(r){var base={n:r.name,a:AM_ACT_L[r.action]||"agirait",h:r.heat};
+if(!r.enabled)return Object.assign(base,{s:"off"});
+if((ch.value&&r.ex_channels.indexOf(ch.value)>-1)||rid.some(function(i){return r.ex_roles.indexOf(i)>-1}))return Object.assign(base,{s:"ex"});
+var hit=r.custom?amCustomHit(r,t):(AM_TEST[r.id]?AM_TEST[r.id](t):false);return Object.assign(base,{s:hit?"hit":"ok"})})};show()}});
+box.appendChild(fld("Message",ta));
+box.appendChild(h("div",{class:"td-cfg",style:"border:0;padding-top:0"},[fld("Salon",ch),fld("Rôles du membre",rl)]));
+box.appendChild(go);box.appendChild(out);show();return box}
 function drawCreate(){var f={name:"",type:"words",pattern:"",action:"delete"},cd=card([]);
 cd.appendChild(h("div",{class:"td-hd"},[ic("plus"),h("div",{class:"in"},[h("b",{text:"Nouvelle règle"}),h("span",{class:"d",text:"Mots interdits (séparés par une virgule ou un retour à la ligne) ou expression régulière."})])]));
 var nm=h("input",{type:"text",maxlength:60,placeholder:"Ex. : Pubs pour un autre serveur","aria-label":"Nom"});nm.addEventListener("input",function(){f.name=nm.value});
@@ -3712,64 +3824,27 @@ V.rules.push({id:"custom_"+Date.now().toString(36),name:f.name.trim(),desc:f.typ
 creating=false;dirty();draw()}}),
 h("button",{class:"btn ghost",type:"button",text:"Annuler",onclick:function(){creating=false;draw()}})]));
 return cd}
-function cfgWords(){var list=h("div",{class:"am-list"}),cs=customs();body.appendChild(list);
-if(!cs.length)list.appendChild(card([h("p",{class:"td-empty",style:"margin:0",text:"Aucune règle personnalisée pour l’instant."})]));
-cs.forEach(function(r){list.appendChild(ruleCard(r))});
+function drawRules(){
+var sc=card([row("Appliquer aussi aux administrateurs et modérateurs","Par défaut, les membres qui ont « Administrateur » ou « Gérer les messages » sont ignorés (insultes, majuscules, invitations, règles perso, liens, nouveaux membres, limite). Active cette option pour tester avec ton propre compte.",sw(V.staff,function(v){V.staff=v;dirty()}))]);sc.style.marginBottom="14px";body.appendChild(sc);
+var s=h("input",{class:"find",type:"search",placeholder:"Rechercher une règle","aria-label":"Rechercher une règle"});s.value=q;
+s.addEventListener("input",function(){q=s.value;drawList()});body.appendChild(h("div",{class:"tb"},[s]));
+var list=h("div",{class:"am-list"});body.appendChild(list);
+function drawList(){list.innerHTML="";var k=nz(q),shown=V.rules.filter(function(r){return !k||nz(r.name+" "+r.desc).indexOf(k)>-1});
+if(!shown.length)list.appendChild(h("div",{class:"td-card"},[h("p",{class:"td-empty",style:"margin:0",text:"Aucune règle ne correspond."})]));
+shown.forEach(function(r){list.appendChild(ruleCard(r))})}
+drawList();
+body.appendChild(drawTester());
 if(creating)body.appendChild(drawCreate());
 else{var add=h("button",{class:"am-add",type:"button",onclick:function(){creating=true;draw();var e=body.lastChild;if(e&&e.scrollIntoView)e.scrollIntoView({block:"center",behavior:"smooth"})}});add.innerHTML=svg24(AM_IC.plus);add.appendChild(document.createTextNode("Créer une nouvelle règle"));body.appendChild(add)}}
-function cfgProt(P){
-P.pts.forEach(function(t){body.appendChild(h("p",{class:"muted",style:"margin:0 0 10px;font-size:14px",text:"• "+t}))});
-body.appendChild(h("p",{class:"muted",style:"margin:16px 0 0;font-size:13.5px",text:"Cette protection s’applique aussi dans /protect-settings et dans la configuration recommandée."}))}
-function cfgSmart(){var S=V.smart;
-body.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[fld("Sensibilité",sel([["low","Faible : seulement les cas évidents"],["medium","Moyenne"],["high","Élevée : plus de faux positifs"]],S.level,function(v){S.level=v;dirty()},"Sensibilité")),fld("Action",sel(AM_ACT,S.action,function(v){S.action=v;dirty()},"Action")),fld("Salon des alertes",chanSel(S.channel,function(v){S.channel=v;dirty()},"Salon des alertes"))]));
-body.appendChild(h("hr",{class:"td-sep"}));
-var first=true;[["toxicity","Toxicité et insultes"],["harassment","Harcèlement et menaces"],["spam","Spam et publicité"],["nsfw","Contenu sexuel"]].forEach(function(k){if(!first)body.appendChild(h("hr",{class:"td-sep",style:"margin:10px 0"}));first=false;body.appendChild(row(k[1],"",sw(S.cats[k[0]],function(v){S.cats[k[0]]=v;dirty()})))})}
-function cfgLinks(){var L=V.links;
-body.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[fld("Mode",sel([["blacklist","Bloquer ces domaines"],["whitelist","Autoriser uniquement ces domaines"],["all","Bloquer tous les liens"]],L.mode,function(v){L.mode=v;dirty()},"Mode")),fld("Action",sel(AM_ACT,L.action,function(v){L.action=v;dirty()},"Action"))]));
-var ta=h("textarea",{maxlength:3000,placeholder:"exemple.com\nautre-site.fr","aria-label":"Domaines"});ta.value=L.domains;ta.addEventListener("input",function(){L.domains=ta.value;dirty()});
-body.appendChild(h("div",{style:"margin-top:14px"},[fld("Domaines (un par ligne)",ta)]));
-body.appendChild(h("hr",{class:"td-sep"}));
-body.appendChild(row("Bloquer les invitations Discord","Supprime les liens discord.gg vers d’autres serveurs.",sw(L.block_invites,function(v){L.block_invites=v;dirty()})));
-body.appendChild(h("hr",{class:"td-sep",style:"margin:10px 0"}));
-body.appendChild(row("Bloquer les raccourcisseurs de liens","bit.ly, tinyurl… : ils cachent la vraie destination.",sw(L.block_shorteners,function(v){L.block_shorteners=v;dirty()})))}
-function cfgNewm(){var N=V.newm;
-body.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
-fld("Âge minimum du compte (jours)",num(N.min_age_days,0,365,function(v){N.min_age_days=v;dirty()},"Âge minimum")),
-fld("Restriction après l’arrivée (heures)",num(N.restrict_hours,0,168,function(v){N.restrict_hours=v;dirty()},"Heures")),
-fld("Pendant cette période, interdire",sel([["links","Les liens"],["media","Les liens et les images"],["all","Tout envoi de messages"]],N.restrict,function(v){N.restrict=v;dirty()},"Restriction")),
-fld("Si le compte est trop récent",sel([["alert","Alerter le staff"],["quarantine","Mettre en quarantaine"],["kick","Expulser"]],N.action,function(v){N.action=v;dirty()},"Action")),
-fld("Salon des alertes",chanSel(N.channel,function(v){N.channel=v;dirty()},"Salon des alertes"))]))}
-function cfgRate(){var R=V.rate;
-body.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
-fld("Messages maximum",num(R.max,2,50,function(v){R.max=v;dirty()},"Messages")),
-fld("Sur une durée de (secondes)",num(R.window,1,60,function(v){R.window=v;dirty()},"Secondes")),
-fld("Action",sel(AM_ACT,R.action,function(v){R.action=v;dirty()},"Action")),
-fld("Durée de l’exclusion (minutes)",num(R.timeout_min,1,1440,function(v){R.timeout_min=v;dirty()},"Minutes"))]));
-body.appendChild(h("p",{class:"muted",style:"margin:14px 0 0;font-size:13.5px",text:"Exemple : 5 messages en 5 secondes déclenchent l’action choisie."}))}
-function drawTester(){var box=card([]);
-box.appendChild(h("div",{class:"td-hd"},[ic("flask"),h("div",{class:"in"},[h("b",{text:"Tester un message"})])]));
-box.appendChild(h("p",{class:"muted",style:"margin:12px 0 14px;font-size:13.5px",text:"Écrivez un message comme un membre : CoreLab dit ce que chaque règle en ferait, avec les réglages en cours, même pas encore enregistrés."}));
-var ta=h("textarea",{maxlength:2000,placeholder:"Par exemple : rejoins discord.gg/abc pour du nitro gratuit","aria-label":"Message"});
-var ch=h("select",{"aria-label":"Salon"});ch.appendChild(opt("","N’importe quel salon"));(meta.channels||[]).forEach(function(x){ch.appendChild(opt(x.id,"# "+x.name))});
-var rl2=multi(meta.roles,[],function(){},"Rôles du membre");
-var out=h("div",{style:"margin-top:16px"});
-function show(){out.innerHTML="";if(!tested)return;
-if(tested.empty){out.appendChild(h("p",{class:"err",text:"Écrivez un message à tester."}));return}
-var hits=tested.res.filter(function(x){return x.s==="hit"});
-out.appendChild(h("p",{style:"margin:0 0 10px;font-weight:600",text:hits.length?hits.length+" règle"+(hits.length>1?"s":"")+" se déclenche"+(hits.length>1?"nt":""):"Aucune règle ne se déclenche : le message passerait."}));
-var l=h("div",{class:"trl"});tested.res.forEach(function(x){var st=x.s==="hit"?["DÉCLENCHÉE","bad"]:x.s==="off"?["DÉSACTIVÉE",""]:x.s==="ex"?["EXCLU",""]:["OK","on"];
-l.appendChild(h("div",{class:"arow"},[h("div",{class:"ati"},[h("b",{},[x.n,h("span",{class:"pill "+st[1],style:"margin-left:8px",text:st[0]})]),x.s==="hit"?h("span",{class:"ad",text:"Elle "+x.a+" (heat +"+x.h+")."}):null])]))});out.appendChild(l);
-out.appendChild(h("p",{class:"muted",style:"margin:10px 0 0;font-size:13px",text:"Seul le texte est analysé : les images ne peuvent pas être testées ici."}))}
-var go=h("button",{class:"btn ghost",type:"button",text:"Tester",onclick:function(){var t=ta.value;if(!t.trim()){tested={empty:true};show();return}
-var rid=[].filter.call(rl2.options,function(o){return o.selected}).map(function(o){return o.value});
-tested={res:V.rules.map(function(r){var base={n:r.name,a:AM_ACT_L[r.action]||"agirait",h:r.heat};
-if(!r.enabled)return Object.assign(base,{s:"off"});
-if((ch.value&&r.ex_channels.indexOf(ch.value)>-1)||rid.some(function(i){return r.ex_roles.indexOf(i)>-1}))return Object.assign(base,{s:"ex"});
-var hit=r.custom?amCustomHit(r,t):(AM_TEST[r.id]?AM_TEST[r.id](t):false);return Object.assign(base,{s:hit?"hit":"ok"})})};show()}});
-box.appendChild(fld("Message",ta));
-box.appendChild(h("div",{class:"td-cfg",style:"border:0;padding-top:0"},[fld("Salon",ch),fld("Rôles du membre",rl2)]));
-box.appendChild(go);box.appendChild(out);show();return box}
-function drawProtTester(){var box=card([]);
+function drawProt(){
+var intro=card([h("div",{class:"td-hd"},[ic("shield"),h("div",{class:"in"},[h("b",{text:"Nouvelles protections CoreLab"}),h("span",{class:"d",text:"Trois protections contre les fuites et les attaques. Elles s’appliquent aussi dans /protect-settings et dans la configuration recommandée."})])])]);body.appendChild(intro);
+var list=h("div",{class:"am-list"});body.appendChild(list);
+AM_PROT.forEach(function(P){var on=!!V.prot[P.k];
+var pill=h("span",{class:"pill"+(on?" on":""),style:"margin-left:10px",text:on?"● ACTIVE":"● DÉSACTIVÉE"});
+var cd=card([h("div",{class:"td-hd"},[ic(P.ic),h("div",{class:"in"},[h("b",{},[P.name,pill]),h("span",{class:"d",text:P.desc})]),sw(on,function(v){V.prot[P.k]=v;dirty();draw()})])]);
+P.pts.forEach(function(t){cd.appendChild(h("p",{class:"muted",style:"margin:10px 0 0;font-size:13.5px",text:"• "+t}))});
+list.appendChild(cd)});
+var box=card([]);
 box.appendChild(h("div",{class:"td-hd"},[ic("flask"),h("div",{class:"in"},[h("b",{text:"Tester un secret ou un nom de fichier"})])]));
 box.appendChild(h("p",{class:"muted",style:"margin:12px 0 14px;font-size:13.5px",text:"Simulation locale avec les réglages en cours : rien n’est envoyé et le secret est masqué dans le résultat."}));
 var ta=h("textarea",{maxlength:2000,placeholder:"Par exemple : voici mon token ghp_…","aria-label":"Message"});
@@ -3785,9 +3860,48 @@ files.forEach(function(f){var r=amFileHit(f);
 l.appendChild(!V.prot.dangerous_files_enabled?line("Fichier : "+f,["DÉSACTIVÉE",""],r?"Il serait repéré ("+r+") mais la protection est coupée.":""):r?line("Fichier : "+f,["DÉCLENCHÉE","bad"],"La pièce jointe serait supprimée ("+r+") et le membre recevrait un strike."):line("Fichier : "+f,["OK","on"],"Aucun danger repéré."))});
 out.appendChild(l)}});
 box.appendChild(fld("Message",ta));box.appendChild(h("div",{style:"margin-top:14px"},[fld("Noms de fichiers (un par ligne)",fn)]));box.appendChild(h("div",{style:"margin-top:14px"},[go]));box.appendChild(out);
-return box}
-function cfgTester(){body.appendChild(drawTester());body.appendChild(drawProtTester())}
-function draw(){drawHead();drawBanner();drawNav();drawMain()}
+body.appendChild(box)}
+function drawSmart(){var S=V.smart,cd=card([]);
+cd.appendChild(row("Activer l’automod intelligent","Analyse le sens des messages (toxicité, harcèlement, spam, contenu sexuel) au lieu de chercher des mots précis.",sw(S.enabled,function(v){S.enabled=v;dirty()})));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[fld("Sensibilité",sel([["low","Faible : seulement les cas évidents"],["medium","Moyenne"],["high","Élevée : plus de faux positifs"]],S.level,function(v){S.level=v;dirty()},"Sensibilité")),fld("Action",sel(AM_ACT,S.action,function(v){S.action=v;dirty()},"Action")),fld("Salon des alertes",chanSel(S.channel,function(v){S.channel=v;dirty()},"Salon des alertes"))]));
+cd.appendChild(h("hr",{class:"td-sep"}));
+[["toxicity","Toxicité et insultes"],["harassment","Harcèlement et menaces"],["spam","Spam et publicité"],["nsfw","Contenu sexuel"]].forEach(function(k){cd.appendChild(row(k[1],"",sw(S.cats[k[0]],function(v){S.cats[k[0]]=v;dirty()})));cd.appendChild(h("hr",{class:"td-sep",style:"margin:10px 0"}))});
+cd.removeChild(cd.lastChild);body.appendChild(cd)}
+function drawLinks(){var L=V.links,cd=card([]);
+cd.appendChild(row("Activer le filtre de liens","Contrôle les liens postés par les membres.",sw(L.enabled,function(v){L.enabled=v;dirty()})));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[fld("Mode",sel([["blacklist","Bloquer ces domaines"],["whitelist","Autoriser uniquement ces domaines"],["all","Bloquer tous les liens"]],L.mode,function(v){L.mode=v;dirty()},"Mode")),fld("Action",sel(AM_ACT,L.action,function(v){L.action=v;dirty()},"Action"))]));
+var ta=h("textarea",{maxlength:3000,placeholder:"exemple.com\nautre-site.fr","aria-label":"Domaines"});ta.value=L.domains;ta.addEventListener("input",function(){L.domains=ta.value;dirty()});
+cd.appendChild(h("div",{style:"margin-top:14px"},[fld("Domaines (un par ligne)",ta)]));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(row("Bloquer les invitations Discord","Supprime les liens discord.gg vers d’autres serveurs.",sw(L.block_invites,function(v){L.block_invites=v;dirty()})));
+cd.appendChild(h("hr",{class:"td-sep",style:"margin:10px 0"}));
+cd.appendChild(row("Bloquer les raccourcisseurs de liens","bit.ly, tinyurl… : ils cachent la vraie destination.",sw(L.block_shorteners,function(v){L.block_shorteners=v;dirty()})));
+body.appendChild(cd)}
+function drawNewm(){var N=V.newm,cd=card([]);
+cd.appendChild(row("Surveiller les nouveaux membres","Applique des règles plus strictes aux comptes récents ou arrivés depuis peu.",sw(N.enabled,function(v){N.enabled=v;dirty()})));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
+fld("Âge minimum du compte (jours)",num(N.min_age_days,0,365,function(v){N.min_age_days=v;dirty()},"Âge minimum")),
+fld("Restriction après l’arrivée (heures)",num(N.restrict_hours,0,168,function(v){N.restrict_hours=v;dirty()},"Heures")),
+fld("Pendant cette période, interdire",sel([["links","Les liens"],["media","Les liens et les images"],["all","Tout envoi de messages"]],N.restrict,function(v){N.restrict=v;dirty()},"Restriction")),
+fld("Si le compte est trop récent",sel([["alert","Alerter le staff"],["quarantine","Mettre en quarantaine"],["kick","Expulser"]],N.action,function(v){N.action=v;dirty()},"Action")),
+fld("Salon des alertes",chanSel(N.channel,function(v){N.channel=v;dirty()},"Salon des alertes"))]));
+body.appendChild(cd)}
+function drawRate(){var R=V.rate,cd=card([]);
+cd.appendChild(row("Limiter la publication","Repère les membres qui envoient trop de messages en peu de temps.",sw(R.enabled,function(v){R.enabled=v;dirty()})));
+cd.appendChild(h("hr",{class:"td-sep"}));
+cd.appendChild(h("div",{class:"td-cfg",style:"border:0;margin:0;padding:0"},[
+fld("Messages maximum",num(R.max,2,50,function(v){R.max=v;dirty()},"Messages")),
+fld("Sur une durée de (secondes)",num(R.window,1,60,function(v){R.window=v;dirty()},"Secondes")),
+fld("Action",sel(AM_ACT,R.action,function(v){R.action=v;dirty()},"Action")),
+fld("Durée de l’exclusion (minutes)",num(R.timeout_min,1,1440,function(v){R.timeout_min=v;dirty()},"Minutes"))]));
+cd.appendChild(h("p",{class:"muted",style:"margin:14px 0 0;font-size:13.5px",text:"Exemple : 5 messages en 5 secondes déclenchent l’action choisie."}));
+body.appendChild(cd)}
+function draw(){body.innerHTML="";drawTabs();
+if(loadErr)body.appendChild(h("p",{class:"net-note",style:"margin:0 0 16px;padding-top:0;border:0",text:"Aperçu avec les réglages par défaut : le module d’automodération n’est pas encore actif côté bot. Mettez le bot à jour pour pouvoir enregistrer."}));
+if(tab==="rules")drawRules();else if(tab==="prot")drawProt();else if(tab==="smart")drawSmart();else if(tab==="links")drawLinks();else if(tab==="newm")drawNewm();else drawRate()}
 function merge(v){if(!v)return;
 if(Array.isArray(v.automod_rules)){v.automod_rules.forEach(function(s){var r=V.rules.filter(function(x){return x.id===s.id})[0];
 if(r)Object.assign(r,{enabled:!!s.enabled,action:s.action||r.action,heat:s.heat!=null?s.heat:r.heat,timeout_min:s.timeout_min!=null?s.timeout_min:(r.timeout_min||10),ex_channels:s.ex_channels||[],ex_roles:s.ex_roles||[]});
@@ -3797,7 +3911,7 @@ if(v.automod_smart)Object.assign(V.smart,v.automod_smart,{cats:Object.assign(V.s
 if(typeof v.automod_apply_staff==="boolean")V.staff=v.automod_apply_staff;["anti_token_enabled","dangerous_files_enabled","compromised_account_enabled"].forEach(function(k){if(typeof v[k]==="boolean")V.prot[k]=v[k]});if(v.automod_links)Object.assign(V.links,v.automod_links);if(v.automod_newmembers)Object.assign(V.newm,v.automod_newmembers);if(v.automod_ratelimit)Object.assign(V.rate,v.automod_ratelimit)}
 draw();
 api("/api/guilds/"+G.id+"/modules/automod").then(function(d){merge(d&&d.values)}).catch(function(e){if(e&&e.message==="auth")return;loadErr=true})
-.then(function(){var pm=(PEND[G.id]||{}).automod;if(pm){var keep=(pm.body.automod_rules||[]).map(function(x){return x.id});V.rules=V.rules.filter(function(r){return !r.custom||keep.indexOf(r.id)>-1});merge(pm.body)}if(c.isConnected)draw()})}
+.then(function(){var pm=(PEND[G.id]||{}).automod;if(pm){var keep=(pm.body.automod_rules||[]).map(function(x){return x.id});V.rules=V.rules.filter(function(r){return !r.custom||keep.indexOf(r.id)>-1});merge(pm.body)}if(body.isConnected)draw()})}
 
 /* ---- À traiter ---- */
 var TD_IC={inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',down:'<path d="m6 9 6 6 6-6"/>'};
@@ -4301,7 +4415,7 @@ h("button",{class:"btn sm",type:"button",text:gbusy?"Enregistrement…":"Tout en
 function saveAll(g){if(gbusy)return;var ids=Object.keys(PEND[g]||{}),fails=[],ok=0;gbusy=true;updateGBar();
 (function next(i){if(i>=ids.length)return done();var mid=ids[i],it=PEND[g][mid];
 api("/api/guilds/"+g+"/modules/"+mid,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(it.body)})
-.then(function(r){if(mid==="automod"&&!(r&&r.values&&Array.isArray(r.values.automod_rules))){fails.push(it.label+" : le bot n’a pas conservé ces réglages (route automod à ajouter côté bot)");return next(i+1)}ok++;delete PEND[g][mid];next(i+1)})
+.then(function(r){if(mid==="security"&&!(r&&r.values&&typeof r.values.security_mode==="string")){fails.push(it.label+" : le bot n’a pas conservé ces réglages (route security à ajouter côté bot)");return next(i+1)}if(mid==="automod"&&!(r&&r.values&&Array.isArray(r.values.automod_rules))){fails.push(it.label+" : le bot n’a pas conservé ces réglages (route automod à ajouter côté bot)");return next(i+1)}ok++;delete PEND[g][mid];next(i+1)})
 .catch(function(e){if(e&&e.message==="auth"){gbusy=false;return}fails.push(it.label+" : "+errText(e));next(i+1)})})(0);
 function done(){gbusy=false;if(!fails.length){DIRTY=false;toast(ok>1?"Tout est enregistré ✓ ("+ok+" modules)":"Enregistré ✓")}else toast((ok?ok+" enregistré(s). ":"")+"Échec — "+fails.join(" | "),true);updateGBar()}}
 
