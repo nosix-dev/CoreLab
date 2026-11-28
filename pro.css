@@ -330,3 +330,43 @@ html.seen .cyb{animation-delay:.1s}
 @media(max-width:1180px){.cyb-feed,.cyb-box{display:none}}
 @media(max-width:600px){.cyb-t{display:none}}
 @media(prefers-reduced-motion:reduce){.cyb-radar i,.cyb-scan::after,.cyb-bar i,.cyb-t i,.hub.shield svg,.hub.shield image{animation:none!important}}
+
+
+/* ===================== SITE : style cyber protection (toutes les pages) ===================== */
+:root:not([data-theme="light"]) body::after{content:"";position:fixed;inset:0;z-index:40;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,rgba(0,0,0,.07) 3px 4px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.28))}
+html{scrollbar-width:thin;scrollbar-color:var(--ac) #1a1b1e}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#1a1b1e}
+::-webkit-scrollbar-thumb{background:var(--ac);border:2px solid #1a1b1e}
+:root:not([data-theme="light"]) h1{text-shadow:0 0 32px rgba(232,81,13,.22)}
+.card:hover,.plan:hover,.post:hover,.mod:hover,.sc:hover,.stat:hover,.sl-card:hover,.hm-promo:hover{box-shadow:0 0 28px rgba(232,81,13,.14)!important}
+
+/* bandeau défilant de statuts de protection */
+.thr{position:relative;overflow:hidden;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);background:var(--s1);padding:10px 0;font:500 12px var(--mono);letter-spacing:.14em;color:var(--mu);white-space:nowrap}
+.thr::before,.thr::after{content:"";position:absolute;top:0;bottom:0;width:90px;z-index:2}
+.thr::before{left:0;background:linear-gradient(90deg,var(--s1),transparent)}
+.thr::after{right:0;background:linear-gradient(270deg,var(--s1),transparent)}
+.thr>div{display:flex;width:max-content;gap:38px;padding-right:38px;animation:thr 40s linear infinite}
+.thr:hover>div{animation-play-state:paused}
+.thr>div>span{display:inline-flex;align-items:center;gap:10px}
+.thr>div>span::before{content:"";width:7px;height:7px;background:var(--ac);flex:none}
+.thr b{color:var(--ok,#2fb872);font-weight:500}
+@keyframes thr{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.thr>div{animation:none}}
+
+
+/* ===================== CYBER++ : effets agressifs (toutes les pages) ===================== */
+:root:not([data-theme="light"]) h1{text-shadow:1.5px 0 rgba(255,40,80,.4),-1.5px 0 rgba(0,255,170,.3),0 0 34px rgba(232,81,13,.25)}
+h2::after{content:"_";margin-left:4px;color:var(--ok,#2fb872);animation:cyblink 1s steps(1) infinite}
+h2:hover{animation:cyglh .4s steps(2) 1}
+@keyframes cyglh{0%{text-shadow:3px 0 rgba(255,40,80,.7),-3px 0 rgba(0,255,170,.6);transform:translateX(-2px)}50%{text-shadow:-3px 0 rgba(255,40,80,.7),3px 0 rgba(0,255,170,.6);transform:translateX(2px)}100%{text-shadow:none;transform:none}}
+/* viseur qui suit la souris et se verrouille sur les liens et boutons */
+.tl-ring{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;z-index:99990;pointer-events:none;border:1px solid rgba(232,81,13,.75);border-radius:50%;translate:-100px -100px;transition:width .2s,height .2s,margin .2s,border-color .2s,border-radius .2s,rotate .25s}
+.tl-ring.lk{width:56px;height:56px;margin:-28px 0 0 -28px;border-color:#2fb872;border-radius:0;rotate:45deg}
+.tl-dot{position:fixed;left:0;top:0;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;z-index:99991;pointer-events:none;background:#e8510d;translate:-100px -100px}
+/* flux de données sur les bords de l'écran */
+.tl-str{position:fixed;top:0;width:40px;height:100%;z-index:39;pointer-events:none;opacity:.55;-webkit-mask-image:linear-gradient(transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(transparent,#000 15%,#000 85%,transparent)}
+.tl-str.l{left:0}.tl-str.r{right:0}
+@media(max-width:1280px){.tl-str{display:none}}
+.cyb-feed{left:56px}.cyb-box{right:56px}
+@media(prefers-reduced-motion:reduce){h2::after{animation:none}h2:hover{animation:none}}
