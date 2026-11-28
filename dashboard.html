@@ -545,7 +545,7 @@ h2.t{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;margin:44px 0 6px}
 .cap-row .cap-t b{display:block;font-size:14px}.cap-row .cap-t span{font-size:12.5px;opacity:.7}
 .cap-step{display:flex;align-items:center;border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--s1);flex:none}
 .cap-step button{width:36px;height:36px;border:0;background:transparent;color:inherit;font-size:18px;cursor:pointer}.cap-step button:hover{background:rgba(232,81,13,.12)}
-.cap-step input{width:52px;height:36px;border:0;border-left:1px solid var(--ln);border-right:1px solid var(--ln);background:transparent;color:inherit;text-align:center;font:inherit;-moz-appearance:textfield}
+.cap-step input{width:52px;height:36px;border:0;border-left:1px solid var(--ln);border-right:1px solid var(--ln);background:transparent;color:inherit;text-align:center;font:inherit;-moz-appearance:textfield;appearance:textfield}
 .cap-step input::-webkit-outer-spin-button,.cap-step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .cap-step em{padding:0 10px;font-style:normal;font-size:12.5px;opacity:.7}
 .cap-tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--ln);border-radius:10px;margin:12px 0 0}
@@ -999,7 +999,7 @@ h("p",{text:"Utilisez votre compte Discord pour retrouver les serveurs que vous 
 LOGIN_ERR?h("p",{class:"lgn-err",text:LOGIN_MSG[LOGIN_ERR]||LOGIN_MSG.login}):null,
 h("ul",{class:"lgn-notes"},[h("li",{},[ic(P_LOCK,"lgn-i"),h("span",{},[h("b",{text:"Vous vous connectez sur Discord. "}),"CoreLab ne vous demande jamais votre mot de passe."])]),
 h("li",{},[ic(P_CHECK,"lgn-i"),"Vous choisissez le compte à utiliser."]),h("li",{},[ic(P_CHECK,"lgn-i"),"Vos permissions déterminent vos accès."])])]);
-var help=h("a",{class:"lgn-help",href:"https://discord.gg/WecpyxrSBT",target:"_blank",rel:"noopener"},[ic(P_CHAT),h("div",{},[h("b",{text:"Une question avant de commencer ?"}),h("span",{text:"Retrouvez la communauté sur Discord."})]),h("i",{text:"↗"})]);
+var help=h("a",{class:"lgn-help",href:"https://discord.gg/GfbkAqHaFn",target:"_blank",rel:"noopener"},[ic(P_CHAT),h("div",{},[h("b",{text:"Une question avant de commencer ?"}),h("span",{text:"Retrouvez la communauté sur Discord."})]),h("i",{text:"↗"})]);
 app.appendChild(h("div",{class:"lgn"},[left,h("div",{},[card,help])]));
 app.appendChild(h("div",{class:"lgn-foot"},[h("span",{text:"© 2026 CoreLab"}),h("span",{text:"Un espace pour votre communauté."})]))}
 
@@ -1036,7 +1036,7 @@ rec.forEach(function(g){nav.appendChild(h("a",{href:g.botIn?"#/g/"+g.id:"#/serve
 side.appendChild(nav);
 function ls(p,t,href,ext){var a=h("a",{class:"l",href:href});a.innerHTML='<svg viewBox="0 0 24 24">'+p+'</svg>';a.appendChild(h("span",{text:t}));if(ext){a.target="_blank";a.rel="noopener"}return a}
 side.appendChild(h("div",{class:"sfnav"},[ls('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',"Documentation","docs.html"),
-ls('<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',"Support","https://discord.gg/WecpyxrSBT",true),
+ls('<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',"Support","https://discord.gg/GfbkAqHaFn",true),
 ls('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',"Statut","status.html"),
 h("a",{class:"sfadd",href:invUrl(),target:"_blank",rel:"noopener",text:"＋ Ajouter CoreLab"})]));
 if(ME&&ME.user){var U=ME.user;side.appendChild(h("div",{class:"sfoot"},[U.avatar?h("img",{src:"https://cdn.discordapp.com/avatars/"+U.id+"/"+U.avatar+".png?size=64",alt:""}):h("span",{class:"av",style:"width:36px;height:36px",text:String(U.username||"?").charAt(0).toUpperCase()}),h("div",{class:"sfx"},[h("b",{text:U.username}),h("span",{text:"Connecté avec Discord"})]),h("button",{class:"sfb",type:"button",title:"Déconnexion","aria-label":"Déconnexion",text:"⏻",onclick:function(){logout()}})]))}
@@ -1069,7 +1069,7 @@ function rcItem(p,t,d,href,ext,done){var a=h("a",{class:"hm-ri"+(done?" done":""
 var protoLink=tgt?"#/g/"+tgt.id:"#/servers",permLink=protoLink;
 var rP=rcItem(P_SHD,"Vérifier les protections","Définissez vos seuils et vos exclusions.",protoLink),rA=rcItem(P_LCK,"Organiser les accès","Les bons droits pour votre équipe.",permLink);
 reco.appendChild(rP);reco.appendChild(rA);
-reco.appendChild(rcItem(P_CHT,"Rejoindre le Discord","Nouveautés, questions et retours.","https://discord.gg/WecpyxrSBT",true));
+reco.appendChild(rcItem(P_CHT,"Rejoindre le Discord","Nouveautés, questions et retours.","https://discord.gg/GfbkAqHaFn",true));
 reco.appendChild(rcItem(P_OK,"Compte Discord connecté","Vous êtes connecté avec @"+(U.username||"")+".","#/account",false,true));
 /* Derniers serveurs */
 right.appendChild(h("h3",{text:"Retrouvez vos derniers serveurs"}));right.appendChild(h("p",{class:"hm-sub",text:"Reprenez là où vous en étiez."}));
@@ -1194,7 +1194,7 @@ side.appendChild(nav);
 var inv="https://discord.com/oauth2/authorize?client_id="+CLIENT_ID+"&scope=bot%20applications.commands&permissions=8";
 var add=h("a",{class:"sfadd",href:inv,target:"_blank",rel:"noopener",text:"＋ Ajouter CoreLab"});
 side.appendChild(h("div",{class:"sfnav"},[ls('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',"Documentation","docs.html"),
-ls('<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',"Support","https://discord.gg/WecpyxrSBT",true),
+ls('<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',"Support","https://discord.gg/GfbkAqHaFn",true),
 ls('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',"Statut","status.html"),add]))})();
 if(ME&&ME.user){var U=ME.user;side.appendChild(h("div",{class:"sfoot"},[U.avatar?h("img",{src:"https://cdn.discordapp.com/avatars/"+U.id+"/"+U.avatar+".png?size=64",alt:""}):h("span",{class:"av",style:"width:36px;height:36px",text:String(U.username||"?").charAt(0).toUpperCase()}),h("div",{class:"sfx"},[h("b",{text:U.username}),h("span",{text:"Connecté avec Discord"})]),h("button",{class:"sfb",type:"button",title:"Déconnexion","aria-label":"Déconnexion",text:"⏻",onclick:function(){logout()}})]))}
 var content=h("div",{class:"content"});
