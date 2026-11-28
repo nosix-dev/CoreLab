@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
-<title>Dashboard · CoreLab</title>
+<title>CoreBoard · CoreLab</title>
 <style>
 :root{--bg:#1e1f22;--s1:#2b2d31;--s2:#313338;--ln:#3f4147;--tx:#f2f3f5;--mu:#b5bac1;--ac:#e8510d;--ac2:#ff7a3d;--ok:#3ba55d;--r:14px;--f:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--nav:60px}
 *,*::before,*::after{box-sizing:border-box}
@@ -938,7 +938,7 @@ body.hs>header{display:none}
 </head>
 <body>
 <header><div class="bar">
-<a class="logo" href="index.html"><img src="logo.png" alt="" width="28" height="28">CoreLab <small>Dashboard</small></a>
+<a class="logo" href="index.html"><img src="logo.png" alt="" width="28" height="28">CoreLab <small>CoreBoard</small></a>
 <div class="right" id="hr"><a class="btn ghost sm" href="index.html">Retour au site</a></div>
 </div></header>
 <main id="app"></main>
@@ -1111,7 +1111,7 @@ rf.innerHTML='<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 
 tabs.appendChild(h("button",{type:"button","data-t":t[0],class:t[0]===tab?"on":"",onclick:function(){tab=t[0];[].forEach.call(tabs.children,function(b){b.className=b.getAttribute("data-t")===tab?"on":""});draw()}},[t[1],h("em",{text:String(t[2])})]))});
 root.appendChild(h("div",{class:"sl-top"},[tabs,h("div",{class:"sl-tools"},[find,rf])]));
 root.appendChild(body);
-root.appendChild(h("p",{class:"sl-note",text:"🔒 Retrouvez les serveurs que vous pouvez gérer. Ajoutez CoreLab ou ouvrez son dashboard."}));
+root.appendChild(h("p",{class:"sl-note",text:"🔒 Retrouvez les serveurs que vous pouvez gérer. Ajoutez CoreLab ou ouvrez son CoreBoard."}));
 find.addEventListener("input",function(){q=find.value.trim().toLowerCase();draw()});
 function role(s){return typeof s.owner==="boolean"?(s.owner?"Propriétaire":"Administrateur"):""}
 function head(t,n){return h("h3",{class:"sl-h"},[t,h("em",{text:String(n)})])}
@@ -2220,7 +2220,7 @@ api(base+"/"+selected.id+"/image",{method:"DELETE"}).then(function(){selected.ba
 return wrap
 }
 function ticketError(e){
-if(e&&e.error==="not_found")return "L’API des panneaux n’est pas présente sur le bot déployé. Redéploie/redémarre CoreLab avec la dernière version, puis recharge le dashboard.";
+if(e&&e.error==="not_found")return "L’API des panneaux n’est pas présente sur le bot déployé. Redéploie/redémarre CoreLab avec la dernière version, puis recharge le CoreBoard.";
 if(e&&e.error==="panel_not_found")return "Ce panneau n’existe plus côté bot. Recharge la page et réessaie.";
 if(e&&e.error==="premium")return "L’ajout d’une bannière est réservé à l’abonnement Personnalisation ou Total.";
 return errText(e)
@@ -3178,7 +3178,7 @@ if(!as.length){box.appendChild(h("div",{class:"empty",text:"Aucune absence dans 
 as.forEach(function(a){box.appendChild(rowOf(a))})}
 function rowOf(a){var st=ST[a.status]||[a.status,""],off=a.status==="past"||a.status==="returned"||a.status==="refused"||a.status==="cancelled";
 var det=[];det.push(dt(a.start)+" → "+dt(a.end)+" · "+a.duration);if(a.reason)det.push("Motif : "+a.reason);if(a.info)det.push("Infos : "+a.info);
-det.push("Soumise le "+dt(a.createdAt)+(a.source==="discord"?" via /absence":" depuis le dashboard"));
+det.push("Soumise le "+dt(a.createdAt)+(a.source==="discord"?" via /absence":" depuis le CoreBoard"));
 if(a.decidedBy&&(a.status!=="pending"))det.push("Traitée par "+a.decidedBy);
 if(a.extension)det.push("Prolongation demandée jusqu’au "+dt(a.extension.end)+(a.extension.reason?" ("+a.extension.reason+")":""));
 var btns=[];
