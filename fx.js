@@ -95,3 +95,64 @@ new MutationObserver(function(){if(q)return;q=true;requestAnimationFrame(functio
 document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".lang button"))setTimeout(railUpdate,50)})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+
+/* ── passerelle Discord : fenêtre sécurisée avant d'ouvrir l'invitation du bot ou le serveur support ── */
+(function(){
+"use strict";
+var cs=document.currentScript;if(cs&&cs.hasAttribute("data-lite"))return;
+var TX={fr:{g:"PASSERELLE SÉCURISÉE",bot:"Inviter CoreLab",sup:"Rejoindre le support",dom:"Domaine vérifié",tls:"Connexion chiffrée (HTTPS)",adm:"Permissions demandées",admv:"Administrateur",srv:"Serveur",srvv:"Support officiel CoreLab",an:"ANALYSE DU LIEN…",ok:"DOMAINE OFFICIEL DISCORD",go:"Continuer vers Discord",no:"Annuler",w:"Vérifie les permissions avant d'accepter."},
+en:{g:"SECURE GATEWAY",bot:"Invite CoreLab",sup:"Join the support server",dom:"Verified domain",tls:"Encrypted connection (HTTPS)",adm:"Requested permissions",admv:"Administrator",srv:"Server",srvv:"Official CoreLab support",an:"ANALYZING LINK…",ok:"OFFICIAL DISCORD DOMAIN",go:"Continue to Discord",no:"Cancel",w:"Check the permissions before accepting."}};
+function kind(a){var u;try{u=new URL(a.href,location.href)}catch(e){return null}
+if(u.hostname==="discord.com"&&u.pathname.indexOf("/oauth2/authorize")===0)return{k:"bot",u:u};
+if(u.hostname==="discord.gg"||(u.hostname==="discord.com"&&u.pathname.indexOf("/invite/")===0))return{k:"sup",u:u};
+return null}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function css(){if(document.getElementById("gwcss"))return;var s=document.createElement("style");s.id="gwcss";
+s.textContent=".gw{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:20px;background:rgba(10,11,13,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:gwf .25s ease-out;font-family:ui-monospace,Menlo,Consolas,monospace}"+
+".gw-b{position:relative;width:min(440px,100%);padding:28px 24px 22px;background:#1e1f22;border:1px solid #3f4147;color:#f2f3f5;box-shadow:0 0 60px rgba(232,81,13,.18);animation:gwu .35s cubic-bezier(.2,.7,.2,1)}"+
+".gw-c{position:absolute;width:20px;height:20px;border:0 solid #e8510d}.gw-c.a{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}.gw-c.b{top:-1px;right:-1px;border-top-width:2px;border-right-width:2px}.gw-c.c{bottom:-1px;left:-1px;border-bottom-width:2px;border-left-width:2px}.gw-c.d{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}"+
+".gw-sh{position:relative;width:64px;margin:0 auto 12px;overflow:hidden}.gw-sh svg{display:block;width:64px;height:auto;overflow:visible}"+
+".gw-sh .s{fill:rgba(232,81,13,.14);stroke:#e8510d;stroke-width:2.5;stroke-linejoin:round;stroke-dasharray:400;stroke-dashoffset:400;animation:gwd .7s ease-out forwards}"+
+".gw-sh .c{fill:none;stroke:#2fb872;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:gwd .35s 1.2s ease-out forwards}"+
+".gw-sh i{position:absolute;left:0;right:0;top:0;height:2px;background:#2fb872;box-shadow:0 0 10px 2px rgba(47,184,114,.55);animation:gws 1.1s .15s ease-in-out forwards;opacity:0}"+
+".gw-g{text-align:center;font-size:10.5px;letter-spacing:.24em;color:#e8510d}.gw h3{margin:6px 0 16px;text-align:center;font:800 22px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:-.01em}"+
+".gw ul{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:7px;font-size:12px;color:#b5bac1}"+
+".gw li{display:flex;gap:8px;opacity:0;animation:gwo .25s forwards}.gw li::before{content:'✓';color:#2fb872;font-weight:700}.gw li.w::before{content:'!';color:#e8510d}.gw li b{margin-left:auto;color:#f2f3f5;font-weight:600;text-align:right}"+
+".gw li:nth-child(1){animation-delay:.4s}.gw li:nth-child(2){animation-delay:.7s}.gw li:nth-child(3){animation-delay:1s}"+
+".gw-bar{height:3px;background:#313338;overflow:hidden}.gw-bar i{display:block;height:100%;background:linear-gradient(90deg,#e8510d,#2fb872);transform-origin:left;transform:scaleX(0);animation:gwp 1.25s .1s ease-in-out forwards}"+
+".gw-st{margin:8px 0 14px;text-align:center;font-size:10.5px;letter-spacing:.2em;color:#b5bac1}.gw-st.ok{color:#2fb872}"+
+".gw-w{margin:-4px 0 14px;text-align:center;font:12px system-ui,sans-serif;color:#b5bac1}"+
+".gw-bt{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.gw-bt button{font:600 14px system-ui,sans-serif;padding:11px 20px;border-radius:8px;cursor:pointer;border:1px solid #e8510d;background:#e8510d;color:#fff;transition:opacity .2s,transform .15s}"+
+".gw-bt button:hover:not(:disabled){transform:translateY(-1px)}.gw-bt button:disabled{opacity:.35;cursor:wait}.gw-bt .g{background:transparent;border-color:#3f4147;color:#f2f3f5}"+
+"@keyframes gwf{from{opacity:0}}@keyframes gwu{from{opacity:0;transform:translateY(14px) scale(.97)}}@keyframes gwd{to{stroke-dashoffset:0}}@keyframes gwo{to{opacity:1}}@keyframes gwp{to{transform:scaleX(1)}}@keyframes gws{0%{opacity:1;transform:translateY(0)}90%{opacity:1}100%{opacity:0;transform:translateY(60px)}}"+
+"@media(prefers-reduced-motion:reduce){.gw,.gw *{animation-duration:.01s!important;animation-delay:0s!important}}";
+document.head.appendChild(s)}
+function open(info,from){css();
+var t=TX[document.documentElement.lang==="en"?"en":"fr"],o=el("div","gw"),b=el("div","gw-b"),prev=document.activeElement;
+o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label",t[info.k]);
+["a","b","c","d"].forEach(function(x){b.appendChild(el("i","gw-c "+x))});
+var sh=el("div","gw-sh");sh.innerHTML='<svg viewBox="0 0 100 120"><path class="s" d="M50 5 91 20v33c0 27-17 45-41 54C26 98 9 80 9 53V20z"/><path class="c" d="M34 56l12 12 22-26"/></svg><i></i>';
+b.appendChild(sh);b.appendChild(el("div","gw-g",t.g));b.appendChild(el("h3",null,t[info.k]));
+var ul=el("ul"),l1=el("li");l1.appendChild(document.createTextNode(t.dom));l1.appendChild(el("b",null,info.u.hostname));ul.appendChild(l1);
+if(info.u.protocol==="https:"){var l2=el("li");l2.appendChild(document.createTextNode(t.tls));ul.appendChild(l2)}
+var l3=el("li");
+if(info.k==="bot"&&info.u.searchParams.get("permissions")==="8"){l3.className="w";l3.appendChild(document.createTextNode(t.adm));l3.appendChild(el("b",null,t.admv))}
+else if(info.k==="sup"){l3.appendChild(document.createTextNode(t.srv));l3.appendChild(el("b",null,t.srvv))}
+else l3=null;
+if(l3)ul.appendChild(l3);b.appendChild(ul);
+var bar=el("div","gw-bar");bar.appendChild(el("i"));b.appendChild(bar);
+var st=el("div","gw-st",t.an);b.appendChild(st);
+if(info.k==="bot")b.appendChild(el("div","gw-w",t.w));
+var bt=el("div","gw-bt"),go=el("button",null,t.go),no=el("button","g",t.no);go.type=no.type="button";go.disabled=true;bt.appendChild(go);bt.appendChild(no);b.appendChild(bt);
+o.appendChild(b);document.body.appendChild(o);
+function close(){clearTimeout(tm);document.removeEventListener("keydown",key,true);if(o.parentNode)o.parentNode.removeChild(o);if(prev&&prev.focus)try{prev.focus()}catch(e){}}
+function key(e){if(e.key==="Escape"){e.preventDefault();close()}}
+var tm=setTimeout(function(){st.textContent=t.ok;st.className="gw-st ok";go.disabled=false;go.focus()},1350);
+document.addEventListener("keydown",key,true);
+no.onclick=close;o.addEventListener("click",function(e){if(e.target===o)close()});
+go.onclick=function(){window.open(info.u.href,"_blank","noopener");close()}}
+document.addEventListener("click",function(e){
+if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+var a=e.target&&e.target.closest?e.target.closest("a[href]"):null;if(!a)return;
+var i=kind(a);if(!i)return;e.preventDefault();open(i,a)},true);
+})();
