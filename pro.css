@@ -361,13 +361,13 @@ h2::after{content:"_";margin-left:4px;color:var(--ok,#2fb872);animation:cyblink 
 h2:hover{animation:cyglh .4s steps(2) 1}
 @keyframes cyglh{0%{text-shadow:3px 0 rgba(255,40,80,.7),-3px 0 rgba(0,255,170,.6);transform:translateX(-2px)}50%{text-shadow:-3px 0 rgba(255,40,80,.7),3px 0 rgba(0,255,170,.6);transform:translateX(2px)}100%{text-shadow:none;transform:none}}
 /* viseur qui suit la souris et se verrouille sur les liens et boutons */
-.tl-ring{position:fixed;left:0;top:0;width:38px;height:24px;margin:-12px 0 0 -19px;z-index:99990;pointer-events:none;translate:-100px -100px;transition:width .2s,height .2s,margin .2s}
+.tl-ring{position:fixed;left:0;top:0;width:38px;height:24px;margin:-12px 0 0 -19px;z-index:2147483646;pointer-events:none;translate:-100px -100px;transition:width .2s,height .2s,margin .2s}
 .tl-ring::before,.tl-ring::after{content:"";position:absolute;top:0;width:9px;height:100%;border:2px solid #f2f3f5;border-bottom-color:#2fb872;transition:border-color .2s}
 .tl-ring::before{left:0;border-right:0}
 .tl-ring::after{right:0;border-left:0}
 .tl-ring.lk{width:60px;height:36px;margin:-18px 0 0 -30px}
 .tl-ring.lk::before,.tl-ring.lk::after{border-color:#2fb872}
-.tl-dot{position:fixed;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;z-index:99991;pointer-events:none;border-radius:50%;background:#e8510d;box-shadow:0 0 8px 2px rgba(232,81,13,.55);translate:-100px -100px}
+.tl-dot{position:fixed;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;z-index:2147483647;pointer-events:none;border-radius:50%;background:#e8510d;box-shadow:0 0 8px 2px rgba(232,81,13,.55);translate:-100px -100px}
 html.tl-on,html.tl-on *{cursor:none!important}
 html.tl-on textarea,html.tl-on input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]){cursor:text!important}
 /* flux de données sur les bords de l'écran */
