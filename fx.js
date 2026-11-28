@@ -167,10 +167,7 @@ fine=window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches;
 if(reduce)return;
 function div(c){var d=document.createElement("div");d.className=c;document.body.appendChild(d);return d}
 function init(){
-if(fine){document.documentElement.classList.add("tl-on");var r=div("tl-ring"),d=div("tl-dot"),x=-100,y=-100,rx=x,ry=y;
-addEventListener("mousemove",function(e){x=e.clientX;y=e.clientY;d.style.translate=x+"px "+y+"px";
-var t=e.target&&e.target.closest?e.target.closest("a,button,summary,label,input,select,textarea,[role=button]"):null;r.classList.toggle("lk",!!t)},{passive:true});
-(function f(){rx+=(x-rx)*.2;ry+=(y-ry)*.2;r.style.translate=rx+"px "+ry+"px";requestAnimationFrame(f)})()}
+
 ["l","r"].forEach(function(s){var c=document.createElement("canvas");c.className="tl-str "+s;c.setAttribute("aria-hidden","true");document.body.appendChild(c);
 var g=c.getContext("2d"),W=c.width=40,H,dr=[0,0],last=0,HX="0123456789ABCDEF";
 function sz(){H=c.height=innerHeight;dr=[Math.random()*H/14,Math.random()*H/14]}sz();addEventListener("resize",sz);
