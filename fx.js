@@ -167,7 +167,7 @@ fine=window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches;
 if(reduce)return;
 function div(c){var d=document.createElement("div");d.className=c;document.body.appendChild(d);return d}
 function init(){
-if(fine){var r=div("tl-ring"),d=div("tl-dot"),x=-100,y=-100,rx=x,ry=y;
+if(fine){document.documentElement.classList.add("tl-on");var r=div("tl-ring"),d=div("tl-dot"),x=-100,y=-100,rx=x,ry=y;
 addEventListener("mousemove",function(e){x=e.clientX;y=e.clientY;d.style.translate=x+"px "+y+"px";
 var t=e.target&&e.target.closest?e.target.closest("a,button,summary,label,input,select,textarea,[role=button]"):null;r.classList.toggle("lk",!!t)},{passive:true});
 (function f(){rx+=(x-rx)*.2;ry+=(y-ry)*.2;r.style.translate=rx+"px "+ry+"px";requestAnimationFrame(f)})()}
